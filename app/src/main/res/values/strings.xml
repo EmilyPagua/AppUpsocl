@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">AppUpsocl</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="msg_login">Optimismo que nos une.</string>
+    <string name="msg_welcome">Bienvenido a Upsocl</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="banner_ad_unit_id">/100064084/andorid_test</string>
+    <string name="facebook_app_id">1768654246682359</string>
+    <string name="menu_add">Agregar</string>
+    <string name="menu_search">Buscar</string>
+    <string name="action_settings">PruebaMenu</string>
+    <string name="search_result">Resultado busqueda</string>
+    <string name="search_hint">Buscar</string>
+    <string name="btn_init">Comenzar</string>
+    <string name="title_activity_crear_cuenta">CrearCuenta</string>
+    <string name="title_activity_create_perfil">CreatePerfil</string>
+
+    <!-- CREATE PERFIL BUTTON -->
+    <string name="msg_createPerfil">Selecciona al menos tres categorias para personalizar tu feed.</string>
+    <string name="btn_culture">Cultura y Entreteniemiento</string>
+    <string name="btn_community">Comunidad</string>
+    <string name="btn_travel">Viajes</string>
+    <string name="btn_quiz">Quiz</string>
+    <string name="btn_worl">Mundo</string>
+    <string name="btn_animals">VErde/Animales</string>
+    <string name="btn_movie">Pelicula</string>
+    <string name="btn_inspiration">Inspiración</string>
+    <string name="btn_health">Salud</string>
+    <string name="btn_cook">Comida</string>
+    <string name="btn_women">Mujer</string>
+    <string name="btn_family">Familia</string>
+    <string name="btn_relationes">Relaciones</string>
+    <string name="btn_diversity">Diversidad</string>
+    <string name="btn_styleLive">Estilo de vida</string>
+    <string name="btn_beauty">Belleza</string>
+    <string name="btn_creativity">Creatividad</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+
+
+    <!-- PRICIPAL MENU -->
+    <string name="home_item">Home</string>
+    <string name="productos_item">Productos</string>
+    <string name="compras_item">Carrito</string>
+    <string name="ordenes_item">Ordenes</string>
+    <string name="facturas_item">Facturas</string>
+    <string name="log_out_item">Cerrar Sesión</string>
+    <string name="configuracion_item">Configuración</string>
+
+</resources>

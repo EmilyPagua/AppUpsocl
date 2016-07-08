@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionGroup="false"
+    android:touchscreenBlocksFocus="false">
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/cardtextColor"
+            tools:context="com.upsocl.upsocl.DetailActivity">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"/>
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/heigny_image_detail"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder"
+                android:id="@+id/imageViewDetail" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailTextView"
+                android:paddingTop="@dimen/margin_webview"
+                android:textSize="26dp"
+                android:layout_margin="10dp"
+                android:textStyle="bold" />
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/webView"
+                android:layout_below="@+id/detailTextView"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/margin_webview"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Compartir"
+                android:drawableTop="@drawable/share"
+                android:onClick="on_click_share"
+                android:theme="@style/Theme.AppCompat.Light" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
