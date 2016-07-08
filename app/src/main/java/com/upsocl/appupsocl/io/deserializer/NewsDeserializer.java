@@ -10,6 +10,9 @@ import com.upsocl.appupsocl.io.model.JsonKeys;
 
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by leninluque on 13-11-15.
@@ -32,6 +35,7 @@ public class NewsDeserializer implements JsonDeserializer<News> {
 
         String urlImage= item.get(JsonKeys.NEWS_IMAGES_URL).toString();
         currentNews.setImage(urlImage.substring(1, urlImage.length()-1));
+        currentNews.setDatePublicaded(cenvertToDate(item.get(JsonKeys.NEWS_DATE).toString()));
 
         return currentNews;
     }
@@ -39,6 +43,22 @@ public class NewsDeserializer implements JsonDeserializer<News> {
     private String getJsonValue(JsonElement jsonElement) {
         String valor =  ((JsonObject) jsonElement).get(JsonKeys.RENDERED).toString();
         return  valor.substring(1, valor.length()-1);
+    }
+
+    private String cenvertToDate(String dateInString ){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
+
+        Date date =  null;
+        try {
+
+            date = formatter.parse(dateInString.substring(1, 11 ));
+            return formatter2.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

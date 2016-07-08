@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by leninluque on 09-11-15.
  */
@@ -17,10 +19,27 @@ public class News {
     @SerializedName("content")
     private String content;
     private String image;
+    private String author;
+    private String datePublicaded;
 
     public News() {
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getDatePublicaded() {
+        return datePublicaded;
+    }
+
+    public void setDatePublicaded(String datePublicaded) {
+        this.datePublicaded = datePublicaded;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public String getImage() {
         return image;

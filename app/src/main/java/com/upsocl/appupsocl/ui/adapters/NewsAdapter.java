@@ -41,6 +41,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     @Override
     public void onBindViewHolder(NewsHolder holder, int position) {
         holder.name.setText(news.get(position).getTitle());
+        holder.dataPost.setText("Publicado: "+news.get(position).getDatePublicaded());
         holder.setNewsObj(news.get(position));
 
         if (!(news.get(position).getImage() == "")){
@@ -66,12 +67,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
         private ImageView image;
         private TextView name;
+        private TextView dataPost;
         private News newsObj;
 
         public NewsHolder(final View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.img_post);
             name = (TextView) itemView.findViewById(R.id.title_post);
+            dataPost = (TextView) itemView.findViewById(R.id.data_post);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,6 +104,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             this.newsObj = newsObj;
         }
 
+        public void setDataPost(String dataPost) {
+            this.dataPost.setText(dataPost);
+        }
     }
 
 
