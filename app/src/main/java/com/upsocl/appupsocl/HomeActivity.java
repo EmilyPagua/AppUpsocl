@@ -1,6 +1,5 @@
 package com.upsocl.appupsocl;
 
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
@@ -26,6 +26,7 @@ import com.upsocl.appupsocl.ui.fragments.NewsFragment;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,10 +92,10 @@ public class HomeActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.home, menu);
 
         // Associate searchable configuration with the SearchView
-      /*  SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        MenuItem menuItem =  menu.findItem(R.id.menu_item_search);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-*/
 
         return true;
     }
@@ -107,9 +108,9 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_search) {
+        /*if (id == R.id.action_search) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -141,4 +142,6 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.news_content, fragment);
         fragmentTransaction.commit();
     }
+
+
 }

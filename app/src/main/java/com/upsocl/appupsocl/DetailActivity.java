@@ -76,7 +76,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem item = menu.findItem(R.id.menu_search);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
 
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
@@ -100,7 +100,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_search:
+            case R.id.menu_item_share:
                 share_url_new();
                 return true;
             default:
