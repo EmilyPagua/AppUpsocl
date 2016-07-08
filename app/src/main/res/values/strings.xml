@@ -9,10 +9,11 @@
     <string name="msg_welcome">Bienvenido a Upsocl</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="banner_ad_unit_id">/100064084/andorid_test</string>
-    <string name="facebook_app_id">1768654246682359</string>
+    <string name="facebook_app_id">278628459160126</string>
     <string name="menu_add">Agregar</string>
     <string name="menu_search">Buscar</string>
     <string name="action_settings">PruebaMenu</string>
+    <string name="action_search">Buscar</string>
     <string name="search_result">Resultado busqueda</string>
     <string name="search_hint">Buscar</string>
     <string name="btn_init">Comenzar</string>
@@ -49,5 +50,6 @@
     <string name="facturas_item">Facturas</string>
     <string name="log_out_item">Cerrar Sesión</string>
     <string name="configuracion_item">Configuración</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
 
 </resources>
