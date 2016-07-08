@@ -9,7 +9,7 @@ public class ButtonOptionKeys {
     public static final String OPT_COMMUNITY = "comunidad" ;
     public static final String OPT_TRAVEL = "viaje";
     public static final String OPT_QUIZ = "quiz";
-    public static final String OPT_WORL= "mundo";
+    public static final String OPT_WORLD= "mundo";
     public static final String OPT_ANIMALS= "animales";
     public static final String OPT_MOVIES = "pelicula";
     public static final String OPT_INSPIRATION= "inspiracion";
@@ -19,8 +19,8 @@ public class ButtonOptionKeys {
     public static final String OPT_WOMEN= "mujer";
     public static final String OPT_FAMILY= "familia";
     public static final String OPT_CREATIVITY= "Cultura";
-    public static final String OPT_BEAUTY= "Cultura";
-    public static final String OPT_DIVERSITY= "Cultura";
-    public static final String OPT_STYLELIVE= "Cultura";
+    public static final String OPT_BEAUTY= "Belleza";
+    public static final String OPT_DIVERSITY= "Diversidad";
+    public static final String OPT_STYLELIVE= "EstiloDeVida";
 
 }

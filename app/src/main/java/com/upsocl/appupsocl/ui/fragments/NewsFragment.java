@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
 import com.upsocl.appupsocl.R;
@@ -35,10 +36,13 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
     private LinearLayoutManager llm;
     private ProgressBar spinner;
     private Integer tabSelected;
+    private String word;
+    private TextView header_news;
 
     @SuppressLint("ValidFragment")
-    public NewsFragment(Integer tabSelected) {
+    public NewsFragment(Integer tabSelected, String word) {
         this.tabSelected = tabSelected;
+        this.word = word;
     }
 
     @Nullable
@@ -48,6 +52,7 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
         page = 1;
         loadPosts(page, tabSelected);
 
+        header_news = (TextView) root.findViewById(R.id.header_news);
         newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewsAdapter(getActivity());
@@ -62,7 +67,6 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
             llm = (LinearLayoutManager) recyclerView.getLayoutManager();
             int size = llm.getItemCount();
             if (size == llm.findLastCompletelyVisibleItemPosition() + 1) {
-                Log.d(getTag(), "SI load more findLastCompletelyVisibleItemPosition->" + llm.findLastCompletelyVisibleItemPosition() + "---size:" + size);
                 page = page + 1;
                 spinner.setVisibility(View.VISIBLE);
                 loadPosts(page,tabSelected);
@@ -77,6 +81,9 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
 
     @Override
     public void success(ArrayList<News> newses, Response response) {
+        if (newses.size()==0)
+            header_news.setText("No se encontraron resultados para la busqueda: " + word);
+
         adapter.addAll(newses);
         spinner.setVisibility(View.GONE);
     }
@@ -88,6 +95,9 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
 
     public void loadPosts(Integer paged, Integer tabSelected){
         switch (tabSelected){
+            case -1:{
+                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListWord(word,page, this);
+                break;}
             case 0:{
                 WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListNews(paged, this);
                 break;}
@@ -106,6 +116,7 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
             case 5:{
                 WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListPopulary(paged, this);
                 break;}
+
         }
 
     }

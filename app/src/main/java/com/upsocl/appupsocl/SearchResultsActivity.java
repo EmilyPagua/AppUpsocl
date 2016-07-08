@@ -5,11 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
+
+import com.upsocl.appupsocl.ui.fragments.NewsFragment;
 
 public class SearchResultsActivity extends AppCompatActivity {
+
+    private String word;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,17 +26,18 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        handleIntent(getIntent());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
+
+        handleIntent(getIntent());
+        setFragment(new NewsFragment(-1, word));
+
     }
 
     protected void onNewIntent(Intent intent){
@@ -37,9 +46,15 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())){
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            System.out.println(query);
+            word= intent.getStringExtra(SearchManager.QUERY);
         }
+    }
+
+    protected void setFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.news_content, fragment);
+        fragmentTransaction.commit();
     }
 
 }

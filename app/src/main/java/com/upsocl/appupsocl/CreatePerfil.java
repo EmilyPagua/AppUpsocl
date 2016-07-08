@@ -22,7 +22,7 @@ public class CreatePerfil extends AppCompatActivity {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
 
-    private Button btn_culture, btn_community, btn_travel, btn_quiz, btn_worl, btn_animals ,
+    private Button btn_culture, btn_community, btn_travel, btn_quiz, btn_world, btn_animals ,
             btn_women,btn_cook, btn_inspiration, btn_health, btn_relations, btn_family,
             btn_creativity, btn_beauty, btn_diversity, btn_movies, btn_styleLive;
     ArrayList<String> listOptions =  new ArrayList<>();
@@ -39,7 +39,7 @@ public class CreatePerfil extends AppCompatActivity {
         btn_community = (Button) findViewById(R.id.btn_community);
         btn_travel = (Button) findViewById(R.id.btn_travel);
         btn_quiz = (Button) findViewById(R.id.btn_quiz);
-        btn_worl = (Button) findViewById(R.id.btn_worl);
+        btn_world = (Button) findViewById(R.id.btn_worl);
         btn_animals = (Button) findViewById(R.id.btn_animals);
         btn_women = (Button) findViewById(R.id.btn_women);
         btn_cook = (Button) findViewById(R.id.btn_cook);
@@ -106,7 +106,7 @@ public class CreatePerfil extends AppCompatActivity {
 
     }
     public void bntWorl(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_WORL,btn_worl);
+        changeStatusButton(ButtonOptionKeys.OPT_WORLD,btn_world);
     }
 
     public void btnWomen(View view){
@@ -175,14 +175,11 @@ public class CreatePerfil extends AppCompatActivity {
         for (int i=0;i< listOptions.size(); i++){
             if (listOptions.get(i).equals(option)){
                 listOptions.remove(i);
-                System.out.println("Remover: " + option);
                 return false;
             }
         }
 
         listOptions.add(option);
-        System.out.println("Tamaño de la lista: " +listOptions.size());
-
         return flag;
     }
 
