@@ -32,6 +32,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+
         setSupportActionBar(toolbar);
         setFragment(new NewsFragment(0, null));
 
@@ -95,7 +96,6 @@ public class HomeActivity extends AppCompatActivity
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         return true;
     }
 
@@ -131,6 +131,7 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.news_content, fragment);
         fragmentTransaction.commit();
     }
+
 
 
 }
