@@ -26,9 +26,9 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+       /* getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar_segundary.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -36,7 +36,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
 
         handleIntent(getIntent());
-        setFragment(new NewsFragment(-1, word));
+        setFragment(new NewsFragment(-1, word));*/
 
     }
 

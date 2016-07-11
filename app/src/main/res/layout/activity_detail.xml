@@ -6,7 +6,7 @@
     android:transitionGroup="false"
     android:touchscreenBlocksFocus="false">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar_segundary"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"

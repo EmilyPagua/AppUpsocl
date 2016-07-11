@@ -11,6 +11,11 @@
             android:icon="@android:drawable/ic_input_get"
             android:title="Bookmarks" />
 
+        <item
+            android:id="@+id/nav_interests"
+            android:icon="@android:drawable/btn_star_big_off"
+            android:title="Interes" />
+
 
     </group>
 
@@ -23,7 +28,7 @@
                 android:title="Preferencia" />
 
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_help"
                 android:icon="@android:drawable/ic_menu_help"
                 android:title="Ayuda" />
         </menu>

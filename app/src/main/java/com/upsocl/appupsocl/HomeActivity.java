@@ -2,6 +2,7 @@ package com.upsocl.appupsocl;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -105,13 +106,17 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_interests) {
+            Intent  intent = new Intent(this,InterestsActivity.class);
+            HomeActivity.this.startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
+            Intent  intent = new Intent(this,PreferencesActivity.class);
+            HomeActivity.this.startActivity(intent);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_help) {
+            Intent  intent = new Intent(this,HelpActivity.class);
+            HomeActivity.this.startActivity(intent);
 
         }
 
