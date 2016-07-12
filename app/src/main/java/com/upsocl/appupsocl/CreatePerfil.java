@@ -18,9 +18,10 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.facebook.share.widget.ShareDialog;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,7 +40,6 @@ public class CreatePerfil extends AppCompatActivity {
     private FacebookCallback<LoginResult> callback =  new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-
             Profile profile = Profile.getCurrentProfile();
             nextActivity(profile);
         }
@@ -80,11 +80,13 @@ public class CreatePerfil extends AppCompatActivity {
         btn_relations = (Button) findViewById(R.id.btn_relations);
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
-
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                System.out.println(currentAccessToken);
+                AccessToken.setCurrentAccessToken(currentAccessToken);
+
 
             }
         };
@@ -92,7 +94,6 @@ public class CreatePerfil extends AppCompatActivity {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-
                 nextActivity(newProfile);
             }
         };
@@ -119,6 +120,7 @@ public class CreatePerfil extends AppCompatActivity {
         };
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
         loginButton.registerCallback(callbackManager, callback);
+
     }
 
     @Override
@@ -136,11 +138,9 @@ public class CreatePerfil extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
     }
-
 
 
     private void nextActivity(Profile profile) {
@@ -160,7 +160,14 @@ public class CreatePerfil extends AppCompatActivity {
     public void btnCLickInit(View view){
         if (listOptions.size()<3)
             Toast.makeText(CreatePerfil.this, "Debe seleccionar al menos 3 categorias", Toast.LENGTH_SHORT).show();
-
+        else{
+            loginButton.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+            intent.putExtra("name", "Mily Pagua");
+            intent.putExtra("imagenURL","https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p200x200/10325715_10207625705094835_3366849149656567779_n.jpg?oh=7b96b85353204dda89c5df0ffe315478&oe=57F4A079&__gda__=1478888108_17b2784e8061d3206445a37ccacafdb1" );
+            startActivity(intent);
+            CreatePerfil.this.finish();
+        }
     }
 
     @Override

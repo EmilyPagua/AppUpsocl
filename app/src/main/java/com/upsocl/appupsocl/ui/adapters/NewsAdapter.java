@@ -2,7 +2,12 @@ package com.upsocl.appupsocl.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +46,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     @Override
     public void onBindViewHolder(NewsHolder holder, int position) {
         holder.name.setText(news.get(position).getTitle());
-        holder.dataPost.setText("Publicado: "+news.get(position).getDatePublicaded());
+        String description= news.get(position).getDatePublicaded();
+
+        SpannableStringBuilder sBDate = new SpannableStringBuilder("Publicado: "+description);
+        sBDate.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 10, sBDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        holder.dataPost.setText(sBDate);
         holder.setNewsObj(news.get(position));
 
         if (!(news.get(position).getImage() == "")){
@@ -96,16 +106,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                     .into(image);
         }
 
-        public void setName(String name) {
+       /* public void setName(String name) {
             this.name.setText(name);
         }
-
+*/
         public void setNewsObj(News newsObj) {
             this.newsObj = newsObj;
         }
 
         public void setDataPost(String dataPost) {
-            this.dataPost.setText(dataPost);
+
+            SpannableStringBuilder stringBuilder = new SpannableStringBuilder(dataPost);
+            stringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            this.dataPost.setText(stringBuilder);
         }
     }
 

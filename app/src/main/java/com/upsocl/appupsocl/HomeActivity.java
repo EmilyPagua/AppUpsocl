@@ -4,6 +4,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.textservice.SpellCheckerService;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +23,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.share.widget.ShareDialog;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.internal.Validate;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.upsocl.appupsocl.ui.DownloadImage;
@@ -32,11 +39,13 @@ public class HomeActivity extends AppCompatActivity
 
     private SearchView searchView;
     private NavigationView navigationView;
-    private ShareDialog shareDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Bundle b = getIntent().getExtras();
@@ -55,13 +64,7 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         setFragment(new NewsFragment(0, null));
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText("Para ti"));
-        tabs.addTab(tabs.newTab().setText("Verde"));
-        tabs.addTab(tabs.newTab().setText("Comida"));
-        tabs.addTab(tabs.newTab().setText("Mujer"));
-        tabs.addTab(tabs.newTab().setText("Mas popular"));
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+        TabLayout tabs = createTabLayout();
 
         tabs.setOnTabSelectedListener(
                 new TabLayout.OnTabSelectedListener() {
@@ -85,15 +88,28 @@ public class HomeActivity extends AppCompatActivity
                 }
         );
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
-    toggle.syncState();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 }
+
+    @NonNull
+    private TabLayout createTabLayout() {
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.addTab(tabs.newTab().setText("Para ti"));
+        tabs.addTab(tabs.newTab().setText("Verde"));
+        tabs.addTab(tabs.newTab().setText("Comida"));
+        tabs.addTab(tabs.newTab().setText("Mujer"));
+        tabs.addTab(tabs.newTab().setText("Mas popular"));
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+        return tabs;
+    }
 
     @Override
     public void onBackPressed() {
@@ -136,7 +152,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_help) {
             Intent  intent = new Intent(this,HelpActivity.class);
             HomeActivity.this.startActivity(intent);
-
+        }
+        else if (id == R.id.nav_close) {
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -151,6 +169,14 @@ public class HomeActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    public void logout(){
+        LoginManager.getInstance().logOut();
+        AccessToken.setCurrentAccessToken((AccessToken) null);
+        Profile.setCurrentProfile((Profile)null);
+        Intent login = new Intent(HomeActivity.this, CreatePerfil.class);
+        startActivity(login);
+        finish();
+    }
 
 
 }
