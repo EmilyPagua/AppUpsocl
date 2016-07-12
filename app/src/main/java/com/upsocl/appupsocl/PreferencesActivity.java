@@ -1,5 +1,6 @@
 package com.upsocl.appupsocl;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,11 +8,17 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.Toast;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 
 public class PreferencesActivity extends AppCompatActivity {
 
     private Switch aSwitch;
     private RadioGroup radioGroup;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +33,12 @@ public class PreferencesActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    aSwitch.setChecked(true);
                     //FIXME
                 }else{
-                    aSwitch.setChecked(false);
                     radioGroup.clearCheck();
+                    aSwitch.setChecked(false);
+
                 }
 
             }
@@ -68,5 +77,6 @@ public class PreferencesActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

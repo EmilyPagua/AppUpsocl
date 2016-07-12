@@ -268,31 +268,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-            android:layout_below="@+id/button"
-            android:layout_centerHorizontal="true" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/linearLayout8"
-        android:layout_below="@+id/linearLayout7"
-        android:gravity="center">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Continuar"
-            android:id="@+id/start"
-            android:enabled="true"
-            android:textColor="@color/cardtextColor"
-            android:background="#303f9f"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:onClick="btnCLickInit"
+            android:layout_below="@+id/button"
             android:layout_centerHorizontal="true" />
 
     </LinearLayout>

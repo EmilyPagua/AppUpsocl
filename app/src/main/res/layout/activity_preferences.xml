@@ -1,111 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.upsocl.appupsocl.PreferencesActivity"
-    android:transitionGroup="false"
-    android:touchscreenBlocksFocus="false">
+    android:fitsSystemWindows="true"
+    tools:context="com.upsocl.appupsocl.InterestsActivity">
 
-    <include layout="@layout/toolbar_segundary"/>
-
-    <LinearLayout
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-
-        android:layout_below="@+id/toolbar_segundary"
-        android:id="@+id/linearLayout1"
-        android:orientation="vertical"
+    <android.support.design.widget.AppBarLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:id="@+id/AppBarlayout"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_segundary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <TextView
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Notificaciones"
-            android:id="@+id/tv_notification" />
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/spinner"
+            android:layout_gravity="center"
+            android:layout_alignTop="@+id/publisherAdView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:visibility="gone"/>
 
-        <Switch
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Desea recibir notificaciones"
-            android:id="@+id/switch_notification"
-            android:textOff="NO"
-            android:textOn="SI"/>
+    </android.support.design.widget.AppBarLayout>
 
-    </LinearLayout>
-
-    <View
-        android:id="@+id/line1"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/cardBgColor"/>
-
-    <LinearLayout
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="10dp"
-        android:id="@+id/linearLayout2"
-        android:layout_below="@+id/line1"
-        android:orientation="vertical"
+    <include
+        layout="@layout/content_prereferences"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_segundary" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Frecuencia"
-            android:id="@+id/tv_frecuency" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Con que frecuencia desea recibir notificaciones"
-            android:id="@+id/textView2" />
-
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 día"
-                    android:id="@+id/rb_day" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 semana"
-                    android:id="@+id/rb_week" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 mes"
-                    android:id="@+id/rb_month" />
-
-            </RadioGroup>
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/line2"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/cardBgColor"/>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

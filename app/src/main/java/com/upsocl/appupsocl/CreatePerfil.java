@@ -1,5 +1,6 @@
 package com.upsocl.appupsocl;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,20 +8,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CreatePerfil extends AppCompatActivity {
 
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
+
 
     private Button btn_culture, btn_community, btn_travel, btn_quiz, btn_world, btn_animals ,
             btn_women,btn_cook, btn_inspiration, btn_health, btn_relations, btn_family,
@@ -31,7 +40,6 @@ public class CreatePerfil extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_create_perfil);
 
@@ -55,11 +63,17 @@ public class CreatePerfil extends AppCompatActivity {
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
 
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
-                System.out.println("User id: " + loginResult.getAccessToken().getUserId() +
-                        " Token: " + loginResult.getAccessToken().getToken());
+
+                AccessToken accessToken =  loginResult.getAccessToken();
+                Profile profile = Profile.getCurrentProfile();
+                loginButton.setVisibility(View.INVISIBLE);
+                nextActivity(profile);
             }
 
             @Override
@@ -69,25 +83,56 @@ public class CreatePerfil extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException e) {
-                System.out.println("Error : " + e.getMessage() );
-
+                System.out.println("Error : " + e.getMessage());
             }
         });
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        Profile profile = Profile.getCurrentProfile();
+        nextActivity(profile);
+
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+    }
+
+
+
+    private void nextActivity(Profile profile) {
+        Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+        intent.putExtra("name", profile.getName());
+        intent.putExtra("surname", profile.getLastName());
+        intent.putExtra("imagenURL", profile.getProfilePictureUri(200,200).toString());
+        CreatePerfil.this.startActivity(intent);
+        CreatePerfil.this.finish();
+    }
+
     public void btnCLickInit(View view){
-        if (listOptions.size()>=3){
-            Intent  intent = new Intent(this,HomeActivity.class);
-            CreatePerfil.this.startActivity(intent);
-        }else
+        if (listOptions.size()<3)
             Toast.makeText(CreatePerfil.this, "Debe seleccionar al menos 3 categorias", Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (listOptions.size()>=3){
+            super.onActivityResult(requestCode, resultCode, data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void btnCuture(View view){

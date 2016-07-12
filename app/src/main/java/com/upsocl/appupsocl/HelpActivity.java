@@ -15,7 +15,7 @@ public class HelpActivity extends AppCompatActivity {
     }
 
     private void setToolBar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_segundary);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_segundary1);
         toolbar.setTitle("Ayuda o recomendaciones");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);

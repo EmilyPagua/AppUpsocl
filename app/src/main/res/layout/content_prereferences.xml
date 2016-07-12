@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.upsocl.appupsocl.HelpActivity">
+
+
+    <LinearLayout
+        android:layout_below="@+id/toolbar_segundary"
+        android:id="@+id/linearLayout1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Notificaciones"
+            android:id="@+id/tv_notification" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Desea recibir notificaciones"
+            android:id="@+id/switch_notification"
+            android:textOff="NO"
+            android:textOn="SI"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/cardBgColor"/>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/linearLayout2"
+        android:layout_below="@+id/line1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Frecuencia"
+            android:id="@+id/tv_frecuency" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Con que frecuencia desea recibir notificaciones"
+            android:id="@+id/textView2" />
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 día"
+                android:id="@+id/rb_day" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 semana"
+                android:id="@+id/rb_week" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 mes"
+                android:id="@+id/rb_month" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/cardBgColor"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/line2"
+        android:layout_alignEnd="@+id/line2" />
+
+</RelativeLayout>

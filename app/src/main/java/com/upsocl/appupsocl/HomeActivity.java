@@ -17,6 +17,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
@@ -26,12 +28,24 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SearchView searchView;
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Bundle b = getIntent().getExtras();
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
+        TextView tv_username = (TextView) headerView.findViewById(R.id.tv_username);
+
+        String value ="Nombre usuario";
+
+        if (b!=null)
+            value= b.getString("userFacebook");
+
+        tv_username.setText(value);
 
         setSupportActionBar(toolbar);
         setFragment(new NewsFragment(0, null));

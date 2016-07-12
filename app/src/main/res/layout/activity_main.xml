@@ -1,54 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="@drawable/fondo">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:id="@+id/logo"
-        android:layout_marginTop="133dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/msg_welcome"
-        android:id="@+id/msg_welcome"
-        android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"
-        android:textSize="30sp"
-        android:textStyle="bold|normal"
-        android:textColor="#fefbfb" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/msg_login"
-        android:textAlignment="center"
-        android:id="@+id/msg"
-        android:layout_below="@+id/msg_welcome"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffff" />
+    <include
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_init"
-        android:id="@+id/start"
-        android:enabled="true"
-        android:textColor="@color/cardtextColor"
-        android:background="#3f51b5"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_marginTop="64dp"
-        android:onClick="btnCLickInit"
-        android:layout_below="@+id/msg"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

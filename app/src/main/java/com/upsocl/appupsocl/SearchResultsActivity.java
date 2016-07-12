@@ -32,7 +32,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_search);
-        toolbar.setTitle("Ayuda o recomendaciones");
+        toolbar.setTitle("Resultado de busqueda");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
