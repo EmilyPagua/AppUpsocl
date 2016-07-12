@@ -18,10 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
+import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.fragments.NewsFragment;
 
 public class HomeActivity extends AppCompatActivity
@@ -29,6 +32,8 @@ public class HomeActivity extends AppCompatActivity
 
     private SearchView searchView;
     private NavigationView navigationView;
+    private ShareDialog shareDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +45,12 @@ public class HomeActivity extends AppCompatActivity
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
         TextView tv_username = (TextView) headerView.findViewById(R.id.tv_username);
 
-        String value ="Nombre usuario";
-
-        if (b!=null)
-            value= b.getString("userFacebook");
-
-        tv_username.setText(value);
+        String urlImagen;
+        if (b!=null){
+            tv_username.setText(b.getString("name"));
+            urlImagen = b.getString("imagenURL");
+            new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
+        }
 
         setSupportActionBar(toolbar);
         setFragment(new NewsFragment(0, null));

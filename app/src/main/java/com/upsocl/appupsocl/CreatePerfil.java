@@ -18,6 +18,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.share.widget.ShareDialog;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
 
 import java.util.ArrayList;
@@ -30,17 +31,34 @@ public class CreatePerfil extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
 
-
     private Button btn_culture, btn_community, btn_travel, btn_quiz, btn_world, btn_animals ,
             btn_women,btn_cook, btn_inspiration, btn_health, btn_relations, btn_family,
             btn_creativity, btn_beauty, btn_diversity, btn_movies, btn_styleLive;
     ArrayList<String> listOptions =  new ArrayList<>();
 
+    private FacebookCallback<LoginResult> callback =  new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+
+            Profile profile = Profile.getCurrentProfile();
+            nextActivity(profile);
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-
         setContentView(R.layout.activity_create_perfil);
 
         btn_culture = (Button) findViewById(R.id.btn_culture);
@@ -64,13 +82,26 @@ public class CreatePerfil extends AppCompatActivity {
         loginButton = (LoginButton)findViewById(R.id.login_button);
 
         callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
 
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+
+                nextActivity(newProfile);
+            }
+        };
+
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+        callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-                AccessToken accessToken =  loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
                 loginButton.setVisibility(View.INVISIBLE);
                 nextActivity(profile);
@@ -82,19 +113,19 @@ public class CreatePerfil extends AppCompatActivity {
             }
 
             @Override
-            public void onError(FacebookException e) {
-                System.out.println("Error : " + e.getMessage());
+            public void onError(FacebookException error) {
+
             }
-        });
+        };
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
+        loginButton.registerCallback(callbackManager, callback);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-
         Profile profile = Profile.getCurrentProfile();
         nextActivity(profile);
-
     }
 
     @Override
@@ -113,12 +144,17 @@ public class CreatePerfil extends AppCompatActivity {
 
 
     private void nextActivity(Profile profile) {
-        Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
-        intent.putExtra("name", profile.getName());
-        intent.putExtra("surname", profile.getLastName());
-        intent.putExtra("imagenURL", profile.getProfilePictureUri(200,200).toString());
-        CreatePerfil.this.startActivity(intent);
-        CreatePerfil.this.finish();
+
+        if (profile!=null && listOptions.size()>=3){
+            loginButton.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+            intent.putExtra("name", profile.getName());
+            intent.putExtra("surname", profile.getLastName());
+            intent.putExtra("imagenURL", profile.getProfilePictureUri(110,110).toString());
+            startActivity(intent);
+            CreatePerfil.this.finish();
+        }
+
     }
 
     public void btnCLickInit(View view){
@@ -134,6 +170,7 @@ public class CreatePerfil extends AppCompatActivity {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
     public void btnCuture(View view){
 
