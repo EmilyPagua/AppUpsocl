@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,14 +24,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.internal.Validate;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.upsocl.appupsocl.ui.DownloadImage;
+import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.NewsFragment;
 
 public class HomeActivity extends AppCompatActivity
@@ -61,10 +61,40 @@ public class HomeActivity extends AppCompatActivity
         }
 
         setSupportActionBar(toolbar);
-        setFragment(new NewsFragment(0, null));
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         TabLayout tabs = createTabLayout();
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabs.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        /* setFragment(new NewsFragment(0, null));
         tabs.setOnTabSelectedListener(
                 new TabLayout.OnTabSelectedListener() {
                     @Override
@@ -85,16 +115,7 @@ public class HomeActivity extends AppCompatActivity
                         // ...
                     }
                 }
-        );
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        );*/
 
 }
 
