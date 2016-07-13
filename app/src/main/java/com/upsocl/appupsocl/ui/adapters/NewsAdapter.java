@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,12 +47,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     @Override
     public void onBindViewHolder(NewsHolder holder, int position) {
         holder.name.setText(news.get(position).getTitle());
-        String description= news.get(position).getDatePublicaded();
+        String author = "Por: "+news.get(position).getAuthor();
+        String  date = "El: "+news.get(position).getDate();
 
-        SpannableStringBuilder sBDate = new SpannableStringBuilder("Publicado: "+description);
-        sBDate.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 10, sBDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder sBauthor = new SpannableStringBuilder(author);
+        sBauthor.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 4, author.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
 
-        holder.dataPost.setText(sBDate);
+        SpannableStringBuilder sBdetail = new SpannableStringBuilder(date);
+        sBdetail.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 3, date.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
+        SpannableStringBuilder result = new SpannableStringBuilder(spanned);
+
+        holder.dataPost.setText(result, TextView.BufferType.SPANNABLE);
         holder.setNewsObj(news.get(position));
 
         if (!(news.get(position).getImage() == "")){

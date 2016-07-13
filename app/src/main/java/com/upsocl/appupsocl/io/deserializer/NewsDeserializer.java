@@ -35,7 +35,8 @@ public class NewsDeserializer implements JsonDeserializer<News> {
 
         String urlImage= item.get(JsonKeys.NEWS_IMAGES_URL).toString();
         currentNews.setImage(urlImage.substring(1, urlImage.length()-1));
-        currentNews.setDatePublicaded(cenvertToDate(item.get(JsonKeys.NEWS_DATE).toString()));
+        currentNews.setDate(cenvertToDate(item.get(JsonKeys.NEWS_DATE).toString()));
+        currentNews.setAuthor((item.get(JsonKeys.NEWS_AUTHOR_FIRST_NAME) +" "+item.get(JsonKeys.NEWS_AUTHOR_LAST_NAME)).replace("\"",""));
 
         return currentNews;
     }

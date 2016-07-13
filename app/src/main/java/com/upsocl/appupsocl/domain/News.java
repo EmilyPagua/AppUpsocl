@@ -20,7 +20,7 @@ public class News {
     private String content;
     private String image;
     private String author;
-    private String datePublicaded;
+    private String date;
 
     public News() {
     }
@@ -29,12 +29,12 @@ public class News {
         return author;
     }
 
-    public String getDatePublicaded() {
-        return datePublicaded;
+    public String getDate() {
+        return date;
     }
 
-    public void setDatePublicaded(String datePublicaded) {
-        this.datePublicaded = datePublicaded;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setAuthor(String author) {
