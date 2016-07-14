@@ -17,7 +17,7 @@
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
@@ -67,7 +67,7 @@
         <!-- Create preferences -->
         <activity
             android:name=".CreatePerfil"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PreferencesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -77,10 +77,13 @@
         <activity
             android:name=".InterestsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".GreenActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+        <activity
+            android:name=".HomeGreenActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".HomeWomenActivity" />
+        <activity android:name=".HomeFoodActivity" />
+        <activity android:name=".HomeNewsActivity" />
+        <activity android:name=".HomePopularyActivity"></activity>
     </application>
 
 </manifest>

@@ -4,7 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.upsocl.appupsocl.GreenActivity;
+import com.upsocl.appupsocl.HomeFoodActivity;
+import com.upsocl.appupsocl.HomeGreenActivity;
+import com.upsocl.appupsocl.HomeNewsActivity;
+import com.upsocl.appupsocl.HomePopularyActivity;
+import com.upsocl.appupsocl.HomeWomenActivity;
 
 /**
  * Created by upsocl on 13-07-16.
@@ -22,17 +26,20 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                GreenActivity tab1 = new GreenActivity();
-                return tab1;
+                HomeNewsActivity homeNewsActivity = new HomeNewsActivity();
+                return homeNewsActivity;
             case 1:
-                GreenActivity tab2 = new GreenActivity();
+                HomeGreenActivity tab2 = new HomeGreenActivity();
                 return tab2;
             case 2:
-                GreenActivity tab3 = new GreenActivity();
-                return tab3;
+                HomeFoodActivity foodActivity = new HomeFoodActivity();
+                return foodActivity;
             case 3:
-                GreenActivity tab4 = new GreenActivity();
-                return tab4;
+                HomeWomenActivity womenActivity = new HomeWomenActivity();
+                return womenActivity;
+            case 4:
+                HomePopularyActivity popularyActivity = new HomePopularyActivity();
+                return popularyActivity;
             default:
                 return null;
         }

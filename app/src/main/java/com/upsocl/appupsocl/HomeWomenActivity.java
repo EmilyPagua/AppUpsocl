@@ -1,6 +1,5 @@
 package com.upsocl.appupsocl;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +24,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class GreenActivity  extends Fragment implements Callback<ArrayList<News>> {
+public class HomeWomenActivity extends Fragment implements Callback<ArrayList<News>> {
 
     private RecyclerView newsList;
     private NewsAdapter adapter;
@@ -37,7 +36,7 @@ public class GreenActivity  extends Fragment implements Callback<ArrayList<News>
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_news, container, false);
+        View root = inflater.inflate(R.layout.activity_home_women, container, false);
         page = 1;
         loadPosts(page);
 
@@ -83,6 +82,7 @@ public class GreenActivity  extends Fragment implements Callback<ArrayList<News>
     }
 
     public void loadPosts(Integer paged){
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListGreen(paged, this);
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListWomen(paged, this);
     }
 }
+
