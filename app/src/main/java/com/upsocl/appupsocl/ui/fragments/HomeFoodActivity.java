@@ -58,8 +58,6 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
                     page = page + 1;
                     spinner.setVisibility(View.VISIBLE);
                     loadPosts(page);
-                } else {
-                    Log.d(getTag(), "NO load more findLastCompletelyVisibleItemPosition->" + llm.findLastCompletelyVisibleItemPosition() + "---size:" + size);
                 }
             }
         });
@@ -69,6 +67,7 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
 
     @Override
     public void success(ArrayList<News> newses, Response response) {
+
         if (newses.size()==0)
             header_news.setText("No se encontraron resultados");
 
@@ -82,7 +81,7 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
     }
 
     public void loadPosts(Integer paged){
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListFood(paged, this);
+         WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListFood(paged, this);
     }
 }
 

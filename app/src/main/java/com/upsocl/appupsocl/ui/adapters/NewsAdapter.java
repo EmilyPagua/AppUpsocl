@@ -22,6 +22,7 @@ import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.ui.ViewConstants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by leninluque on 09-11-15.
@@ -40,7 +41,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View newsView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_news, parent, false);
-        return new NewsHolder(newsView);
+        return new NewsHolder(newsView, news);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
         holder.dataPost.setText(result, TextView.BufferType.SPANNABLE);
         holder.setNewsObj(news.get(position));
+        holder.setPosition(position);
 
         if (!(news.get(position).getImage() == "")){
             holder.setImage(news.get(position).getImage());}
@@ -86,20 +88,29 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         private TextView name;
         private TextView dataPost;
         private News newsObj;
+        private ArrayList<News> newsArrayList;
+        private int position;
 
-        public NewsHolder(final View itemView) {
+        public NewsHolder(final View itemView, ArrayList<News> news) {
+
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.img_post);
             name = (TextView) itemView.findViewById(R.id.title_post);
             dataPost = (TextView) itemView.findViewById(R.id.data_post);
+            newsArrayList =  news;
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), DetailActivity.class);
+
                     Gson gS = new Gson();
                     String target = gS.toJson(newsObj);
+                    String listNews = gS.toJson(newsArrayList);
                     intent.putExtra("new", target);
+                    intent.putExtra("listNews", listNews);
+                    intent.putExtra("position",position);
                     view.getContext().startActivity(intent);
                 }
             });
@@ -113,21 +124,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                     .into(image);
         }
 
-       /* public void setName(String name) {
-            this.name.setText(name);
+
+        public void setPosition(int position) {
+            this.position = position;
         }
-*/
+
         public void setNewsObj(News newsObj) {
             this.newsObj = newsObj;
         }
 
-        public void setDataPost(String dataPost) {
-
-            SpannableStringBuilder stringBuilder = new SpannableStringBuilder(dataPost);
-            stringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            this.dataPost.setText(stringBuilder);
-        }
     }
 
 

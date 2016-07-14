@@ -18,8 +18,11 @@ public class News {
     private String title;
     @SerializedName("content")
     private String content;
+    @SerializedName("image")
     private String image;
+    @SerializedName("author")
     private String author;
+    @SerializedName("date")
     private String date;
 
     public News() {

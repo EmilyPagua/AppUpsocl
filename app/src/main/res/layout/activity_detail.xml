@@ -14,16 +14,17 @@
         android:layout_width="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:transitionGroup="false"
+        android:id="@+id/viewDetailrelative"
         android:touchscreenBlocksFocus="false">
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_marginTop="60dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar_segundary">
+            android:layout_below="@+id/toolbar_segundary"
+            android:id="@+id/scroll_detail">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
@@ -32,6 +33,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 tools:context="com.upsocl.upsocl.DetailActivity"
                 android:weightSum="1"
+                android:id="@+id/viewDetailLinear"
                 tools:ignore="WebViewLayout">
 
                 <ImageView
@@ -60,6 +62,8 @@
 
             </LinearLayout>
         </ScrollView>
+
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
 
