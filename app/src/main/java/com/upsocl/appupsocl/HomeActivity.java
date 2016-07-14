@@ -27,11 +27,8 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
-import com.upsocl.appupsocl.ui.fragments.NewsFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,31 +90,7 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-
-        /* setFragment(new NewsFragment(0, null));
-        tabs.setOnTabSelectedListener(
-                new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        setFragment(new NewsFragment(tab.getPosition(), null));
-                        PublisherAdView mPublisherAdView = (PublisherAdView) findViewById(R.id.publisherAdView);
-                        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().build();
-                        mPublisherAdView.loadAd(adRequest);
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                        // ...
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-                        // ...
-                    }
-                }
-        );*/
-
-}
+    }
 
     @NonNull
     private TabLayout createTabLayout() {
@@ -182,12 +155,6 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    protected void setFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.news_content, fragment);
-        fragmentTransaction.commit();
-    }
 
     public void logout(){
         LoginManager.getInstance().logOut();

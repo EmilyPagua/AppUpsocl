@@ -78,12 +78,12 @@
             android:name=".InterestsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HomeGreenActivity"
+            android:name=".ui.fragments.HomeGreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".HomeWomenActivity" />
-        <activity android:name=".HomeFoodActivity" />
-        <activity android:name=".HomeNewsActivity" />
-        <activity android:name=".HomePopularyActivity"></activity>
+        <activity android:name=".ui.fragments.HomeWomenActivity" />
+        <activity android:name=".ui.fragments.HomeFoodActivity" />
+        <activity android:name=".ui.fragments.HomeNewsActivity" />
+        <activity android:name=".ui.fragments.HomePopularyActivity"></activity>
     </application>
 
 </manifest>

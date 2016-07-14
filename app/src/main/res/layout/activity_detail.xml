@@ -1,55 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:transitionGroup="false"
-    android:touchscreenBlocksFocus="false">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.upsocl.appupsocl.DetailActivity">
 
     <include layout="@layout/toolbar_segundary"/>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_marginTop="60dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_segundary">
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:transitionGroup="false"
+        android:touchscreenBlocksFocus="false">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:background="@color/cardtextColor"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            tools:context="com.upsocl.upsocl.DetailActivity"
-            android:weightSum="1"
-            tools:ignore="WebViewLayout">
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_marginTop="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_segundary">
 
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/heigny_image_detail"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder"
-                android:id="@+id/imageViewDetail" />
-
-            <TextView
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/detailTextView"
-                android:paddingTop="@dimen/margin_webview"
-                android:textSize="26dp"
-                android:layout_margin="10dp"
-                android:textStyle="bold" />
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:background="@color/cardtextColor"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                tools:context="com.upsocl.upsocl.DetailActivity"
+                android:weightSum="1"
+                tools:ignore="WebViewLayout">
 
-            <WebView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/webView"
-                android:layout_below="@+id/detailTextView"
-                android:layout_margin="@dimen/margin_webview"
-                android:layout_weight="1" />
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/heigny_image_detail"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/placeholder"
+                    android:id="@+id/imageViewDetail" />
 
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailTextView"
+                    android:paddingTop="@dimen/margin_webview"
+                    android:textSize="26dp"
+                    android:layout_margin="10dp"
+                    android:textStyle="bold" />
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webView"
+                    android:layout_below="@+id/detailTextView"
+                    android:layout_margin="@dimen/margin_webview"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
+
+
+

@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.upsocl.appupsocl.ui.fragments.NewsFragment;
 
 public class SearchResultsActivity extends AppCompatActivity {
@@ -27,7 +29,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
         setToolBar();
         handleIntent(getIntent());
-        setFragment(new NewsFragment(-1, word));
+        setFragment(new NewsFragment(word));
+
+
     }
 
     private void setToolBar(){

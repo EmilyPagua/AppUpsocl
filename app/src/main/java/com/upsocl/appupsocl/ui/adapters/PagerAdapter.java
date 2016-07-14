@@ -4,11 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.upsocl.appupsocl.HomeFoodActivity;
-import com.upsocl.appupsocl.HomeGreenActivity;
-import com.upsocl.appupsocl.HomeNewsActivity;
-import com.upsocl.appupsocl.HomePopularyActivity;
-import com.upsocl.appupsocl.HomeWomenActivity;
+import com.upsocl.appupsocl.ui.fragments.HomeFoodActivity;
+import com.upsocl.appupsocl.ui.fragments.HomeGreenActivity;
+import com.upsocl.appupsocl.ui.fragments.HomeNewsActivity;
+import com.upsocl.appupsocl.ui.fragments.HomePopularyActivity;
+import com.upsocl.appupsocl.ui.fragments.HomeWomenActivity;
 
 /**
  * Created by upsocl on 13-07-16.

@@ -1,9 +1,7 @@
-package com.upsocl.appupsocl;
+package com.upsocl.appupsocl.ui.fragments;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.upsocl.appupsocl.R;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.io.ApiConstants;
 import com.upsocl.appupsocl.io.WordpressApiAdapter;
@@ -25,7 +24,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HomeGreenActivity extends Fragment implements Callback<ArrayList<News>> {
+public class HomeNewsActivity extends Fragment implements Callback<ArrayList<News>> {
 
     private RecyclerView newsList;
     private NewsAdapter adapter;
@@ -37,7 +36,7 @@ public class HomeGreenActivity extends Fragment implements Callback<ArrayList<Ne
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_news, container, false);
+        View root = inflater.inflate(R.layout.fragment_home_news, container, false);
         page = 1;
         loadPosts(page);
 
@@ -83,6 +82,7 @@ public class HomeGreenActivity extends Fragment implements Callback<ArrayList<Ne
     }
 
     public void loadPosts(Integer paged){
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListGreen(paged, this);
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListNews(paged, this);
     }
 }
+

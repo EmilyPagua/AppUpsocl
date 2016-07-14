@@ -35,13 +35,11 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
     private Integer page;
     private LinearLayoutManager llm;
     private ProgressBar spinner;
-    private Integer tabSelected;
     private String word;
     private TextView header_news;
 
     @SuppressLint("ValidFragment")
-    public NewsFragment(Integer tabSelected, String word) {
-        this.tabSelected = tabSelected;
+    public NewsFragment(String word) {
         this.word = word;
     }
 
@@ -50,10 +48,10 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_news, container, false);
         page = 1;
-        loadPosts(page, tabSelected);
+        loadPosts(page);
 
-        header_news = (TextView) root.findViewById(R.id.header_news);
-        newsList = (RecyclerView) root.findViewById(R.id.news_list);
+        header_news = (TextView) root.findViewById(R.id.header_news_search);
+        newsList = (RecyclerView) root.findViewById(R.id.news_list_search);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewsAdapter(getActivity());
         newsList.setAdapter(adapter);
@@ -69,7 +67,7 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
             if (size == llm.findLastCompletelyVisibleItemPosition() + 1) {
                 page = page + 1;
                 spinner.setVisibility(View.VISIBLE);
-                loadPosts(page,tabSelected);
+                loadPosts(page);
             } else {
                 Log.d(getTag(), "NO load more findLastCompletelyVisibleItemPosition->" + llm.findLastCompletelyVisibleItemPosition() + "---size:" + size);
             }
@@ -93,31 +91,9 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
         adapter.addAll(new ArrayList<News>());
     }
 
-    public void loadPosts(Integer paged, Integer tabSelected){
-        switch (tabSelected){
-            case -1:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListWord(word,page, this);
-                break;}
-            case 0:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListNews(paged, this);
-                break;}
-            case 1:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListGreen(paged, this);
-                break;}
-            case 2:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListFood(paged, this);
-                break;}
-            case 3:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListCreativity(paged, this);
-                break;}
-            case 4:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListWomen(paged, this);
-                break;}
-            case 5:{
-                WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListPopulary(paged, this);
-                break;}
+    public void loadPosts(Integer page){
 
-        }
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListWord(word,page, this);
 
     }
 
