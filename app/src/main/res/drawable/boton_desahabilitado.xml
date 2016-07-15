@@ -2,17 +2,17 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Sombra -->
-    <item android:top="4dp">
+    <item android:top="1dp">
         <shape>
             <solid android:color="#00796B" />
-            <corners android:radius="4dip" />
+            <corners android:radius="2dip" />
         </shape>
     </item>
     <!-- Contenido -->
     <item android:bottom="4dp">
         <shape>
             <solid android:color="#00897B" />
-            <corners android:radius="4dip" />
+            <corners android:radius="2dip" />
         </shape>
     </item>
 </layer-list>

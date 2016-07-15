@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.upsocl.appupsocl.DetailActivity"
+    android:background="@drawable/fondo">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,8 +18,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.upsocl.appupsocl.CreatePerfil"
     android:orientation="vertical"
-    android:weightSum="1"
-    android:background="@drawable/fondo">
+    android:weightSum="1">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -37,15 +45,15 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center|center_vertical"
         android:id="@+id/linearLayout1"
         android:layout_below="@+id/linearLayout"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_weight="0.04">
+        android:layout_marginTop="20dp">
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_culture"
@@ -54,8 +62,9 @@
             />
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_community"
@@ -72,17 +81,19 @@
         android:gravity="center">
 
         <Button
+            android:layout_margin="5dp"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:text="@string/btn_travel"
             android:id="@+id/btn_travel"
             android:onClick="btnTravel"/>
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_quiz"
@@ -90,8 +101,9 @@
             android:onClick="btnQuiz"/>
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_worl"
@@ -100,7 +112,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,8 +121,9 @@
         android:gravity="center">
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_animals"
@@ -119,8 +131,9 @@
             android:onClick="btnAnimals"/>
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_movie"
@@ -128,8 +141,9 @@
             android:onClick="btnMovies"/>
 
         <Button
+            android:layout_margin="5dp"
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_inspiration"
@@ -148,7 +162,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_health"
@@ -157,7 +172,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_cook"
@@ -166,7 +182,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_relationes"
@@ -187,7 +204,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_family"
@@ -196,7 +214,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="Creatividad"
@@ -205,7 +224,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:text="@string/btn_diversity"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
@@ -225,16 +245,18 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_styleLive"
+            android:layout_margin="5dp"
             android:id="@+id/btn_styleLive"
             android:onClick="btnStyleLive"/>
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_women"
@@ -243,7 +265,8 @@
 
         <Button
             style="@style/buttonStyle"
-            android:background="@drawable/button_onclick"
+            android:layout_margin="5dp"
+            android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_beauty"
@@ -296,5 +319,6 @@
             android:layout_centerHorizontal="true" />
 
     </LinearLayout>
-
 </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

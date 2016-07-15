@@ -17,16 +17,33 @@
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.segundary" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!-- Create preferences -->
+        <activity
+            android:name=".CreatePerfil"
+            android:theme="@style/AppTheme.segundary" >
+
+        </activity>
+
+        <!-- Login Facebook -->
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- home -->
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <meta-data
                 android:name="android.app.default_searchable"
@@ -52,22 +69,13 @@
                 android:value=".HomeActivity" />
         </activity>
 
-        <!-- Login Facebook -->
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Detalle del Post -->
         <activity
             android:name=".DetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- Create preferences -->
-        <activity
-            android:name=".CreatePerfil"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".PreferencesActivity"
             android:theme="@style/AppTheme.NoActionBar" />

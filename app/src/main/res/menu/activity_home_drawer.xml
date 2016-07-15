@@ -11,10 +11,10 @@
             android:icon="@android:drawable/ic_input_get"
             android:title="Bookmarks" />
 
-        <item
+        <ite
             android:id="@+id/nav_interests"
             android:icon="@android:drawable/btn_star_big_off"
-            android:title="Interes" />
+            android:title="Intereses" />
 
 
     </group>

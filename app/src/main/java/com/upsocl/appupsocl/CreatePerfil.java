@@ -153,7 +153,8 @@ public class CreatePerfil extends AppCompatActivity {
             intent.putExtra("imagenURL", profile.getProfilePictureUri(110,110).toString());
             startActivity(intent);
             CreatePerfil.this.finish();
-        }
+        }else
+            Toast.makeText(CreatePerfil.this, "Debe seleccionar al menos 3 categorias", Toast.LENGTH_SHORT).show();
 
     }
 
