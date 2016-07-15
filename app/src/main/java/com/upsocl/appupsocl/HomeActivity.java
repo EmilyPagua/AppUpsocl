@@ -3,12 +3,11 @@ package com.upsocl.appupsocl;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -29,12 +28,16 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
+import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SearchView searchView;
     private NavigationView navigationView;
+    private DrawerLayout drawer;
+    private TabLayout tabs;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +62,66 @@ public class HomeActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                boolean fragmentTransacction = false;
+                Fragment fragment = null;
+                SharedPreferences prefs2 =null;
 
-        TabLayout tabs = createTabLayout();
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+                switch (item.getItemId()){
+                    case R.id.nav_home:
+                        fragmentTransacction = false;
+                        tabs.setVisibility(View.VISIBLE);
+                        viewPager.setVisibility(View.VISIBLE);
+                        getSupportActionBar().setTitle(item.getTitle());
+                        break;
+                    case R.id.nav_bookmarks:
+                        prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+                        fragment = new BookmarksFragment(prefs2);
+                        fragmentTransacction = true;
+                        visibleGoneElement();
+
+                        break;
+                    case R.id.nav_interests:
+                        visibleGoneElement();
+
+                        break;
+                    case R.id.nav_manage:
+                        visibleGoneElement();
+
+                        break;
+                    case R.id.nav_help:
+                        visibleGoneElement();
+
+                        break;
+                    case R.id.nav_close:
+                        logout();
+                        break;
+                }
+                if (fragmentTransacction){
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.content_frame, fragment).
+                            commit();
+
+                    item.setChecked(true);
+                    getSupportActionBar().setTitle(item.getTitle());
+                }
+
+                drawer.closeDrawers();
+                return true;
+            }
+        });
+
+        tabs = createTabLayout();
+        viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabs.getTabCount());
         viewPager.setAdapter(adapter);
@@ -90,6 +142,12 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+
+    }
+
+    private void visibleGoneElement() {
+        tabs.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
     }
 
     @NonNull
@@ -132,27 +190,29 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_interests) {
-            Intent  intent = new Intent(this,InterestsActivity.class);
-            HomeActivity.this.startActivity(intent);
-
-        } else if (id == R.id.nav_manage) {
-            Intent  intent = new Intent(this,PreferencesActivity.class);
-            HomeActivity.this.startActivity(intent);
-
-        } else if (id == R.id.nav_help) {
-            Intent  intent = new Intent(this,HelpActivity.class);
-            HomeActivity.this.startActivity(intent);
-        }
-        else if (id == R.id.nav_close) {
-            logout();
-        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+
+        switch (item.getItemId()){
+            case R.id.nav_bookmarks:
+                drawer.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.nav_interests:
+
+                break;
+            case R.id.nav_manage:
+
+                break;
+            case R.id.nav_help:
+
+                break;
+            case R.id.nav_close:
+                logout();
+                break;
+        }
+
+        //drawer.closeDrawer(GravityCompat.START);
+        //return true;
+        return super.onOptionsItemSelected(item);
     }
 
 

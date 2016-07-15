@@ -17,7 +17,7 @@
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.segundary" >
+            android:theme="@style/AppTheme.segundary">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,9 +28,7 @@
         <!-- Create preferences -->
         <activity
             android:name=".CreatePerfil"
-            android:theme="@style/AppTheme.segundary" >
-
-        </activity>
+            android:theme="@style/AppTheme.segundary"></activity>
 
         <!-- Login Facebook -->
         <activity
@@ -44,7 +42,6 @@
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultsActivity" />
@@ -69,13 +66,10 @@
                 android:value=".HomeActivity" />
         </activity>
 
-
         <!-- Detalle del Post -->
         <activity
             android:name=".DetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".PreferencesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -91,7 +85,8 @@
         <activity android:name=".ui.fragments.HomeWomenActivity" />
         <activity android:name=".ui.fragments.HomeFoodActivity" />
         <activity android:name=".ui.fragments.HomeNewsActivity" />
-        <activity android:name=".ui.fragments.HomePopularyActivity"></activity>
+        <activity android:name=".ui.fragments.HomePopularyActivity" />
+        <activity android:name=".ui.fragments.BookmarksFragment"></activity>
     </application>
 
 </manifest>

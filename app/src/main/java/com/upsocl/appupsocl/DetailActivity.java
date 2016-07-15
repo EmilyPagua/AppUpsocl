@@ -209,17 +209,20 @@ public class DetailActivity extends AppCompatActivity {
         Gson gS = new Gson();
         String target = gS.toJson(obj);
 
-        SharedPreferences prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
-        prefs2.getAll().size();
+        SharedPreferences prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+
+        prefs.getAll().size();
         if (obj.getId()!="0")
         {
             flag_bookmarks = true;
             Toast.makeText(this, "Salvado como preferido", Toast.LENGTH_SHORT).show();
-            SharedPreferences.Editor editor2 =  prefs2.edit();
-            editor2.putString(String.valueOf(obj.getId()), target);
-            editor2.commit();
+
+            editor.putString(String.valueOf(obj.getId()), target);
+            editor.commit();
             item.setIcon(R.mipmap.ic_bookmarks);
         }
+
     }
 
     private void removePreference(MenuItem item) {
