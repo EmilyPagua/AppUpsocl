@@ -36,6 +36,7 @@
                 android:id="@+id/viewDetailLinear"
                 tools:ignore="WebViewLayout">
 
+
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/heigny_image_detail"

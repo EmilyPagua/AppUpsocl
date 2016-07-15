@@ -1,14 +1,14 @@
 package com.upsocl.appupsocl;
 
+import android.content.Context;
 import android.content.Intent;
-import android.gesture.Gesture;
+import android.content.SharedPreferences;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -17,14 +17,13 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.ui.ViewConstants;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -33,10 +32,12 @@ public class DetailActivity extends AppCompatActivity {
     private News obj;
     private ShareActionProvider mShareActionProvider;
     private  ArrayList<News> newsArrayList;
-    private String TAG = Gesture.class.getSimpleName();
     float initialX =  Float.NaN;
     private LinearLayout viewDetail;
     private int position;
+    private boolean bookmarks_save, flag_bookmarks;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +51,25 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                onTouchEvent(event);
-                return true;
+                int action = MotionEventCompat.getActionMasked(event);
+                float finalX = event.getX();
+
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = event.getX();
+                        return  true;
+
+                    case (MotionEvent.ACTION_MOVE):
+
+                        if (initialX < finalX)
+                            getNewsObjet(position-1);
+
+                        if (initialX > finalX)
+                            getNewsObjet(position+1);
+
+                        return true;
+                }
+                return false;
             }
         });
 
@@ -59,6 +77,7 @@ public class DetailActivity extends AppCompatActivity {
         setImage(obj.getImage());
         setTextView(obj.getTitle());
         enableWebView(obj.getContent());
+        flag_bookmarks = false;
     }
 
     private void setToolBar(){
@@ -103,8 +122,11 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
+        MenuItem item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
 
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        uploadPreferences(String.valueOf(obj.getId()),item_bookmark);
 
         return true;
     }
@@ -129,50 +151,83 @@ public class DetailActivity extends AppCompatActivity {
             case R.id.menu_item_share:
                 share_url_new();
                 return true;
+
+            case R.id.menu_item_bookmarks:
+
+                if (flag_bookmarks)
+                    removePreference(item);
+                else
+                    savePreferences(item) ;
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    public boolean onTouchEvent(MotionEvent event){
-
-        int action = MotionEventCompat.getActionMasked(event);
-        float finalX = event.getX();
-
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                initialX = event.getX();
-                break;
-
-            case (MotionEvent.ACTION_MOVE):
-
-                if (initialX < finalX){
-                    getNewsObjet(position-1);
-
-                }
-
-
-                if (initialX > finalX){
-                    getNewsObjet(position+1);
-                }
-
-
-                return true;
-        }
-        return  super.onTouchEvent(event);
-    }
 
     private void getNewsObjet(int i) {
 
-        if ((i<0 )|| (i>newsArrayList.size()-1)){
-            Log.d(TAG, "El registro no se encuentra");
-        }else{
+        if ((i>=0 ) && (i<newsArrayList.size()-1)){
             Map<String, String> map = (Map<String, String>) newsArrayList.get(i);
-            setImage(map.get("image"));
-            setTextView(map.get("title"));
-            enableWebView(map.get("content"));
-            position = i;
-            Log.d(TAG, position +"  Proxima vista: " + map.get("title"));
+            News newsObj =  new News();
+            newsObj.setTitle(map.get("title"));
+            newsObj.setImage(map.get("image"));
+            newsObj.setContent(map.get("content"));
+            String id_ = map.get("id").toString();
+            newsObj.setId(map.get("id"));
+            newsObj.setAuthor(map.get("author"));
+
+            Gson gS = new Gson();
+            String target = gS.toJson(newsObj);
+            String listNews = gS.toJson(newsArrayList);
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("new", target);
+            intent.putExtra("listNews", listNews);
+            intent.putExtra("position",i);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            this.finish();
+            startActivity(intent);
         }
     }
 
+    private void uploadPreferences(String id, MenuItem item) {
+
+        SharedPreferences prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+
+        prefs2.getAll().get(1);
+        String objeto = null;
+        objeto = prefs2.getString(id,null);
+        bookmarks_save = prefs2.getBoolean("bookmarks_save", false);
+
+        if (objeto!=null){
+            item.setIcon(R.mipmap.ic_bookmarks);
+            flag_bookmarks = true;
+        }
+    }
+
+    private void savePreferences(MenuItem item) {
+        Gson gS = new Gson();
+        String target = gS.toJson(obj);
+
+        SharedPreferences prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        prefs2.getAll().size();
+        if (obj.getId()!="0")
+        {
+            flag_bookmarks = true;
+            Toast.makeText(this, "Salvado como preferido", Toast.LENGTH_SHORT).show();
+            SharedPreferences.Editor editor2 =  prefs2.edit();
+            editor2.putString(String.valueOf(obj.getId()), target);
+            editor2.commit();
+            item.setIcon(R.mipmap.ic_bookmarks);
+        }
+    }
+
+    private void removePreference(MenuItem item) {
+        flag_bookmarks = false;
+        Toast.makeText(this, "No esta como preferido", Toast.LENGTH_SHORT).show();
+        SharedPreferences prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.remove(String.valueOf(obj.getId())).commit();
+        item.setIcon(R.mipmap.ic_bookmarks_check);
+    }
 }

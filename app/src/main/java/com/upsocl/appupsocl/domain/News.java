@@ -13,7 +13,7 @@ import java.util.Date;
 public class News {
 
     @SerializedName("id")
-    private Integer id;
+    private String id;
     @SerializedName("title")
     private String title;
     @SerializedName("content")
@@ -52,11 +52,11 @@ public class News {
         this.image = image;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

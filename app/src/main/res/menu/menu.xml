@@ -12,5 +12,10 @@
         android:title="Compartir"
         android:icon="@android:drawable/ic_menu_share" />
 
-
+    <item
+        android:id="@+id/menu_item_bookmarks"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Bookmarks"
+        android:icon="@mipmap/ic_bookmarks_check" />
 </menu>

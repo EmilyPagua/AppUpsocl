@@ -29,7 +29,7 @@ public class NewsDeserializer implements JsonDeserializer<News> {
     private News extractNewsFromJsonArray(JsonObject item){
 
         News currentNews = new News();
-        currentNews.setId(item.get(JsonKeys.NEWS_ID).getAsInt());
+        currentNews.setId(item.get(JsonKeys.NEWS_ID).getAsString());
         currentNews.setTitle(getJsonValue(item.get(JsonKeys.NEWS_TITLE)).replace("&#8220;","'").replace("&#8221;","'"));
         currentNews.setContent(getJsonValue(item.get(JsonKeys.NEWS_CONTENT)));
 
