@@ -60,8 +60,6 @@ public class HomeGreenActivity extends Fragment implements Callback<ArrayList<Ne
                     page = page + 1;
                     spinner.setVisibility(View.VISIBLE);
                     loadPosts(page);
-                } else {
-                    Log.d(getTag(), "NO load more findLastCompletelyVisibleItemPosition->" + llm.findLastCompletelyVisibleItemPosition() + "---size:" + size);
                 }
             }
         });

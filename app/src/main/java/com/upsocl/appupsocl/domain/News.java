@@ -24,6 +24,16 @@ public class News {
     private String author;
     @SerializedName("date")
     private String date;
+    @SerializedName("link")
+    private String link;
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public News() {
     }

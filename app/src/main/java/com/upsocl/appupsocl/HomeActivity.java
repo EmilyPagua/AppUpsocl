@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +40,9 @@ public class HomeActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private TabLayout tabs;
     private ViewPager viewPager;
+    private FrameLayout frameLayout;
+    private SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +57,13 @@ public class HomeActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
         TextView tv_username = (TextView) headerView.findViewById(R.id.tv_username);
+        frameLayout= (FrameLayout) findViewById(R.id.content_frame);
 
         String urlImagen;
         if (b!=null){
-            tv_username.setText(b.getString("name"));
-            urlImagen = b.getString("imagenURL");
-            new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
+            //tv_username.setText(b.getString("name"));
+            //urlImagen = b.getString("imagenURL");
+            //new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
         }
 
         setSupportActionBar(toolbar);
@@ -67,25 +73,32 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 boolean fragmentTransacction = false;
-                Fragment fragment = null;
-                SharedPreferences prefs2 =null;
 
                 switch (item.getItemId()){
                     case R.id.nav_home:
                         fragmentTransacction = false;
                         tabs.setVisibility(View.VISIBLE);
                         viewPager.setVisibility(View.VISIBLE);
+                        frameLayout.setVisibility(View.INVISIBLE);
                         getSupportActionBar().setTitle(item.getTitle());
                         break;
+
                     case R.id.nav_bookmarks:
-                        prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
-                        fragment = new BookmarksFragment(prefs2);
+                        frameLayout.setVisibility(View.VISIBLE);
+
+                        Fragment fragment =  BookmarksFragment.newInstance(prefs);
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment)
+                                .commit();
+
                         fragmentTransacction = true;
                         visibleGoneElement();
 
@@ -107,10 +120,6 @@ public class HomeActivity extends AppCompatActivity
                         break;
                 }
                 if (fragmentTransacction){
-                    getSupportFragmentManager().beginTransaction().
-                            replace(R.id.content_frame, fragment).
-                            commit();
-
                     item.setChecked(true);
                     getSupportActionBar().setTitle(item.getTitle());
                 }
@@ -142,7 +151,6 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-
     }
 
     private void visibleGoneElement() {
@@ -209,9 +217,6 @@ public class HomeActivity extends AppCompatActivity
                 logout();
                 break;
         }
-
-        //drawer.closeDrawer(GravityCompat.START);
-        //return true;
         return super.onOptionsItemSelected(item);
     }
 

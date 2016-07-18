@@ -58,8 +58,6 @@ public class HomeNewsActivity extends Fragment implements Callback<ArrayList<New
                     page = page + 1;
                     spinner.setVisibility(View.VISIBLE);
                     loadPosts(page);
-                } else {
-                    Log.d(getTag(), "NO load more findLastCompletelyVisibleItemPosition->" + llm.findLastCompletelyVisibleItemPosition() + "---size:" + size);
                 }
             }
         });

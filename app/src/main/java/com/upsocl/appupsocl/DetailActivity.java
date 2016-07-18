@@ -3,6 +3,8 @@ package com.upsocl.appupsocl;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,8 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.ui.ViewConstants;
+import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -35,8 +39,7 @@ public class DetailActivity extends AppCompatActivity {
     float initialX =  Float.NaN;
     private LinearLayout viewDetail;
     private int position;
-    private boolean bookmarks_save, flag_bookmarks;
-
+    private boolean bookmarks_save, flag_bookmarks, isBookmarks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
         obj = gs.fromJson(getIntent().getStringExtra("new"), News.class);
         newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
         position =  getIntent().getIntExtra("position",0);
+        isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
 
         viewDetail = (LinearLayout) findViewById(R.id.viewDetailLinear);
         viewDetail.setOnTouchListener(new View.OnTouchListener(){
@@ -88,6 +92,7 @@ public class DetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 onBackPressed();
             }
         });
@@ -123,6 +128,9 @@ public class DetailActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
         MenuItem item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
+        if (isBookmarks){
+            item_bookmark.setVisible(false);
+        }
 
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
@@ -137,19 +145,12 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public void share_url_new(){
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, obj.getImage());
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_share:
-                share_url_new();
+                createShareIntent();
                 return true;
 
             case R.id.menu_item_bookmarks:
@@ -166,35 +167,34 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getNewsObjet(int i) {
+        if (newsArrayList!=null){
+            if ((i>=0 ) && (i<newsArrayList.size()-1)){
+                Map<String, String> map = (Map<String, String>) newsArrayList.get(i);
+                News newsObj =  new News();
+                newsObj.setTitle(map.get("title"));
+                newsObj.setImage(map.get("image"));
+                newsObj.setContent(map.get("content"));
+                newsObj.setId(map.get("id"));
+                newsObj.setAuthor(map.get("author"));
+                newsObj.setLink(map.get("link"));
 
-        if ((i>=0 ) && (i<newsArrayList.size()-1)){
-            Map<String, String> map = (Map<String, String>) newsArrayList.get(i);
-            News newsObj =  new News();
-            newsObj.setTitle(map.get("title"));
-            newsObj.setImage(map.get("image"));
-            newsObj.setContent(map.get("content"));
-            String id_ = map.get("id").toString();
-            newsObj.setId(map.get("id"));
-            newsObj.setAuthor(map.get("author"));
-
-            Gson gS = new Gson();
-            String target = gS.toJson(newsObj);
-            String listNews = gS.toJson(newsArrayList);
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("new", target);
-            intent.putExtra("listNews", listNews);
-            intent.putExtra("position",i);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            this.finish();
-            startActivity(intent);
+                Gson gS = new Gson();
+                String target = gS.toJson(newsObj);
+                String listNews = gS.toJson(newsArrayList);
+                Intent intent = new Intent(this, DetailActivity.class);
+                intent.putExtra("new", target);
+                intent.putExtra("listNews", listNews);
+                intent.putExtra("position",i);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                this.finish();
+                startActivity(intent);
+            }
         }
     }
 
     private void uploadPreferences(String id, MenuItem item) {
 
         SharedPreferences prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
-
-        prefs2.getAll().get(1);
         String objeto = null;
         objeto = prefs2.getString(id,null);
         bookmarks_save = prefs2.getBoolean("bookmarks_save", false);
@@ -232,5 +232,14 @@ public class DetailActivity extends AppCompatActivity {
         SharedPreferences.Editor editor =  prefs.edit();
         editor.remove(String.valueOf(obj.getId())).commit();
         item.setIcon(R.mipmap.ic_bookmarks_check);
+    }
+
+
+    private void createShareIntent(){
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "\n\n");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, obj.getLink());
+        this.startActivity(Intent.createChooser(shareIntent,  "Compartir: " +obj.getTitle()));
     }
 }
