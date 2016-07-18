@@ -57,32 +57,8 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85458c0f-4c40-48bf-8585-dfab3ec1a465" name="Default" comment="Agregado compartir por las redes sociales, &#10;funcionalidad de bookmarks, deslizar a un lado">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_bookmarks_check.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_bookmarks_check.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_bookmarks_check.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_bookmarks_check.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_bookmarks_check.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_bookmarks_check.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_bookmarks_check.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_bookmarks_check.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_bookmarks_check.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_bookmarks_check.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_23_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_23_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/circleimageview_1_3_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/circleimageview_1_3_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/design_23_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/design_23_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_23_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_23_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_23_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_23_4_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+    <list default="true" id="85458c0f-4c40-48bf-8585-dfab3ec1a465" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/DetailActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/DetailActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/HomeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/domain/News.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/domain/News.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/io/deserializer/NewsDeserializer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/io/deserializer/NewsDeserializer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/io/model/JsonKeys.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/io/model/JsonKeys.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/BookmarksFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/BookmarksFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomeGreenActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomeGreenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomeNewsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomeNewsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomePopularyActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomePopularyActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomeWomenActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/appupsocl/ui/fragments/HomeWomenActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_home.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_bookmarks.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_bookmarks.xml" />
     </list>
     <ignored path="AppUpsocl.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -199,8 +175,8 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.37037036">
-              <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.33950618">
+              <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -2405,6 +2381,13 @@
       <option name="number" value="Default" />
       <updated>1467937901199</updated>
     </task>
+    <task id="LOCAL-00001" summary="Agregado compartir por las redes sociales, &#10;funcionalidad de bookmarks, deslizar a un lado">
+      <created>1468878773036</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1468878773036</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2924,8 +2907,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.37037036">
-          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.33950618">
+          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
           <folding />
         </state>
       </provider>
