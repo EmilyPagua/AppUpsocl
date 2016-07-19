@@ -6,36 +6,34 @@
             android:id="@+id/nav_home"
             android:icon="@android:drawable/ic_menu_add"
             android:title="Home" />
+
         <item
             android:id="@+id/nav_bookmarks"
             android:icon="@android:drawable/ic_input_get"
             android:title="Bookmarks" />
 
-        <ite
+        <item
             android:id="@+id/nav_interests"
             android:icon="@android:drawable/btn_star_big_off"
             android:title="Intereses" />
-
 
     </group>
 
     <item android:title="Configuraciones">
         <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_manage"
+                    android:icon="@android:drawable/ic_menu_manage"
+                    android:title="Preferencia" />
 
-            <item
-                android:id="@+id/nav_manage"
-                android:icon="@android:drawable/ic_menu_manage"
-                android:title="Preferencia" />
+                <item
+                    android:id="@+id/nav_help"
+                    android:icon="@android:drawable/ic_menu_help"
+                    android:title="Ayuda" />
 
-            <item
-                android:id="@+id/nav_help"
-                android:icon="@android:drawable/ic_menu_help"
-                android:title="Ayuda" />
+            </group>
 
-            <item
-                android:id="@+id/nav_close"
-                android:icon="@android:drawable/ic_menu_close_clear_cancel"
-                android:title="Cerrar Sesión" />
         </menu>
     </item>
 

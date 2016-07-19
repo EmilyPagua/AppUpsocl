@@ -16,6 +16,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
@@ -60,6 +61,10 @@ public class CreatePerfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_create_perfil);
+
+        LoginManager.getInstance().logOut();
+        AccessToken.setCurrentAccessToken((AccessToken) null);
+        Profile.setCurrentProfile((Profile)null);
 
         btn_culture = (Button) findViewById(R.id.btn_culture);
         btn_community = (Button) findViewById(R.id.btn_community);

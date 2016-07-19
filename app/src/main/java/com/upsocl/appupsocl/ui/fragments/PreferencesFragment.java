@@ -1,33 +1,31 @@
-package com.upsocl.appupsocl;
+package com.upsocl.appupsocl.ui.fragments;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
-import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
+import com.upsocl.appupsocl.R;
 
-public class PreferencesActivity extends AppCompatActivity {
+public class PreferencesFragment  extends Fragment {
 
     private Switch aSwitch;
     private RadioGroup radioGroup;
-    private CallbackManager callbackManager;
+
+    public PreferencesFragment() {
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){
+        View root = inflater.inflate(R.layout.activity_preferences, container, false);
 
-        setContentView(R.layout.activity_preferences);
-        setToolBar();
 
-        aSwitch = (Switch) findViewById(R.id.switch_notification);
+        aSwitch = (Switch) root.findViewById(R.id.switch_notification);
+        aSwitch.setChecked(true);
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -38,13 +36,12 @@ public class PreferencesActivity extends AppCompatActivity {
                 }else{
                     radioGroup.clearCheck();
                     aSwitch.setChecked(false);
-
                 }
-
             }
         });
 
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        radioGroup = (RadioGroup) root.findViewById(R.id.radioGroup);
+        radioGroup.check(R.id.rb_week);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 
             @Override
@@ -58,25 +55,12 @@ public class PreferencesActivity extends AppCompatActivity {
                 }else if (checkedId == R.id.rb_month){
                     aSwitch.setChecked(true);
                 }
-
-            }
-
-        });
-    }
-
-    private void setToolBar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_segundary);
-        toolbar.setTitle("Preferencias");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
             }
         });
-    }
 
+
+
+        return root;
+    }
 
 }

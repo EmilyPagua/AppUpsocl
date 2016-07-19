@@ -31,6 +31,9 @@ import com.facebook.login.LoginManager;
 import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
+import com.upsocl.appupsocl.ui.fragments.HelpFragment;
+import com.upsocl.appupsocl.ui.fragments.InterestsFragment;
+import com.upsocl.appupsocl.ui.fragments.PreferencesFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,6 +57,8 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Bundle b = getIntent().getExtras();
 
+
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
         TextView tv_username = (TextView) headerView.findViewById(R.id.tv_username);
@@ -61,9 +66,9 @@ public class HomeActivity extends AppCompatActivity
 
         String urlImagen;
         if (b!=null){
-            //tv_username.setText(b.getString("name"));
-            //urlImagen = b.getString("imagenURL");
-            //new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
+            tv_username.setText(b.getString("name")); //FIXME
+            urlImagen = b.getString("imagenURL");
+            new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
         }
 
         setSupportActionBar(toolbar);
@@ -76,10 +81,15 @@ public class HomeActivity extends AppCompatActivity
         prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+
                 boolean fragmentTransacction = false;
+                Fragment fragment = null;
+                FragmentManager fragmentManager =  null;
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
                 switch (item.getItemId()){
                     case R.id.nav_home:
@@ -91,37 +101,56 @@ public class HomeActivity extends AppCompatActivity
                         break;
 
                     case R.id.nav_bookmarks:
-                        frameLayout.setVisibility(View.VISIBLE);
-
-                        Fragment fragment =  BookmarksFragment.newInstance(prefs);
-                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        visibleGoneElement();
+                        fragment =  BookmarksFragment.newInstance(prefs);
+                        fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
                                 .commit();
 
                         fragmentTransacction = true;
-                        visibleGoneElement();
 
                         break;
                     case R.id.nav_interests:
-                        visibleGoneElement();
 
+                        visibleGoneElement();
+                        fragment =  new InterestsFragment();
+                        fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment)
+                                .commit();
+
+                        fragmentTransacction = true;
                         break;
                     case R.id.nav_manage:
+
                         visibleGoneElement();
+                        fragment =  new PreferencesFragment();
+                        fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment)
+                                .commit();
+
+                        fragmentTransacction = true;
 
                         break;
                     case R.id.nav_help:
+
                         visibleGoneElement();
+                        fragment =  new HelpFragment();
+                        fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment)
+                                .commit();
+
+                        fragmentTransacction = true;
 
                         break;
-                    case R.id.nav_close:
-                        logout();
-                        break;
+
                 }
                 if (fragmentTransacction){
-                    item.setChecked(true);
                     getSupportActionBar().setTitle(item.getTitle());
+
                 }
 
                 drawer.closeDrawers();
@@ -154,7 +183,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void visibleGoneElement() {
+        frameLayout.setVisibility(View.VISIBLE);
+        tabs.setVisibility(View.INVISIBLE);
         tabs.setVisibility(View.GONE);
+        viewPager.setVisibility(View.INVISIBLE);
         viewPager.setVisibility(View.GONE);
     }
 
@@ -211,23 +243,22 @@ public class HomeActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_help:
+                drawer.openDrawer(GravityCompat.START);
 
-                break;
-            case R.id.nav_close:
-                logout();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    public void logout(){
+    public void logout(View view){
         LoginManager.getInstance().logOut();
         AccessToken.setCurrentAccessToken((AccessToken) null);
         Profile.setCurrentProfile((Profile)null);
         Intent login = new Intent(HomeActivity.this, CreatePerfil.class);
         startActivity(login);
         finish();
+
     }
 
 
