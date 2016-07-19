@@ -21,7 +21,7 @@ public class PreferencesFragment  extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){
-        View root = inflater.inflate(R.layout.activity_preferences, container, false);
+        View root = inflater.inflate(R.layout.fragment_preferences, container, false);
 
 
         aSwitch = (Switch) root.findViewById(R.id.switch_notification);

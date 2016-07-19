@@ -31,7 +31,7 @@ public class BookmarksFragment extends Fragment  {
 
 
     private ListView newsListView;
-    ArrayAdapter<News> newsArrayAdapter;
+    private ArrayAdapter<News> newsArrayAdapter;
 
     public BookmarksFragment(SharedPreferences preferences) {
         this.preferences=preferences;

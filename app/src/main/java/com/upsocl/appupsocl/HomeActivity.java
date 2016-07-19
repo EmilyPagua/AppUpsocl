@@ -28,12 +28,17 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.google.gson.Gson;
+import com.upsocl.appupsocl.domain.Category;
 import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 import com.upsocl.appupsocl.ui.fragments.HelpFragment;
-import com.upsocl.appupsocl.ui.fragments.InterestsFragment;
+import com.upsocl.appupsocl.ui.fragments.CategoryFragment;
 import com.upsocl.appupsocl.ui.fragments.PreferencesFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,7 +50,11 @@ public class HomeActivity extends AppCompatActivity
     private ViewPager viewPager;
     private FrameLayout frameLayout;
     private SharedPreferences prefs;
-
+    private String location;
+    private String email;
+    private String birthday;
+    private ArrayList<Category> categoryArrayList;
+    private Gson gs = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +66,6 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Bundle b = getIntent().getExtras();
 
-
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
         TextView tv_username = (TextView) headerView.findViewById(R.id.tv_username);
@@ -68,6 +75,10 @@ public class HomeActivity extends AppCompatActivity
         if (b!=null){
             tv_username.setText(b.getString("name")); //FIXME
             urlImagen = b.getString("imagenURL");
+            email =  b.getString("email");
+            location  =  b.getString("location");
+            categoryArrayList = gs.fromJson(getIntent().getStringExtra("listCategory"), ArrayList.class);
+
             new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
         }
 
@@ -114,7 +125,7 @@ public class HomeActivity extends AppCompatActivity
                     case R.id.nav_interests:
 
                         visibleGoneElement();
-                        fragment =  new InterestsFragment();
+                        fragment =  new CategoryFragment(categoryArrayList);
                         fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)

@@ -17,6 +17,7 @@ public class ApiConstants {
 
     //http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=verde&filter[paged]=1
     //http://upsocl.com/wp-json/wp/v2/posts?filter[s]=Wordpress
-    //http://upsocl.com/wp-json/wp/v2/posts?filter[author]=35
-
+    //http://upsocl.com/wp-json/wp/v2/taxonomies/categories/terms
+    //http://wpruebas.dev/wp-json/wp/v2/taxonomies/category/terms
+    //http://upsocl.com/wp-json/wp/v2/categories&filter[paged]=2
 }

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.upsocl.appupsocl.domain.Category;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.ui.ViewConstants;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
@@ -35,11 +36,12 @@ public class DetailActivity extends AppCompatActivity {
     private  Gson gs = new Gson();
     private News obj;
     private ShareActionProvider mShareActionProvider;
-    private  ArrayList<News> newsArrayList;
+    private  ArrayList<Category> newsArrayList;
     float initialX =  Float.NaN;
     private LinearLayout viewDetail;
     private int position;
     private boolean bookmarks_save, flag_bookmarks, isBookmarks;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

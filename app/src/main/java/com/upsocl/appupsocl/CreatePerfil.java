@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,12 +15,19 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.Gson;
+import com.upsocl.appupsocl.domain.Category;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,13 +44,15 @@ public class CreatePerfil extends AppCompatActivity {
     private Button btn_culture, btn_community, btn_travel, btn_quiz, btn_world, btn_animals ,
             btn_women,btn_cook, btn_inspiration, btn_health, btn_relations, btn_family,
             btn_creativity, btn_beauty, btn_diversity, btn_movies, btn_styleLive;
-    ArrayList<String> listOptions =  new ArrayList<>();
+
+    private ArrayList<Category> listOptions =  new ArrayList<>();
+    private int id;
 
     private FacebookCallback<LoginResult> callback =  new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
             Profile profile = Profile.getCurrentProfile();
-            nextActivity(profile);
+            nextActivity(profile, null, null, null);
         }
 
         @Override
@@ -99,7 +109,7 @@ public class CreatePerfil extends AppCompatActivity {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile);
+                nextActivity(newProfile, null, null, null);
             }
         };
 
@@ -108,9 +118,30 @@ public class CreatePerfil extends AppCompatActivity {
         callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Profile profile = Profile.getCurrentProfile();
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
+
+                                try {
+                                    String email = object.getString("email");
+                                    String birthday = object.getString("birthday");
+                                    String location = object.getString("location");
+                                    Profile profile = Profile.getCurrentProfile();
+                                    nextActivity(profile,email,birthday, location);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday, location");
+                request.setParameters(parameters);
+                request.executeAsync();
+
                 loginButton.setVisibility(View.INVISIBLE);
-                nextActivity(profile);
             }
 
             @Override
@@ -123,16 +154,19 @@ public class CreatePerfil extends AppCompatActivity {
 
             }
         };
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
         loginButton.registerCallback(callbackManager, callback);
-
+        id =0;
+        uploadCategory();
     }
+
+
 
     @Override
     protected void onResume(){
         super.onResume();
         Profile profile = Profile.getCurrentProfile();
-        nextActivity(profile);
+        nextActivity(profile, null, null, null);
     }
 
     @Override
@@ -147,15 +181,22 @@ public class CreatePerfil extends AppCompatActivity {
         profileTracker.stopTracking();
     }
 
-
-    private void nextActivity(Profile profile) {
+    private void nextActivity(Profile profile, String email, String birthday, String location) {
 
         if (profile!=null && listOptions.size()>=3){
             loginButton.setVisibility(View.INVISIBLE);
+
+            Gson gS = new Gson();
+            String listCategory = gS.toJson(listOptions);
             Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+            intent.putExtra("listCategory", listCategory);
             intent.putExtra("name", profile.getName());
             intent.putExtra("surname", profile.getLastName());
+            intent.putExtra("email", email);
+            intent.putExtra("birthday", birthday);
+            intent.putExtra("location", location);
             intent.putExtra("imagenURL", profile.getProfilePictureUri(110,110).toString());
+
             startActivity(intent);
             CreatePerfil.this.finish();
         }else
@@ -169,6 +210,9 @@ public class CreatePerfil extends AppCompatActivity {
         else{
             loginButton.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+            Gson gS = new Gson();
+            String listCategory = gS.toJson(listOptions);
+            intent.putExtra("listCategory", listCategory);
             intent.putExtra("name", "Mily Pagua");
             intent.putExtra("imagenURL","https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p200x200/10325715_10207625705094835_3366849149656567779_n.jpg?oh=7b96b85353204dda89c5df0ffe315478&oe=57F4A079&__gda__=1478888108_17b2784e8061d3206445a37ccacafdb1" );
             startActivity(intent);
@@ -186,7 +230,6 @@ public class CreatePerfil extends AppCompatActivity {
 
 
     public void btnCuture(View view){
-
         changeStatusButton(ButtonOptionKeys.OPT_CULTURA,btn_culture);
     }
 
@@ -197,9 +240,8 @@ public class CreatePerfil extends AppCompatActivity {
 
     public void btnQuiz(View view){
         changeStatusButton(ButtonOptionKeys.OPT_QUIZ,btn_quiz);
-
-
     }
+
     public void bntWorl(View view){
         changeStatusButton(ButtonOptionKeys.OPT_WORLD,btn_world);
     }
@@ -268,15 +310,36 @@ public class CreatePerfil extends AppCompatActivity {
         boolean flag= true;
 
         for (int i=0;i< listOptions.size(); i++){
-            if (listOptions.get(i).equals(option)){
-                listOptions.remove(i);
-                return false;
+            if (listOptions.get(i).getTitle().equals(option)){
+                if (listOptions.get(i).getIsCheck().equals("true"))
+                    listOptions.get(i).setIsCheck("false");
+                else
+                    listOptions.get(i).setIsCheck("true");
             }
         }
-
-        listOptions.add(option);
+        id++;
         return flag;
     }
 
+    private void uploadCategory() {
+
+        listOptions.add(new Category("1",ButtonOptionKeys.OPT_ANIMALS,"false"));
+        listOptions.add(new Category("2",ButtonOptionKeys.OPT_BEAUTY,"false"));
+        listOptions.add(new Category("3",ButtonOptionKeys.OPT_COMMUNITY,"false"));
+        listOptions.add(new Category("4",ButtonOptionKeys.OPT_COOK,"false"));
+        listOptions.add(new Category("5",ButtonOptionKeys.OPT_CREATIVITY,"false"));
+        listOptions.add(new Category("6",ButtonOptionKeys.OPT_CULTURA,"false"));
+        listOptions.add(new Category("7",ButtonOptionKeys.OPT_DIVERSITY,"false"));
+        listOptions.add(new Category("8",ButtonOptionKeys.OPT_FAMILY,"false"));
+        listOptions.add(new Category("9",ButtonOptionKeys.OPT_HEALTH,"false"));
+        listOptions.add(new Category("10",ButtonOptionKeys.OPT_INSPIRATION,"false"));
+        listOptions.add(new Category("11",ButtonOptionKeys.OPT_MOVIES,"false"));
+        listOptions.add(new Category("12",ButtonOptionKeys.OPT_QUIZ,"false"));
+        listOptions.add(new Category("13",ButtonOptionKeys.OPT_RELATIONS,"false"));
+        listOptions.add(new Category("14",ButtonOptionKeys.OPT_STYLELIVE,"false"));
+        listOptions.add(new Category("15",ButtonOptionKeys.OPT_TRAVEL,"false"));
+        listOptions.add(new Category("16",ButtonOptionKeys.OPT_WOMEN,"false"));
+        listOptions.add(new Category("17",ButtonOptionKeys.OPT_WORLD,"false"));
+    }
 
 }
