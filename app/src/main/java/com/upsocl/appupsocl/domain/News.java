@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+
 /**
  * Created by leninluque on 09-11-15.
  */

@@ -14,6 +14,10 @@
         android:layout_width="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:transitionGroup="false"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:id="@+id/viewDetailrelative"
         android:touchscreenBlocksFocus="false">
 
@@ -36,7 +40,6 @@
                 android:id="@+id/viewDetailLinear"
                 tools:ignore="WebViewLayout">
 
-
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/heigny_image_detail"
@@ -50,20 +53,26 @@
                     android:id="@+id/detailTextView"
                     android:paddingTop="@dimen/margin_webview"
                     android:textSize="26dp"
-                    android:layout_margin="10dp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Small Text"
+                    android:layout_below="@+id/detailTextView"
+                    android:id="@+id/detail" />
 
                 <WebView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/webView"
-                    android:layout_below="@+id/detailTextView"
+                    android:layout_below="@+id/detail"
                     android:layout_margin="@dimen/margin_webview"
                     android:layout_weight="1" />
 
             </LinearLayout>
         </ScrollView>
-
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

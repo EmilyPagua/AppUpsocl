@@ -3,6 +3,7 @@ package com.upsocl.appupsocl;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -11,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -81,9 +86,30 @@ public class DetailActivity extends AppCompatActivity {
 
         setToolBar();
         setImage(obj.getImage());
-        setTextView(obj.getTitle());
+        setTextViewTitle(obj.getTitle());
+        setTextViewDetail(obj.getAuthor(), obj.getDate());
         enableWebView(obj.getContent());
         flag_bookmarks = false;
+    }
+
+    private void setTextViewDetail(String authorCreate, String dateCreate) {
+
+        TextView detail = (TextView) findViewById(R.id.detail);
+
+        String author = "Por: "+ authorCreate;
+        String  date = "El: "+ dateCreate;
+
+        SpannableStringBuilder sBauthor = new SpannableStringBuilder(author);
+        sBauthor.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 4, author.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        SpannableStringBuilder sBdetail = new SpannableStringBuilder(date);
+        sBdetail.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 3, date.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
+        SpannableStringBuilder result = new SpannableStringBuilder(spanned);
+
+        detail.setText(result, TextView.BufferType.SPANNABLE);
+
     }
 
     private void setToolBar(){
@@ -120,7 +146,7 @@ public class DetailActivity extends AppCompatActivity {
                 .into(imageview);
     }
 
-    private void setTextView(String title){
+    private void setTextViewTitle(String title){
         TextView textView = (TextView) findViewById(R.id.detailTextView);
         textView.setText(title);
     }
