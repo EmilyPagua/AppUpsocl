@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.appupsocl.domain.Category;
 import com.upsocl.appupsocl.domain.News;
+import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.ui.ViewConstants;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 
@@ -228,7 +229,7 @@ public class DetailActivity extends AppCompatActivity {
         bookmarks_save = prefs2.getBoolean("bookmarks_save", false);
 
         if (objeto!=null){
-            item.setIcon(R.mipmap.ic_bookmarks);
+            item.setIcon(R.drawable.ic_bookmark_white_36dp);
             flag_bookmarks = true;
         }
     }
@@ -237,7 +238,7 @@ public class DetailActivity extends AppCompatActivity {
         Gson gS = new Gson();
         String target = gS.toJson(obj);
 
-        SharedPreferences prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        SharedPreferences prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
 
         prefs.getAll().size();
@@ -248,18 +249,17 @@ public class DetailActivity extends AppCompatActivity {
 
             editor.putString(String.valueOf(obj.getId()), target);
             editor.commit();
-            item.setIcon(R.mipmap.ic_bookmarks);
+            item.setIcon(R.drawable.ic_bookmark_white_36dp);
         }
-
     }
 
     private void removePreference(MenuItem item) {
         flag_bookmarks = false;
         Toast.makeText(this, "No esta como preferido", Toast.LENGTH_SHORT).show();
-        SharedPreferences prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        SharedPreferences prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.remove(String.valueOf(obj.getId())).commit();
-        item.setIcon(R.mipmap.ic_bookmarks_check);
+        item.setIcon(R.drawable.ic_bookmark_border_white_36dp);
     }
 
 

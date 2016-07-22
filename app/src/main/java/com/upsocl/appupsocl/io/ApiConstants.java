@@ -20,4 +20,10 @@ public class ApiConstants {
     //http://upsocl.com/wp-json/wp/v2/taxonomies/categories/terms
     //http://wpruebas.dev/wp-json/wp/v2/taxonomies/category/terms
     //http://upsocl.com/wp-json/wp/v2/categories&filter[paged]=2
+
+    //Sender ID: 149087864796
+    //Server API key AIzaSyDqPOHOJq0dwmEewLpTuOqP0Y3U95-QB9g
+
+    //ic_note_add_black_24dp
 }
+

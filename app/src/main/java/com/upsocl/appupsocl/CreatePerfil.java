@@ -1,10 +1,18 @@
 package com.upsocl.appupsocl;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,9 +30,14 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Category;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
+import com.upsocl.appupsocl.keys.Preferences;
+import com.upsocl.appupsocl.notification.QuickstartPreferences;
+import com.upsocl.appupsocl.notification.RegistrationIntentService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +48,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CreatePerfil extends AppCompatActivity {
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private boolean isReceiverRegistered;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = "CreatePerfil";
+
 
     private LoginButton loginButton;
     private CallbackManager callbackManager;
@@ -52,7 +71,7 @@ public class CreatePerfil extends AppCompatActivity {
         @Override
         public void onSuccess(LoginResult loginResult) {
             Profile profile = Profile.getCurrentProfile();
-            nextActivity(profile, null, null, null);
+            nextActivity(profile);
         }
 
         @Override
@@ -109,7 +128,7 @@ public class CreatePerfil extends AppCompatActivity {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile, null, null, null);
+                nextActivity(newProfile);
             }
         };
 
@@ -130,7 +149,8 @@ public class CreatePerfil extends AppCompatActivity {
                                     String birthday = object.getString("birthday");
                                     String location = object.getString("location");
                                     Profile profile = Profile.getCurrentProfile();
-                                    nextActivity(profile,email,birthday, location);
+                                    saveProfileUser(profile,email,birthday, location);
+                                    nextActivity(profile);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -158,20 +178,21 @@ public class CreatePerfil extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, callback);
         id =0;
         uploadCategory();
-    }
 
-
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Profile profile = Profile.getCurrentProfile();
-        nextActivity(profile, null, null, null);
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                if (sentToken) {
+                    Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
     @Override
@@ -181,7 +202,7 @@ public class CreatePerfil extends AppCompatActivity {
         profileTracker.stopTracking();
     }
 
-    private void nextActivity(Profile profile, String email, String birthday, String location) {
+    private void nextActivity(Profile profile) {
 
         if (profile!=null && listOptions.size()>=3){
             loginButton.setVisibility(View.INVISIBLE);
@@ -190,12 +211,6 @@ public class CreatePerfil extends AppCompatActivity {
             String listCategory = gS.toJson(listOptions);
             Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
             intent.putExtra("listCategory", listCategory);
-            intent.putExtra("name", profile.getName());
-            intent.putExtra("surname", profile.getLastName());
-            intent.putExtra("email", email);
-            intent.putExtra("birthday", birthday);
-            intent.putExtra("location", location);
-            intent.putExtra("imagenURL", profile.getProfilePictureUri(110,110).toString());
 
             startActivity(intent);
             CreatePerfil.this.finish();
@@ -340,6 +355,20 @@ public class CreatePerfil extends AppCompatActivity {
         listOptions.add(new Category("15",ButtonOptionKeys.OPT_TRAVEL,"false"));
         listOptions.add(new Category("16",ButtonOptionKeys.OPT_WOMEN,"false"));
         listOptions.add(new Category("17",ButtonOptionKeys.OPT_WORLD,"false"));
+    }
+
+
+    private void saveProfileUser(Profile profile, String email, String birthday, String location) {
+
+        SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.putString(Preferences.DATA_USER_NAME, profile.getName());
+        editor.putString(Preferences.DATA_USER_LAST_NAME, profile.getLastName());
+        editor.putString(Preferences.DATA_USER_BIRTHDAY, birthday);
+        editor.putString(Preferences.DATA_USER_LOCATION, location);
+        editor.putString(Preferences.DATA_USER_IMAGEN_URL, profile.getProfilePictureUri(110,110).toString());
+        editor.putString(Preferences.DATA_USER_EMAIL, email);
+        editor.commit();
     }
 
 }

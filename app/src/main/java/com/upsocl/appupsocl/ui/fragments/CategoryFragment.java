@@ -47,14 +47,15 @@ public class CategoryFragment extends Fragment {
     }
 
     private void loadCategory() {
-
-        for (int i=0;i<categoryArrayList.size();i++){
-            Map<String, String> map = (Map<String, String>) categoryArrayList.get(i);
-            Category category =  new Category();
-            category.setTitle(map.get("title"));
-            category.setId(map.get("id"));
-            category.setIsCheck(map.get("isCheck"));
-            categorys.add(category);
+        if (categoryArrayList != null && categoryArrayList.size()!=0){
+            for (int i=0;i<categoryArrayList.size();i++){
+                Map<String, String> map = (Map<String, String>) categoryArrayList.get(i);
+                Category category =  new Category();
+                category.setTitle(map.get("title"));
+                category.setId(map.get("id"));
+                category.setIsCheck(map.get("isCheck"));
+                categorys.add(category);
+            }
         }
     }
 }

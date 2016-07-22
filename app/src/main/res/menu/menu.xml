@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
 
     <item
         android:id="@+id/menu_item_share"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:title="Compartir"
-        android:icon="@android:drawable/ic_menu_share" />
+        android:icon="@drawable/ic_share_white_36dp" />
 
     <item
         android:id="@+id/menu_item_bookmarks"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:title="Bookmarks"
-        android:icon="@mipmap/ic_bookmarks_check" />
+        android:icon="@drawable/ic_bookmark_border_white_36dp" />
 </menu>

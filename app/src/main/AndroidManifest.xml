@@ -3,16 +3,15 @@
     package="com.upsocl.appupsocl">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- permission notifications-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="net.sgoliver.android.newgcm.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.upsocl.appupsocl.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="net.sgoliver.android.newgcm.permission.C2D_MESSAGE" />
-    <!-- permission notifications-->
+
+    <uses-permission android:name="com.upsocl.appupsocl.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,23 +23,55 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.upsocl.appupsocl" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+
+        <!-- [START gcm_listener] -->
+        <service
+            android:name=".notification.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+
+
+        <!-- [START instanceId_listener] -->
+        <service
+            android:name=".notification.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+        <!-- [END instanceId_listener] -->
+        <service
+            android:name=".notification.RegistrationIntentService"
+            android:exported="false"></service>
+
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.segundary">
-
-        </activity>
+            android:theme="@style/AppTheme.segundary"></activity>
 
         <!-- Create preferences -->
         <activity
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Login Facebook -->
@@ -55,10 +86,14 @@
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultsActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Resultado de busqueda -->
@@ -100,7 +135,9 @@
         <activity android:name=".ui.fragments.HomeFoodActivity" />
         <activity android:name=".ui.fragments.HomeNewsActivity" />
         <activity android:name=".ui.fragments.HomePopularyActivity" />
-        <activity android:name=".ui.fragments.BookmarksFragment"></activity>
+        <activity android:name=".ui.fragments.BookmarksFragment" />
+        <activity android:name=".NotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>
