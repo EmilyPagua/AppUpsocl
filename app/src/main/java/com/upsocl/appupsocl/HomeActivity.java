@@ -6,11 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -25,8 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,24 +30,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Category;
+import com.upsocl.appupsocl.keys.CustomerKeys;
+import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
-import com.upsocl.appupsocl.notification.RegistrationIntentService;
 import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 import com.upsocl.appupsocl.ui.fragments.HelpFragment;
 import com.upsocl.appupsocl.ui.fragments.CategoryFragment;
 import com.upsocl.appupsocl.ui.fragments.PreferencesFragment;
+
 
 import java.util.ArrayList;
 
@@ -75,13 +69,10 @@ public class HomeActivity extends AppCompatActivity
     private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
 
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
     private View headerView;
     private TextView tv_username;
     private ActionBarDrawerToggle toggle;
-
-    private RelativeLayout notificationCount;
 
 
     @Override
@@ -113,33 +104,9 @@ public class HomeActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        setBundleVar(b);
+        uploadPreferences();
         selectDrawerOption();
         selectTabsOption();
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                       Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        registerReceiver();
-        if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-        }
-
-        notificationCount = (RelativeLayout)findViewById(R.id.badge_layout1);
 
     }
 
@@ -149,17 +116,6 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
     }
 
-    private void setBundleVar(Bundle b) {
-        String urlImagen;
-        if (b!=null){
-            tv_username.setText(b.getString("name"));
-            urlImagen = b.getString("imagenURL");
-            email =  b.getString("email");
-            location  =  b.getString("location");
-            categoryArrayList = gs.fromJson(getIntent().getStringExtra("listCategory"), ArrayList.class);
-            new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(urlImagen);
-        }
-    }
 
     private void selectTabsOption() {
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -270,11 +226,11 @@ public class HomeActivity extends AppCompatActivity
     @NonNull
     private TabLayout createTabLayout() {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText("Para ti"));
-        tabs.addTab(tabs.newTab().setText("Verde"));
-        tabs.addTab(tabs.newTab().setText("Comida"));
-        tabs.addTab(tabs.newTab().setText("Mujer"));
-        tabs.addTab(tabs.newTab().setText("Mas popular"));
+        tabs.addTab(tabs.newTab().setText(R.string.forYou));
+        tabs.addTab(tabs.newTab().setText(R.string.green));
+        tabs.addTab(tabs.newTab().setText(R.string.food));
+        tabs.addTab(tabs.newTab().setText(R.string.women));
+        tabs.addTab(tabs.newTab().setText(R.string.populary));
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         return tabs;
     }
@@ -302,8 +258,15 @@ public class HomeActivity extends AppCompatActivity
 
         MenuItem item_notification = menu.findItem(R.id.menu_item_notification);
         MenuItemCompat.setActionView(item_notification, R.layout.counter_menuitem_layout);
-       //item_notification.setIcon(buildCounterDrawable(3,  R.drawable.ic_notifications_white_24dp));
-        notificationCount = (RelativeLayout) MenuItemCompat.getActionView(item_notification);
+
+        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+        String objeto = prefs.getString(Preferences.NOTI_COUNT,null);
+
+        RelativeLayout notificationCount = (RelativeLayout) MenuItemCompat.getActionView(item_notification);
+        TextView notificastionCountText = (TextView) notificationCount.findViewById(R.id.badge_notification_1);
+        notificastionCountText.setText(objeto);
+
+        MenuItemCompat.setActionView(item_notification, notificationCount);
 
         return true;
     }
@@ -343,21 +306,7 @@ public class HomeActivity extends AppCompatActivity
         finish();
     }
 
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
+
 
     @Override
     protected void onResume() {
@@ -380,7 +329,7 @@ public class HomeActivity extends AppCompatActivity
     private void goNotifications() {
         visibleGoneElement();
         Intent intent = new Intent(this, NotificationActivity.class);
-        intent.putExtra("contentText", "desde el login");
+        intent.putExtra("idPost","0");
         startActivity(intent);
     }
 
@@ -391,4 +340,20 @@ public class HomeActivity extends AppCompatActivity
             isReceiverRegistered = true;
         }
     }
+
+    private void uploadPreferences() {
+
+        SharedPreferences prefs2 =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        String userName = null, userLastName = null, imagenURL=null;
+
+        userName = prefs2.getString(CustomerKeys.DATA_USER_FIRST_NAME,"Nombre");
+        userLastName = prefs2.getString(CustomerKeys.DATA_USER_LAST_NAME,"Apellido");
+        imagenURL = prefs2.getString(CustomerKeys.DATA_USER_IMAGEN_URL,null);
+
+        tv_username.setText(userName +" " +userLastName);
+        categoryArrayList = gs.fromJson(getIntent().getStringExtra("listCategory"), ArrayList.class);
+        new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(imagenURL);
+    }
+
+
 }

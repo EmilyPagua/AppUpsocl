@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     float initialX =  Float.NaN;
     private LinearLayout viewDetail;
     private int position;
-    private boolean bookmarks_save, flag_bookmarks, isBookmarks;
+    private boolean bookmarks_save, flag_bookmarks, isBookmarks, isNotification;
 
 
     @Override
@@ -57,6 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
         position =  getIntent().getIntExtra("position",0);
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
+        isNotification =  getIntent().getBooleanExtra("isNotification",false);
 
         viewDetail = (LinearLayout) findViewById(R.id.viewDetailLinear);
         viewDetail.setOnTouchListener(new View.OnTouchListener(){
@@ -110,7 +111,6 @@ public class DetailActivity extends AppCompatActivity {
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
 
         detail.setText(result, TextView.BufferType.SPANNABLE);
-
     }
 
     private void setToolBar(){
@@ -121,8 +121,11 @@ public class DetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                onBackPressed();
+                if (isNotification){
+                    Intent intent = new Intent(DetailActivity.this, NotificationActivity.class);
+                    startActivity(intent);
+                }else
+                    onBackPressed();
             }
         });
         setShareIntent(getIntent());
@@ -223,7 +226,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void uploadPreferences(String id, MenuItem item) {
 
-        SharedPreferences prefs2 =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        SharedPreferences prefs2 =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         String objeto = null;
         objeto = prefs2.getString(id,null);
         bookmarks_save = prefs2.getBoolean("bookmarks_save", false);

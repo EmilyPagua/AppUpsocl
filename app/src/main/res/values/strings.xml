@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Upsocl</string>
+    <string name="app_notifications">Notificaciones</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -12,6 +13,7 @@
 
     <string name="gcm_defaultSenderId">417856637205</string>
     <string name="gcm_send_message">Token entregado con exito </string>
+    <string name="msg_save_wordpress">Registro procesado</string>
     <string name="token_error_message">Error en token</string>
 
     <string name="facebook_app_id">278628459160126</string>
@@ -57,5 +59,17 @@
     <string name="configuracion_item">Configuración</string>
     <string name="title_activity_search_results">Resultado...</string>
     <string name="title_activity_prueba">PruebaActivity</string>
+
+    <!-- SocialNetwork -->
+    <string name="name_facebook">facebook</string>
+    <string name="name_gmail">gmail.</string>
+    <string name="name_twitter">facebook</string>
+
+    <!-- Tabs MENU -->
+    <string name="forYou">Para ti</string>
+    <string name="green">Verde</string>
+    <string name="food">Comida</string>
+    <string name="women">Mujer</string>
+    <string name="populary">Mas popular</string>
 
 </resources>

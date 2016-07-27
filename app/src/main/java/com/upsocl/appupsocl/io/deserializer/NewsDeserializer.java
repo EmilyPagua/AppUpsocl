@@ -18,6 +18,7 @@ import java.util.Date;
  * Created by leninluque on 13-11-15.
  */
 public class NewsDeserializer implements JsonDeserializer<News> {
+
     @Override
     public News deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 

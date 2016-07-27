@@ -60,18 +60,24 @@
         <!-- [END instanceId_listener] -->
         <service
             android:name=".notification.RegistrationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.segundary"></activity>
+            android:theme="@style/AppTheme.segundary">
+
+        </activity>
 
         <!-- Create preferences -->
         <activity
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Login Facebook -->
@@ -89,11 +95,7 @@
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultsActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Resultado de busqueda -->
@@ -136,8 +138,12 @@
         <activity android:name=".ui.fragments.HomeNewsActivity" />
         <activity android:name=".ui.fragments.HomePopularyActivity" />
         <activity android:name=".ui.fragments.BookmarksFragment" />
-        <activity android:name=".NotificationActivity"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/app_notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>

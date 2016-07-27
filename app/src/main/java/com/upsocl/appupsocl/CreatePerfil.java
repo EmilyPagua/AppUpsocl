@@ -1,18 +1,16 @@
 package com.upsocl.appupsocl;
 
-import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -34,7 +32,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Category;
+import com.upsocl.appupsocl.domain.UserLogin;
+import com.upsocl.appupsocl.io.ApiConstants;
+import com.upsocl.appupsocl.io.WordpressApiAdapter;
 import com.upsocl.appupsocl.keys.ButtonOptionKeys;
+import com.upsocl.appupsocl.keys.CustomerKeys;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
 import com.upsocl.appupsocl.notification.RegistrationIntentService;
@@ -42,12 +44,18 @@ import com.upsocl.appupsocl.notification.RegistrationIntentService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
-public class CreatePerfil extends AppCompatActivity {
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+public class CreatePerfil extends AppCompatActivity implements Callback<ArrayList<Integer>>  {
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
@@ -66,6 +74,7 @@ public class CreatePerfil extends AppCompatActivity {
 
     private ArrayList<Category> listOptions =  new ArrayList<>();
     private int id;
+    private String nameSocialNetwork;
 
     private FacebookCallback<LoginResult> callback =  new FacebookCallback<LoginResult>() {
         @Override
@@ -94,6 +103,8 @@ public class CreatePerfil extends AppCompatActivity {
         LoginManager.getInstance().logOut();
         AccessToken.setCurrentAccessToken((AccessToken) null);
         Profile.setCurrentProfile((Profile)null);
+
+        savePreferencsNotifications();
 
         btn_culture = (Button) findViewById(R.id.btn_culture);
         btn_community = (Button) findViewById(R.id.btn_community);
@@ -145,19 +156,23 @@ public class CreatePerfil extends AppCompatActivity {
                                 Log.v("LoginActivity", response.toString());
 
                                 try {
-                                    String email = object.getString("email");
-                                    String birthday = object.getString("birthday");
-                                    String location = object.getString("location");
                                     Profile profile = Profile.getCurrentProfile();
-                                    saveProfileUser(profile,email,birthday, location);
-                                    nextActivity(profile);
+
+                                    UserLogin userLogin=  new UserLogin(object.getString("email"),
+                                            profile.getFirstName(),
+                                            profile.getLastName(),
+                                            convertFormat(object.getString("birthday")),
+                                            object.getJSONObject("location").getString("name"), null, 0,profile.getProfilePictureUri(110,110).toString());
+
+                                    saveUserWP(userLogin);
+                                    nameSocialNetwork = getString(R.string.name_facebook);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender,birthday, location");
+                parameters.putString("fields", "id,name, email,gender,birthday, location");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -187,12 +202,53 @@ public class CreatePerfil extends AppCompatActivity {
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
+                   // Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                    System.out.println(R.string.gcm_send_message);
+                } else {
+                    Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                    System.out.println(R.string.token_error_message);
+                }
+            }
+        };
+
+        //RegistrationToken Wordpress
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                if (sentToken) {
                     Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
                 }
             }
         };
+
+        registerReceiver();
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -207,13 +263,6 @@ public class CreatePerfil extends AppCompatActivity {
         if (profile!=null && listOptions.size()>=3){
             loginButton.setVisibility(View.INVISIBLE);
 
-            Gson gS = new Gson();
-            String listCategory = gS.toJson(listOptions);
-            Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
-            intent.putExtra("listCategory", listCategory);
-
-            startActivity(intent);
-            CreatePerfil.this.finish();
         }else
             Toast.makeText(CreatePerfil.this, "Debe seleccionar al menos 3 categorias", Toast.LENGTH_SHORT).show();
 
@@ -228,10 +277,11 @@ public class CreatePerfil extends AppCompatActivity {
             Gson gS = new Gson();
             String listCategory = gS.toJson(listOptions);
             intent.putExtra("listCategory", listCategory);
-            intent.putExtra("name", "Mily Pagua");
-            intent.putExtra("imagenURL","https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p200x200/10325715_10207625705094835_3366849149656567779_n.jpg?oh=7b96b85353204dda89c5df0ffe315478&oe=57F4A079&__gda__=1478888108_17b2784e8061d3206445a37ccacafdb1" );
-            startActivity(intent);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             CreatePerfil.this.finish();
+            startActivity(intent);
+
+
         }
     }
 
@@ -358,17 +408,105 @@ public class CreatePerfil extends AppCompatActivity {
     }
 
 
-    private void saveProfileUser(Profile profile, String email, String birthday, String location) {
+    private void saveUserWP(final UserLogin userLogin) {
 
-        SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        final SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        final String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
+
+        userLogin.setId(44);  //FIXME
+        userLogin.setToken(token);
+        saveUser(prefs, userLogin);
+
+        WordpressApiAdapter.getApiServiceCustomer(ApiConstants.BASE_URL_CUSTOMER)
+                    .saveCustomer( userLogin.getFirstName(),
+                            userLogin.getLastName(),
+                            userLogin.getEmail(),
+                            userLogin.getBirthday(),
+                            userLogin.getLocation(),
+                            "facebook",
+                            token, new Callback<Integer>() {
+                                @Override
+                                public void success(Integer idUser, Response response) {
+
+                                    saveUser(prefs, userLogin);
+
+                                    Gson gS = new Gson();
+                                    String listCategory = gS.toJson(listOptions);
+
+                                    Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+                                    intent.putExtra("listCategory", listCategory);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                                    startActivity(intent);
+                                    CreatePerfil.this.finish();
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    System.out.println(error);
+                                }
+                            });
+
+    }
+
+
+
+    private void saveUser(SharedPreferences prefs, UserLogin userLogin) {
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.putString(Preferences.DATA_USER_NAME, profile.getName());
-        editor.putString(Preferences.DATA_USER_LAST_NAME, profile.getLastName());
-        editor.putString(Preferences.DATA_USER_BIRTHDAY, birthday);
-        editor.putString(Preferences.DATA_USER_LOCATION, location);
-        editor.putString(Preferences.DATA_USER_IMAGEN_URL, profile.getProfilePictureUri(110,110).toString());
-        editor.putString(Preferences.DATA_USER_EMAIL, email);
+        editor.putString(CustomerKeys.DATA_USER_TOKEN, userLogin.getToken());
+        editor.putString(CustomerKeys.DATA_USER_FIRST_NAME, userLogin.getFirstName());
+        editor.putString(CustomerKeys.DATA_USER_LAST_NAME, userLogin.getLastName());
+        editor.putString(CustomerKeys.DATA_USER_BIRTHDAY, userLogin.getBirthday());
+        editor.putString(CustomerKeys.DATA_USER_LOCATION, userLogin.getLocation());
+        editor.putString(CustomerKeys.DATA_USER_IMAGEN_URL, userLogin.getImagenURL());
+        editor.putString(CustomerKeys.DATA_USER_EMAIL, userLogin.getEmail());
+        editor.putInt(CustomerKeys.DATA_USER_ID, userLogin.getId());
         editor.commit();
     }
 
+    @Nullable
+    private String convertFormat(String birthday) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date =  null;
+        try {
+
+            date = formatter.parse(birthday);
+            return formatter2.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+            isReceiverRegistered = true;
+        }
+    }
+
+    @Override
+    public void success(ArrayList<Integer> integers, Response response) {
+
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+
+    }
+
+    private void savePreferencsNotifications(){
+        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.clear().commit();
+        editor.putBoolean(Preferences.NOTI_IS_EMPTY,true).commit();
+        editor.putString(Preferences.NOTI_COUNT,"10").commit();
+
+    }
 }

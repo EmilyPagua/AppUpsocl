@@ -42,7 +42,7 @@ public class HomeGreenActivity extends Fragment implements Callback<ArrayList<Ne
         page = 1;
         loadPosts(page);
 
-        header_news = (TextView) root.findViewById(R.id.header_news);
+        header_news = (TextView) root.findViewById(R.id.header_green);
         newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewsAdapter(getActivity());

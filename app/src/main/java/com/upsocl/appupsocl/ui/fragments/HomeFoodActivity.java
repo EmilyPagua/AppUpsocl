@@ -40,7 +40,7 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
         page = 1;
         loadPosts(page);
 
-        header_news = (TextView) root.findViewById(R.id.header_news);
+        header_news = (TextView) root.findViewById(R.id.header_food);
         newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewsAdapter(getActivity());

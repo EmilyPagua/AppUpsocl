@@ -15,15 +15,6 @@
               https://console.developers.google.com/flows/enableapi?apiid=googlecloudmessaging&keyType=SERVER_SIDE&r=0.0.0.0/0
 
             Once you have your API key (which starts with “AIza...”), replace the "gcm.api.key" string in this file.
-
-            AIzaSyDUsm9dk3Hs9moRPUzstSYp_qD7JquAFXk
-
-ID del proyecto
-upsocl-1379
-
-Número del proyecto
-939864869165
-
             -->
 
         <property name="gcm.api.key" value="AIzaSyCSTj08HQ-IIJ-yho6bwN2MiGy4iLD8dYE"/>

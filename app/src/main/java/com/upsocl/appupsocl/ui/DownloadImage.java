@@ -9,6 +9,9 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.upsocl.appupsocl.R;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -37,14 +40,18 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             Log.e("ERROR", e.getMessage());
             e.printStackTrace();
         }
+
         return mIcon11;
     }
 
     protected void onPostExecute(Bitmap resutl){
-        //creamos el drawable redondeado
-        RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, resutl);
-        //asignamos el CornerRadius
-        roundedDrawable.setCornerRadius(resutl.getHeight());
-        imageView.setImageDrawable(roundedDrawable);
+        if (resutl!=null){
+            //creamos el drawable redondeado
+            RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(resources, resutl);
+            //asignamos el CornerRadius
+            roundedDrawable.setCornerRadius(resutl.getHeight());
+            imageView.setImageDrawable(roundedDrawable);
+        }
+
     }
 }
