@@ -38,6 +38,10 @@ public interface WordpressService {
     void getListPopulary(@Query(ApiConstants.FILTER_POPULARY) int page, Callback<ArrayList<News>> response);
 
     @GET(ApiConstants.LIST_POSTS)
+    void getListLastNews(@Query(ApiConstants.FILTER_LASTNEWS) String category, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
+
+
+    @GET(ApiConstants.LIST_POSTS)
     void getListWord(@Query(ApiConstants.FILTER_WORD) String word, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
 
     @GET(ApiConstants.LIST_POSTS)

@@ -29,7 +29,7 @@
             android:textColor="#222"
             android:text="Titulo"
             android:textStyle="bold"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -40,7 +40,18 @@
             android:text="Descripcion"
             android:textColor="#666"
             android:id="@+id/data_post"
-            android:textSize="14dp" />
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/data_post"
+            android:maxLines="3"
+            android:padding="2dp"
+            android:text="Category"
+            android:textColor="#666"
+            android:id="@+id/categories"
+            android:textSize="12dp" />
 
 
     </RelativeLayout>

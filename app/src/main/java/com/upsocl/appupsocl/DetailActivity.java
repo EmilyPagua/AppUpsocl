@@ -86,28 +86,36 @@ public class DetailActivity extends AppCompatActivity {
         setToolBar();
         setImage(obj.getImage());
         setTextViewTitle(obj.getTitle());
-        setTextViewDetail(obj.getAuthor(), obj.getDate());
+        setTextViewDetail(obj.getAuthor(), obj.getDate(), obj.getCategories());
         enableWebView(obj.getContent());
         flag_bookmarks = false;
     }
 
-    private void setTextViewDetail(String authorCreate, String dateCreate) {
+    private void setTextViewDetail(String authorCreate, String dateCreate, String category) {
 
         TextView detail = (TextView) findViewById(R.id.detail);
 
         String author = "Por: "+ authorCreate;
         String  date = "El: "+ dateCreate;
+        String categories = "Categorias: " + category;
 
-        SpannableStringBuilder sBauthor = new SpannableStringBuilder(author);
-        sBauthor.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 4, author.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        SpannableStringBuilder sBauthor = setStyleText(author, 4,author.length());
+        SpannableStringBuilder sBdetail = setStyleText(date, 3,date.length());
+        SpannableStringBuilder sBcategory = setStyleText(date, 3,date.length());
 
-        SpannableStringBuilder sBdetail = new SpannableStringBuilder(date);
-        sBdetail.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 3, date.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
+        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail, ". ",sBcategory);
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
 
         detail.setText(result, TextView.BufferType.SPANNABLE);
+    }
+
+    private SpannableStringBuilder setStyleText(String text, int i, int length) {
+
+        SpannableStringBuilder result = new SpannableStringBuilder(text);
+        result.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), i, length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        return result;
+
     }
 
     private void setToolBar(){
@@ -211,6 +219,7 @@ public class DetailActivity extends AppCompatActivity {
                 newsObj.setAuthor(map.get("author"));
                 newsObj.setDate(map.get("date"));
                 newsObj.setLink(map.get("link"));
+                newsObj.setCategories(map.get("categoriesName"));
 
                 Gson gS = new Gson();
                 String target = gS.toJson(newsObj);

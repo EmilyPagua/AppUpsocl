@@ -3,6 +3,7 @@ package com.upsocl.appupsocl.ui.fragments;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,7 +27,6 @@ public class InterestsFragment extends Fragment {
 
     public InterestsFragment(SharedPreferences prefs) {
         this.preferences = prefs;
-
     }
 
     @Override
@@ -44,9 +44,7 @@ public class InterestsFragment extends Fragment {
 
         loadInterests();
         loadPreferences();
-
         interestList.setAdapter(adapter);
-
         return root;
     }
 

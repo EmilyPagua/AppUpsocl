@@ -13,7 +13,7 @@ public class JsonKeys {
     public static final String NEWS_DATE = "date";
     public static final String NEWS_AUTHOR_FIRST_NAME = "author_first_name";
     public static final String NEWS_AUTHOR_LAST_NAME = "author_last_name";
-
     public static final String NEWS_AUTHOR = "author";
     public static final String NEWS_IMAGES ="image";
+    public static final String NEWS_CATEGORIES = "categories_name";
 }

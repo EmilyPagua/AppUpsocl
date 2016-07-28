@@ -39,6 +39,8 @@ public class NewsDeserializer implements JsonDeserializer<News> {
         currentNews.setDate(cenvertToDate(item.get(JsonKeys.NEWS_DATE).toString()));
         currentNews.setAuthor((item.get(JsonKeys.NEWS_AUTHOR_FIRST_NAME) +" "+item.get(JsonKeys.NEWS_AUTHOR_LAST_NAME)).replace("\"",""));
         currentNews.setLink(item.get(JsonKeys.NEWS_LINK).getAsString());
+        String categorias = item.get(JsonKeys.NEWS_CATEGORIES).getAsString();
+        currentNews.setCategories(categorias.substring(0, categorias.length()-1));
 
         return currentNews;
     }

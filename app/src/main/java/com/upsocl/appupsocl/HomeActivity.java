@@ -48,6 +48,7 @@ import com.upsocl.appupsocl.ui.fragments.PreferencesFragment;
 
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,10 +60,7 @@ public class HomeActivity extends AppCompatActivity
     private TabLayout tabs;
     private ViewPager viewPager;
     private FrameLayout frameLayout;
-    private SharedPreferences prefs;
-    private String location;
-    private String email;
-    private String birthday;
+    private SharedPreferences prefs, prefsInterests;
     private ArrayList<Interests> categoryArrayList;
     private Gson gs = new Gson();
     private ProgressBar mRegistrationProgressBar;
@@ -72,6 +70,8 @@ public class HomeActivity extends AppCompatActivity
     private View headerView;
     private TextView tv_username;
     private ActionBarDrawerToggle toggle;
+
+    PagerAdapter adapter;
 
 
     @Override
@@ -89,16 +89,14 @@ public class HomeActivity extends AppCompatActivity
         frameLayout= (FrameLayout) findViewById(R.id.content_frame);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
+        prefsInterests =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
         setDrawer(toolbar);
 
         tabs = createTabLayout();
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabs.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+
+        uploadPager();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -106,6 +104,14 @@ public class HomeActivity extends AppCompatActivity
         selectDrawerOption();
         selectTabsOption();
 
+    }
+
+    private void uploadPager() {
+        adapter = new PagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
+        adapter.setPrefs(prefsInterests);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
     }
 
     private void setDrawer(Toolbar toolbar) {
@@ -139,10 +145,17 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
 
+
                 boolean fragmentTransacction = false;
                 Fragment fragment = null;
                 FragmentManager fragmentManager =  null;
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+                if (countPreference()<=3){
+                    Toast.makeText(HomeActivity.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
+                    drawer.closeDrawers();
+                    return false;
+                }
 
                 switch (item.getItemId()){
                     case R.id.nav_home:
@@ -150,6 +163,7 @@ public class HomeActivity extends AppCompatActivity
                         tabs.setVisibility(View.VISIBLE);
                         viewPager.setVisibility(View.VISIBLE);
                         frameLayout.setVisibility(View.INVISIBLE);
+                        uploadPager();
 
                         getSupportActionBar().setTitle(item.getTitle());
                         break;
@@ -214,6 +228,23 @@ public class HomeActivity extends AppCompatActivity
         });
     }
 
+    private int countPreference() {
+        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        Map<String, ?> map = prefs.getAll();
+        map.size();
+        int i = 1;
+
+        for (Map.Entry<String, ?> e: map.entrySet()) {
+
+            if (e.getKey().equals(Interests.INTERESTS_SIZE)==false && e.getValue().equals(true)){
+               i++;
+            }
+        }
+
+        return i;
+
+    }
+
     private void visibleGoneElement() {
         frameLayout.setVisibility(View.VISIBLE);
         tabs.setVisibility(View.INVISIBLE);
@@ -226,6 +257,7 @@ public class HomeActivity extends AppCompatActivity
     private TabLayout createTabLayout() {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText(R.string.forYou));
+        tabs.addTab(tabs.newTab().setText(R.string.lastNews));
         tabs.addTab(tabs.newTab().setText(R.string.green));
         tabs.addTab(tabs.newTab().setText(R.string.food));
         tabs.addTab(tabs.newTab().setText(R.string.women));
@@ -255,18 +287,6 @@ public class HomeActivity extends AppCompatActivity
         searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-      /*  MenuItem item_notification = menu.findItem(R.id.menu_item_notification);
-       /MenuItemCompat.setActionView(item_notification, R.layout.counter_menuitem_layout);
-
-        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
-        String objeto = prefs.getString(Preferences.NOTI_COUNT,null);
-
-        RelativeLayout notificationCount = (RelativeLayout) MenuItemCompat.getActionView(item_notification);
-        TextView notificastionCountText = (TextView) notificationCount.findViewById(R.id.badge_notification_1);
-        notificastionCountText.setText(objeto);
-
-        MenuItemCompat.setActionView(item_notification, notificationCount);
-*/
         return true;
     }
 
@@ -331,6 +351,16 @@ public class HomeActivity extends AppCompatActivity
         super.onPause();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     public void btnNotification(View view){
 
         goNotifications();
@@ -345,8 +375,6 @@ public class HomeActivity extends AppCompatActivity
         }
         else
             Toast.makeText(HomeActivity.this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();
-
-
     }
 
     private String getNotificationId() {
@@ -360,8 +388,6 @@ public class HomeActivity extends AppCompatActivity
             LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                     new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
             isReceiverRegistered = true;
-
-            //RrCAeN#SGMSyRWQm
         }
     }
 

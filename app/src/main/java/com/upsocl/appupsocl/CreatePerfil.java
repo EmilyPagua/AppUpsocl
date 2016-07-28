@@ -218,7 +218,7 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
                     request.executeAsync();
                 }
                 else
-                    Toast.makeText(CreatePerfil.this, R.string.msg_info_category, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreatePerfil.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
             }
 
             @Override

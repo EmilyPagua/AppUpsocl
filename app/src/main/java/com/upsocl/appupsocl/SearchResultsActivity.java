@@ -30,8 +30,6 @@ public class SearchResultsActivity extends AppCompatActivity {
         setToolBar();
         handleIntent(getIntent());
         setFragment(new NewsFragment(word));
-
-
     }
 
     private void setToolBar(){

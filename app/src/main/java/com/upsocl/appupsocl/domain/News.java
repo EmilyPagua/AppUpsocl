@@ -27,6 +27,8 @@ public class News {
     private String date;
     @SerializedName("link")
     private String link;
+    @SerializedName("categoriesName")
+    private String categories;
 
     public String getLink() {
         return link;
@@ -87,4 +89,11 @@ public class News {
         this.content = content;
     }
 
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
 }
