@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Upsocl</string>
-    <string name="app_notifications">Notificaciones</string>
+    <string name="app_notifications">Post del día</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,12 +8,20 @@
 
     <string name="msg_login">Optimismo que nos une.</string>
     <string name="msg_welcome">Bienvenido a Upsocl</string>
+    <string name="msg_notification_empty">No tiene avisos disponibles</string>
+
+
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+
     <string name="banner_ad_unit_id">/100064084/andorid_test</string>
 
     <string name="gcm_defaultSenderId">417856637205</string>
     <string name="gcm_send_message">Token entregado con exito </string>
     <string name="msg_save_wordpress">Registro procesado</string>
+    <string name="msg_dialog_title">Validando datos</string>
+    <string name="msg_dialog_content">Espere, procesando datos..!</string>
+
     <string name="token_error_message">Error en token</string>
 
     <string name="facebook_app_id">278628459160126</string>
@@ -29,24 +37,24 @@
 
     <!-- CREATE PERFIL BUTTON -->
     <string name="msg_createPerfil">Selecciona al menos tres categorias para personalizar tu feed.</string>
-    <string name="btn_culture">Cultura y Entreteniemiento</string>
+    <string name="msg_info_category">Debe seleccionar al menos 3 categorias.</string>
+    <string name="btn_beauty">Belleza</string>
+    <string name="btn_colaboration">Colaboración</string>
     <string name="btn_community">Comunidad</string>
-    <string name="btn_travel">Viajes</string>
-    <string name="btn_quiz">Quiz</string>
-    <string name="btn_worl">Mundo</string>
-    <string name="btn_animals">Verde/Animales</string>
-    <string name="btn_movie">Pelicula</string>
-    <string name="btn_inspiration">Inspiración</string>
-    <string name="btn_health">Salud</string>
-    <string name="btn_cook">Comida</string>
-    <string name="btn_women">Mujer</string>
-    <string name="btn_family">Familia</string>
-    <string name="btn_relationes">Relaciones</string>
+    <string name="btn_creativity">Creatividad</string>
+    <string name="btn_culture">Cultura y Entreteniemiento</string>
     <string name="btn_diversity">Diversidad</string>
     <string name="btn_styleLive">Estilo de vida</string>
-    <string name="btn_beauty">Belleza</string>
-    <string name="btn_creativity">Creatividad</string>
-    <string name="title_activity_principal">PrincipalActivity</string>
+    <string name="btn_family">Familia</string>
+    <string name="btn_inspiration">Inspiración</string>
+    <string name="btn_women">Mujer</string>
+    <string name="btn_worl">Mundo</string>
+    <string name="btn_movie">Pelicula</string>
+    <string name="btn_relations">Relaciones</string>
+    <string name="btn_health">Salud</string>
+    <string name="btn_animals">Verde/Animales</string>
+
+    <string name="btn_quiz">Quiz</string>
 
 
     <!-- PRICIPAL MENU -->

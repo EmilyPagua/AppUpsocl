@@ -1,14 +1,16 @@
 package com.upsocl.appupsocl;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,8 +32,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.gson.Gson;
-import com.upsocl.appupsocl.domain.Category;
+import com.google.gson.JsonObject;
+import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.domain.UserLogin;
 import com.upsocl.appupsocl.io.ApiConstants;
 import com.upsocl.appupsocl.io.WordpressApiAdapter;
@@ -55,7 +57,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CreatePerfil extends AppCompatActivity implements Callback<ArrayList<Integer>>  {
+public class CreatePerfil extends Activity implements Callback<JsonObject>  {
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
@@ -68,32 +70,18 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
 
-    private Button btn_culture, btn_community, btn_travel, btn_quiz, btn_world, btn_animals ,
-            btn_women,btn_cook, btn_inspiration, btn_health, btn_relations, btn_family,
-            btn_creativity, btn_beauty, btn_diversity, btn_movies, btn_styleLive;
+    private Button btn_culture, btn_community,  btn_quiz,        btn_world,  btn_green ,
+                   btn_women,   btn_colaboration,       btn_inspiration, btn_health, btn_relations,
+                   btn_family,  btn_creativity, btn_beauty,      btn_diversity, btn_movies, btn_styleLive;
 
-    private ArrayList<Category> listOptions =  new ArrayList<>();
-    private int id;
+    private ArrayList<Interests> listOptions =  new ArrayList<>();
+
     private String nameSocialNetwork;
+    private Integer countCategorySelected;
 
-    private FacebookCallback<LoginResult> callback =  new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            Profile profile = Profile.getCurrentProfile();
-            nextActivity(profile);
-        }
+    private FacebookCallback<LoginResult> callback;
 
-        @Override
-        public void onCancel() {
-
-        }
-
-        @Override
-        public void onError(FacebookException error) {
-
-        }
-    };
-
+    private ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,112 +92,58 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
         AccessToken.setCurrentAccessToken((AccessToken) null);
         Profile.setCurrentProfile((Profile)null);
 
-        savePreferencsNotifications();
+        savePreferencesNotifications();
+
+        countCategorySelected = 0;
 
         btn_culture = (Button) findViewById(R.id.btn_culture);
         btn_community = (Button) findViewById(R.id.btn_community);
-        btn_travel = (Button) findViewById(R.id.btn_travel);
         btn_quiz = (Button) findViewById(R.id.btn_quiz);
         btn_world = (Button) findViewById(R.id.btn_worl);
-        btn_animals = (Button) findViewById(R.id.btn_animals);
+        btn_green = (Button) findViewById(R.id.btn_green);
         btn_women = (Button) findViewById(R.id.btn_women);
-        btn_cook = (Button) findViewById(R.id.btn_cook);
+        btn_colaboration = (Button) findViewById(R.id.btn_colaboration);
         btn_inspiration = (Button) findViewById(R.id.btn_inspiration);
         btn_health = (Button) findViewById(R.id.btn_health);
         btn_family = (Button) findViewById(R.id.btn_family);
         btn_creativity = (Button)findViewById(R.id.btn_creativity );
         btn_beauty =  (Button) findViewById(R.id.btn_beauty);
-        btn_diversity = (Button) findViewById(R.id.btn_diversity);
         btn_movies = (Button) findViewById(R.id.btn_movies);
         btn_styleLive = (Button) findViewById(R.id.btn_styleLive);
         btn_relations = (Button) findViewById(R.id.btn_relations);
+        btn_diversity = (Button) findViewById(R.id.btn_diversity);
 
         loginButton = (LoginButton)findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
+
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 System.out.println(currentAccessToken);
-                AccessToken.setCurrentAccessToken(currentAccessToken);
-
-
+                if (countCategorySelected >= 3){
+                    AccessToken.setCurrentAccessToken(currentAccessToken);
+                    loginButton.setVisibility(View.GONE);
+                }
+                else
+                    LoginManager.getInstance().logOut();
             }
         };
 
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                nextActivity(newProfile);
             }
         };
 
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
-        callback = new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.v("LoginActivity", response.toString());
 
-                                try {
-                                    Profile profile = Profile.getCurrentProfile();
-
-                                    UserLogin userLogin=  new UserLogin(object.getString("email"),
-                                            profile.getFirstName(),
-                                            profile.getLastName(),
-                                            convertFormat(object.getString("birthday")),
-                                            object.getJSONObject("location").getString("name"), null, 0,profile.getProfilePictureUri(110,110).toString());
-
-                                    saveUserWP(userLogin);
-                                    nameSocialNetwork = getString(R.string.name_facebook);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name, email,gender,birthday, location");
-                request.setParameters(parameters);
-                request.executeAsync();
-
-                loginButton.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        };
+        createCallbackFacebook();
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
         loginButton.registerCallback(callbackManager, callback);
-        id =0;
-        uploadCategory();
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                   // Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                    System.out.println(R.string.gcm_send_message);
-                } else {
-                    Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                    System.out.println(R.string.token_error_message);
-                }
-            }
-        };
+
+        uploadCategory();
 
         //RegistrationToken Wordpress
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -227,12 +161,91 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
             }
         };
 
+        clearPreferencesLogin();
+
         registerReceiver();
         if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
+
+
+    }
+
+    private void createCallbackFacebook() {
+
+        callback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                if (countCategorySelected >= 3){
+
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+
+                                @Override
+                                public void onCompleted(final JSONObject object, GraphResponse response) {
+                                    Log.v("LoginActivity", response.toString());
+
+                                    try{
+
+                                        Profile profile = Profile.getCurrentProfile();
+                                        UserLogin userLogin=  new UserLogin(object.getString("email"),
+                                                profile.getFirstName(),
+                                                profile.getLastName(),
+                                                convertFormat(object.getString("birthday")),
+                                                object.getJSONObject("location").getString("name"),
+                                                null, 0,profile.getProfilePictureUri(110,110).toString(),
+                                                getString(R.string.name_facebook));
+
+
+                                        dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
+                                                getString(R.string.msg_dialog_content), true);
+
+                                        new DownloadTask().execute(userLogin);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name, email,gender,birthday, location");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                }
+                else
+                    Toast.makeText(CreatePerfil.this, R.string.msg_info_category, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        };
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog!=null && dialog.isShowing())
+            dialog.dismiss();
+
+    }
+
+    private void clearPreferencesLogin() {
+
+        SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.clear().commit();
     }
 
     private boolean checkPlayServices() {
@@ -258,32 +271,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
         profileTracker.stopTracking();
     }
 
-    private void nextActivity(Profile profile) {
-
-        if (profile!=null && listOptions.size()>=3){
-            loginButton.setVisibility(View.INVISIBLE);
-
-        }else
-            Toast.makeText(CreatePerfil.this, "Debe seleccionar al menos 3 categorias", Toast.LENGTH_SHORT).show();
-
-    }
-
-    public void btnCLickInit(View view){
-        if (listOptions.size()<3)
-            Toast.makeText(CreatePerfil.this, "Debe seleccionar al menos 3 categorias", Toast.LENGTH_SHORT).show();
-        else{
-            loginButton.setVisibility(View.INVISIBLE);
-            Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
-            Gson gS = new Gson();
-            String listCategory = gS.toJson(listOptions);
-            intent.putExtra("listCategory", listCategory);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            CreatePerfil.this.finish();
-            startActivity(intent);
-
-
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -294,163 +281,36 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
     }
 
 
-    public void btnCuture(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_CULTURA,btn_culture);
-    }
-
-    public void btnCommunity(View view){
-
-        changeStatusButton(ButtonOptionKeys.OPT_COMMUNITY,btn_community);
-    }
-
-    public void btnQuiz(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_QUIZ,btn_quiz);
-    }
-
-    public void bntWorl(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_WORLD,btn_world);
-    }
-
-    public void btnWomen(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_WOMEN,btn_women);
-    }
-
-    public void btnTravel(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_TRAVEL,btn_travel);
-    }
-
-    public void btnAnimals(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_ANIMALS,btn_animals);
-    }
-
-    public void btnCook(View view){
-
-        changeStatusButton(ButtonOptionKeys.OPT_COOK,btn_cook);
-    }
-
-    public void btnInspiration(View view){
-
-        changeStatusButton(ButtonOptionKeys.OPT_INSPIRATION,btn_inspiration);
-    }
-
-    public void btnHealth(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_HEALTH, btn_health);
-    }
-
-    public void btnRelations(View view){
-
-        changeStatusButton(ButtonOptionKeys.OPT_RELATIONS, btn_relations);
-    }
-
-    public void btnFamily(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_FAMILY, btn_family);
-    }
-
-    public void btnCreativity(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_CREATIVITY, btn_creativity);
-    }
-    public void btnBeauty(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_BEAUTY, btn_beauty);
-    }
-    public void btnDiversity(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_DIVERSITY, btn_diversity);
-    }
-    public void btnMovies(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_MOVIES, btn_movies);
-    }
-
-    public void btnStyleLive(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_STYLELIVE, btn_styleLive);
-    }
-
-    private void changeStatusButton(String optCultura, Button button) {
-
-        if (changeListOpt(optCultura))
-            button.setBackground(getResources().getDrawable(R.drawable.boton_desahabilitado));
-        else
-            button.setBackground(getResources().getDrawable(R.drawable.boton_normal));
-    }
-
-    private Boolean changeListOpt(String option) {
-        boolean flag= true;
-
-        for (int i=0;i< listOptions.size(); i++){
-            if (listOptions.get(i).getTitle().equals(option)){
-                if (listOptions.get(i).getIsCheck().equals("true"))
-                    listOptions.get(i).setIsCheck("false");
-                else
-                    listOptions.get(i).setIsCheck("true");
-            }
-        }
-        id++;
-        return flag;
-    }
-
-    private void uploadCategory() {
-
-        listOptions.add(new Category("1",ButtonOptionKeys.OPT_ANIMALS,"false"));
-        listOptions.add(new Category("2",ButtonOptionKeys.OPT_BEAUTY,"false"));
-        listOptions.add(new Category("3",ButtonOptionKeys.OPT_COMMUNITY,"false"));
-        listOptions.add(new Category("4",ButtonOptionKeys.OPT_COOK,"false"));
-        listOptions.add(new Category("5",ButtonOptionKeys.OPT_CREATIVITY,"false"));
-        listOptions.add(new Category("6",ButtonOptionKeys.OPT_CULTURA,"false"));
-        listOptions.add(new Category("7",ButtonOptionKeys.OPT_DIVERSITY,"false"));
-        listOptions.add(new Category("8",ButtonOptionKeys.OPT_FAMILY,"false"));
-        listOptions.add(new Category("9",ButtonOptionKeys.OPT_HEALTH,"false"));
-        listOptions.add(new Category("10",ButtonOptionKeys.OPT_INSPIRATION,"false"));
-        listOptions.add(new Category("11",ButtonOptionKeys.OPT_MOVIES,"false"));
-        listOptions.add(new Category("12",ButtonOptionKeys.OPT_QUIZ,"false"));
-        listOptions.add(new Category("13",ButtonOptionKeys.OPT_RELATIONS,"false"));
-        listOptions.add(new Category("14",ButtonOptionKeys.OPT_STYLELIVE,"false"));
-        listOptions.add(new Category("15",ButtonOptionKeys.OPT_TRAVEL,"false"));
-        listOptions.add(new Category("16",ButtonOptionKeys.OPT_WOMEN,"false"));
-        listOptions.add(new Category("17",ButtonOptionKeys.OPT_WORLD,"false"));
-    }
-
-
     private void saveUserWP(final UserLogin userLogin) {
-
         final SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         final String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
 
-        userLogin.setId(44);  //FIXME
         userLogin.setToken(token);
-        saveUser(prefs, userLogin);
 
         WordpressApiAdapter.getApiServiceCustomer(ApiConstants.BASE_URL_CUSTOMER)
-                    .saveCustomer( userLogin.getFirstName(),
-                            userLogin.getLastName(),
-                            userLogin.getEmail(),
-                            userLogin.getBirthday(),
-                            userLogin.getLocation(),
-                            "facebook",
-                            token, new Callback<Integer>() {
-                                @Override
-                                public void success(Integer idUser, Response response) {
-
-                                    saveUser(prefs, userLogin);
-
-                                    Gson gS = new Gson();
-                                    String listCategory = gS.toJson(listOptions);
-
-                                    Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
-                                    intent.putExtra("listCategory", listCategory);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-                                    startActivity(intent);
-                                    CreatePerfil.this.finish();
-
+                .saveCustomer(userLogin.getFirstName(),
+                        userLogin.getLastName(),
+                        userLogin.getEmail(),
+                        userLogin.getBirthday(),
+                        userLogin.getLocation(),
+                        userLogin.getSocialNetwork(),
+                        token, new Callback<JsonObject>() {
+                            @Override
+                            public void success(JsonObject object, Response response) {
+                                if (object.get("success").equals("true")){
+                                    int id = object.get("id").getAsInt();
+                                    userLogin.setId(id);
                                 }
+                                saveUser(prefs, userLogin);
+                            }
 
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    System.out.println(error);
-                                }
-                            });
+                            @Override
+                            public void failure(RetrofitError error) {
+                                System.out.println(error);
 
+                            }
+                        });
     }
-
-
 
     private void saveUser(SharedPreferences prefs, UserLogin userLogin) {
         SharedPreferences.Editor editor =  prefs.edit();
@@ -492,8 +352,8 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
     }
 
     @Override
-    public void success(ArrayList<Integer> integers, Response response) {
-
+    public void success(JsonObject integers, Response response) {
+        System.out.println(":  " + integers);
     }
 
     @Override
@@ -501,12 +361,149 @@ public class CreatePerfil extends AppCompatActivity implements Callback<ArrayLis
 
     }
 
-    private void savePreferencsNotifications(){
+    private void savePreferencesNotifications(){
         SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.clear().commit();
-        editor.putBoolean(Preferences.NOTI_IS_EMPTY,true).commit();
-        editor.putString(Preferences.NOTI_COUNT,"10").commit();
 
+    }
+
+    private class DownloadTask extends AsyncTask {
+        UserLogin userLogin ;
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            userLogin = (UserLogin) objects[0];
+
+            if (userLogin.getSocialNetwork().equals(getString(R.string.name_facebook))){
+                saveUserWP(userLogin);
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+            CreatePerfil.this.finish();
+            super.onPostExecute(o);
+        }
+    }
+
+    public void btnCuture(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_CULTURA,btn_culture);
+    }
+
+    public void btnCommunity(View view){
+
+        changeStatusButton(ButtonOptionKeys.OPT_COMMUNITY,btn_community);
+    }
+
+    public void btnQuiz(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_QUIZ,btn_quiz);
+    }
+
+    public void bntWorl(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_WORLD,btn_world);
+    }
+
+    public void btnWomen(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_WOMEN,btn_women);
+    }
+
+    public void btnDiversity(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_DIVERSITY,btn_diversity);
+    }
+
+    public void btnGreen(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_GREEN,btn_green);
+    }
+
+    public void btnColaboration(View view){
+
+        changeStatusButton(ButtonOptionKeys.OPT_COLABORATION,btn_colaboration);
+    }
+
+    public void btnInspiration(View view){
+
+        changeStatusButton(ButtonOptionKeys.OPT_INSPIRATION,btn_inspiration);
+    }
+
+    public void btnHealth(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_HEALTH, btn_health);
+    }
+
+    public void btnRelations(View view){
+
+        changeStatusButton(ButtonOptionKeys.OPT_RELATIONS, btn_relations);
+    }
+
+    public void btnFamily(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_FAMILY, btn_family);
+    }
+
+    public void btnCreativity(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_CREATIVITY, btn_creativity);
+    }
+    public void btnBeauty(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_BEAUTY, btn_beauty);
+    }
+
+    public void btnMovies(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_MOVIES, btn_movies);
+    }
+
+    public void btnStyleLive(View view){
+        changeStatusButton(ButtonOptionKeys.OPT_STYLELIVE, btn_styleLive);
+    }
+
+    private void changeStatusButton(String optCultura, Button button) {
+
+        if (changeListOpt(optCultura))
+            button.setBackground(getResources().getDrawable(R.drawable.boton_desahabilitado));
+        else
+            button.setBackground(getResources().getDrawable(R.drawable.boton_normal));
+    }
+
+    private Boolean changeListOpt(String option) {
+        boolean flag= true;
+
+        for (int i=0;i< listOptions.size(); i++){
+            if (listOptions.get(i).getTitle().equals(option)){
+                if (listOptions.get(i).getIsCheck().equals(true)){
+                    flag=false;
+                    countCategorySelected --;
+                }
+                else{
+                    countCategorySelected ++;
+                }
+                listOptions.get(i).setIsCheck(flag);
+                saveInterests(listOptions.get(i).getId(),flag);
+            }
+        }
+
+        return flag;
+    }
+
+    private void saveInterests(int objet, boolean flag){
+
+        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.putBoolean(String.valueOf(objet), flag).commit();
+    }
+    private void uploadCategory() {
+
+        listOptions = (ArrayList<Interests>) new Interests().createList();
+        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.clear().commit();
+        int sizeList =  listOptions.size();
+        for (int i =0; i<sizeList; i++){
+            editor.putBoolean(String.valueOf(listOptions.get(i).getId()), false).commit();
+        }
+        editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).commit();
     }
 }

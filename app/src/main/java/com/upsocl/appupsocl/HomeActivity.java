@@ -14,7 +14,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,15 +27,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
-import com.upsocl.appupsocl.domain.Category;
+import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.keys.CustomerKeys;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
@@ -44,7 +43,7 @@ import com.upsocl.appupsocl.ui.DownloadImage;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 import com.upsocl.appupsocl.ui.fragments.HelpFragment;
-import com.upsocl.appupsocl.ui.fragments.CategoryFragment;
+import com.upsocl.appupsocl.ui.fragments.InterestsFragment;
 import com.upsocl.appupsocl.ui.fragments.PreferencesFragment;
 
 
@@ -64,7 +63,7 @@ public class HomeActivity extends AppCompatActivity
     private String location;
     private String email;
     private String birthday;
-    private ArrayList<Category> categoryArrayList;
+    private ArrayList<Interests> categoryArrayList;
     private Gson gs = new Gson();
     private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
@@ -83,14 +82,13 @@ public class HomeActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Bundle b = getIntent().getExtras();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
         tv_username = (TextView) headerView.findViewById(R.id.tv_username);
         frameLayout= (FrameLayout) findViewById(R.id.content_frame);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        prefs =  getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
+        prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
         setDrawer(toolbar);
@@ -170,7 +168,8 @@ public class HomeActivity extends AppCompatActivity
                     case R.id.nav_interests:
 
                         visibleGoneElement();
-                        fragment =  new CategoryFragment(categoryArrayList);
+                        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+                        fragment =  new InterestsFragment( prefs);
                         fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
@@ -256,8 +255,8 @@ public class HomeActivity extends AppCompatActivity
         searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        MenuItem item_notification = menu.findItem(R.id.menu_item_notification);
-        MenuItemCompat.setActionView(item_notification, R.layout.counter_menuitem_layout);
+      /*  MenuItem item_notification = menu.findItem(R.id.menu_item_notification);
+       /MenuItemCompat.setActionView(item_notification, R.layout.counter_menuitem_layout);
 
         SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
         String objeto = prefs.getString(Preferences.NOTI_COUNT,null);
@@ -267,7 +266,7 @@ public class HomeActivity extends AppCompatActivity
         notificastionCountText.setText(objeto);
 
         MenuItemCompat.setActionView(item_notification, notificationCount);
-
+*/
         return true;
     }
 
@@ -294,6 +293,17 @@ public class HomeActivity extends AppCompatActivity
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_notification:
+                goNotifications();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -327,10 +337,22 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void goNotifications() {
-        visibleGoneElement();
-        Intent intent = new Intent(this, NotificationActivity.class);
-        intent.putExtra("idPost","0");
-        startActivity(intent);
+
+        if (getNotificationId()!= null){
+            visibleGoneElement();
+            Intent intent = new Intent(this, NotificationActivity.class);
+            startActivity(intent);
+        }
+        else
+            Toast.makeText(HomeActivity.this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    private String getNotificationId() {
+
+        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+        return  prefs.getString(Preferences.NOTI_DATA,null);
     }
 
     private void registerReceiver(){
@@ -338,6 +360,8 @@ public class HomeActivity extends AppCompatActivity
             LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                     new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
             isReceiverRegistered = true;
+
+            //RrCAeN#SGMSyRWQm
         }
     }
 
@@ -352,7 +376,8 @@ public class HomeActivity extends AppCompatActivity
 
         tv_username.setText(userName +" " +userLastName);
         categoryArrayList = gs.fromJson(getIntent().getStringExtra("listCategory"), ArrayList.class);
-        new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(imagenURL);
+        if (imagenURL!=null)
+            new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(imagenURL);
     }
 
 

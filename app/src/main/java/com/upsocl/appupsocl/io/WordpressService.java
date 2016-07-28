@@ -1,6 +1,7 @@
 package com.upsocl.appupsocl.io;
 
 
+import com.google.gson.JsonObject;
 import com.upsocl.appupsocl.domain.Customer;
 import com.upsocl.appupsocl.domain.News;
 
@@ -56,7 +57,7 @@ public interface WordpressService {
                       @Query(ApiConstants.CUSTOMER_LOCATION) String location,
                       @Query(ApiConstants.CUSTOMER_SOCIAL_NETWORK) String socialNetwork,
                       @Query(ApiConstants.CUSTOMER_REGISTRATION) String registrationID,
-                      Callback<Integer> response );
+                      Callback<JsonObject> response );
 
     @GET(ApiConstants.CUSTOMER)
     void getCustomerById(@Query(ApiConstants.CUSTOMER_ID) Integer idUser, Callback<Customer> response );

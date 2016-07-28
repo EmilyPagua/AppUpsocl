@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,11 +26,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.upsocl.appupsocl.domain.Category;
+import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.ui.ViewConstants;
-import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -42,11 +39,11 @@ public class DetailActivity extends AppCompatActivity {
     private  Gson gs = new Gson();
     private News obj;
     private ShareActionProvider mShareActionProvider;
-    private  ArrayList<Category> newsArrayList;
+    private  ArrayList<Interests> newsArrayList;
     float initialX =  Float.NaN;
     private LinearLayout viewDetail;
     private int position;
-    private boolean bookmarks_save, flag_bookmarks, isBookmarks, isNotification;
+    private boolean bookmarks_save, flag_bookmarks, isBookmarks, isHome;
 
 
     @Override
@@ -57,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
         newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
         position =  getIntent().getIntExtra("position",0);
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
-        isNotification =  getIntent().getBooleanExtra("isNotification",false);
+        isHome =  getIntent().getBooleanExtra("isHome",false);
 
         viewDetail = (LinearLayout) findViewById(R.id.viewDetailLinear);
         viewDetail.setOnTouchListener(new View.OnTouchListener(){
@@ -121,15 +118,19 @@ public class DetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNotification){
-                    Intent intent = new Intent(DetailActivity.this, NotificationActivity.class);
+                if (isHome){
+                    Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(intent);
-                }else
-                    onBackPressed();
+                    DetailActivity.this.finish();
+                }
+                onBackPressed();
             }
         });
         setShareIntent(getIntent());
     }
+
+
 
     private void enableWebView(String content){
         WebView webView = (WebView) findViewById(R.id.webView);
@@ -208,6 +209,7 @@ public class DetailActivity extends AppCompatActivity {
                 newsObj.setContent(map.get("content"));
                 newsObj.setId(map.get("id"));
                 newsObj.setAuthor(map.get("author"));
+                newsObj.setDate(map.get("date"));
                 newsObj.setLink(map.get("link"));
 
                 Gson gS = new Gson();
@@ -217,6 +219,7 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("new", target);
                 intent.putExtra("listNews", listNews);
                 intent.putExtra("position",i);
+                intent.putExtra("isHome",true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 this.finish();
                 startActivity(intent);

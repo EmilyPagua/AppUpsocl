@@ -41,38 +41,9 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|center_vertical"
-        android:id="@+id/linearLayout1"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginTop="20dp">
-
-        <Button
-            android:layout_margin="5dp"
-            style="@style/buttonStyle"
-            android:background="@drawable/boton_normal"
-            android:layout_height="40dp"
-            android:layout_width="wrap_content"
-            android:text="@string/btn_culture"
-            android:id="@+id/btn_culture"
-            android:onClick="btnCuture"
-            />
-
-        <Button
-            android:layout_margin="5dp"
-            style="@style/buttonStyle"
-            android:background="@drawable/boton_normal"
-            android:layout_height="40dp"
-            android:layout_width="wrap_content"
-            android:text="@string/btn_community"
-            android:id="@+id/btn_community"
-            android:onClick="btnCommunity"/>
-    </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,9 +57,9 @@
             android:layout_width="wrap_content"
             style="@style/buttonStyle"
             android:background="@drawable/boton_normal"
-            android:text="@string/btn_travel"
-            android:id="@+id/btn_travel"
-            android:onClick="btnTravel"/>
+            android:text="@string/btn_diversity"
+            android:id="@+id/btn_diversity"
+            android:onClick="btnDiversity"/>
 
         <Button
             android:layout_margin="5dp"
@@ -127,8 +98,8 @@
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:text="@string/btn_animals"
-            android:id="@+id/btn_animals"
-            android:onClick="btnAnimals"/>
+            android:id="@+id/btn_green"
+            android:onClick="btnGreen"/>
 
         <Button
             android:layout_margin="5dp"
@@ -149,6 +120,36 @@
             android:text="@string/btn_inspiration"
             android:id="@+id/btn_inspiration"
             android:onClick="btnInspiration"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_vertical"
+        android:id="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout">
+
+        <Button
+            android:layout_margin="5dp"
+            style="@style/buttonStyle"
+            android:background="@drawable/boton_normal"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:text="@string/btn_culture"
+            android:id="@+id/btn_culture"
+            android:onClick="btnCuture"
+            />
+
+        <Button
+            android:layout_margin="5dp"
+            style="@style/buttonStyle"
+            android:background="@drawable/boton_normal"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:text="@string/btn_community"
+            android:id="@+id/btn_community"
+            android:onClick="btnCommunity"/>
     </LinearLayout>
 
     <LinearLayout
@@ -176,9 +177,9 @@
             android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:text="@string/btn_cook"
-            android:id="@+id/btn_cook"
-            android:onClick="btnCook"/>
+            android:text="@string/btn_colaboration"
+            android:id="@+id/btn_colaboration"
+            android:onClick="btnColaboration"/>
 
         <Button
             style="@style/buttonStyle"
@@ -186,7 +187,7 @@
             android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:text="@string/btn_relationes"
+            android:text="@string/btn_relations"
             android:id="@+id/btn_relations"
             android:onClick="btnRelations"/>
 
@@ -226,11 +227,13 @@
             style="@style/buttonStyle"
             android:layout_margin="5dp"
             android:background="@drawable/boton_normal"
-            android:text="@string/btn_diversity"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:id="@+id/btn_diversity"
-            android:onClick="btnDiversity"/>
+            android:text="@string/btn_women"
+            android:id="@+id/btn_women"
+            android:onClick="btnWomen"/>
+
+
 
     </LinearLayout>
 
@@ -259,16 +262,6 @@
             android:background="@drawable/boton_normal"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
-            android:text="@string/btn_women"
-            android:id="@+id/btn_women"
-            android:onClick="btnWomen"/>
-
-        <Button
-            style="@style/buttonStyle"
-            android:layout_margin="5dp"
-            android:background="@drawable/boton_normal"
-            android:layout_height="40dp"
-            android:layout_width="wrap_content"
             android:text="@string/btn_beauty"
             android:id="@+id/btn_beauty"
             android:onClick="btnBeauty"/>
@@ -288,7 +281,7 @@
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="76dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:layout_below="@+id/button"
@@ -296,29 +289,6 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/linearLayout8"
-        android:layout_below="@+id/linearLayout7"
-        android:gravity="center">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Continuar"
-            android:id="@+id/start"
-            android:enabled="true"
-            android:textColor="@color/cardtextColor"
-            android:background="#303f9f"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:onClick="btnCLickInit"
-            android:layout_centerHorizontal="true" />
-
-    </LinearLayout>
 </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -73,11 +73,13 @@
         <activity
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <!-- Login Facebook -->
@@ -128,7 +130,7 @@
             android:name=".ui.fragments.HelpFragment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.fragments.CategoryFragment"
+            android:name=".ui.fragments.InterestsFragment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.fragments.HomeGreenActivity"
