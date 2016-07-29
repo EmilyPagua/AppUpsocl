@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.upsocl.appupsocl.DetailActivity">
+    tools:context=".DetailsActivity">
 
     <include layout="@layout/toolbar_segundary"/>
 
@@ -76,6 +76,3 @@
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
-
-
-

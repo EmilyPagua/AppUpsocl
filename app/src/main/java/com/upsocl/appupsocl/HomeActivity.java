@@ -336,8 +336,6 @@ public class HomeActivity extends AppCompatActivity
         finish();
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -349,16 +347,6 @@ public class HomeActivity extends AppCompatActivity
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         isReceiverRegistered = false;
         super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     public void btnNotification(View view){

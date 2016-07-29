@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
     private  Gson gs = new Gson();
     private News obj;
     private ShareActionProvider mShareActionProvider;
@@ -49,10 +49,11 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_details);
         obj = gs.fromJson(getIntent().getStringExtra("new"), News.class);
-        newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
         position =  getIntent().getIntExtra("position",0);
+        newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
+
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
         isHome =  getIntent().getBooleanExtra("isHome",false);
 
@@ -89,6 +90,7 @@ public class DetailActivity extends AppCompatActivity {
         setTextViewDetail(obj.getAuthor(), obj.getDate(), obj.getCategories());
         enableWebView(obj.getContent());
         flag_bookmarks = false;
+
     }
 
     private void setTextViewDetail(String authorCreate, String dateCreate, String category) {
@@ -101,7 +103,7 @@ public class DetailActivity extends AppCompatActivity {
 
         SpannableStringBuilder sBauthor = setStyleText(author, 4,author.length());
         SpannableStringBuilder sBdetail = setStyleText(date, 3,date.length());
-        SpannableStringBuilder sBcategory = setStyleText(date, 3,date.length());
+        SpannableStringBuilder sBcategory = setStyleText(categories, 3,date.length());
 
         Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail, ". ",sBcategory);
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
@@ -127,10 +129,10 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isHome){
-                    Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(DetailsActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(intent);
-                    DetailActivity.this.finish();
+                    DetailsActivity.this.finish();
                 }
                 onBackPressed();
             }
@@ -224,14 +226,15 @@ public class DetailActivity extends AppCompatActivity {
                 Gson gS = new Gson();
                 String target = gS.toJson(newsObj);
                 String listNews = gS.toJson(newsArrayList);
-                Intent intent = new Intent(this, DetailActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, DetailsActivity.class);
                 intent.putExtra("new", target);
                 intent.putExtra("listNews", listNews);
                 intent.putExtra("position",i);
                 intent.putExtra("isHome",true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                this.finish();
                 startActivity(intent);
+                DetailsActivity.this.finish();
+
             }
         }
     }
@@ -285,4 +288,6 @@ public class DetailActivity extends AppCompatActivity {
         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, obj.getLink());
         this.startActivity(Intent.createChooser(shareIntent,  "Compartir: " +obj.getTitle()));
     }
+
+
 }

@@ -16,13 +16,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.upsocl.appupsocl.DetailActivity;
+import com.upsocl.appupsocl.DetailsActivity;
 import com.upsocl.appupsocl.R;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.ui.ViewConstants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by leninluque on 09-11-15.
@@ -75,7 +74,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         result.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), i, length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
 
         return result;
-
     }
 
     @Override
@@ -114,14 +112,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                    Intent intent = new Intent(view.getContext(), DetailsActivity.class);
 
                     Gson gS = new Gson();
                     String target = gS.toJson(newsObj);
                     String listNews = gS.toJson(newsArrayList);
                     intent.putExtra("new", target);
-                    intent.putExtra("listNews", listNews);
                     intent.putExtra("position",position);
+                    intent.putExtra("listNews", listNews);
                     view.getContext().startActivity(intent);
                 }
             });

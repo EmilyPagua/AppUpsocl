@@ -25,6 +25,8 @@
     <string name="token_error_message">Error en token</string>
 
     <string name="facebook_app_id">278628459160126</string>
+
+
     <string name="menu_add">Agregar</string>
     <string name="menu_search">Buscar</string>
     <string name="action_settings">PruebaMenu</string>
