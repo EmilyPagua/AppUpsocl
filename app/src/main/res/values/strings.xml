@@ -21,11 +21,10 @@
     <string name="msg_save_wordpress">Registro procesado</string>
     <string name="msg_dialog_title">Validando datos</string>
     <string name="msg_dialog_content">Espere, procesando datos..!</string>
-
     <string name="token_error_message">Error en token</string>
 
     <string name="facebook_app_id">278628459160126</string>
-
+    <string name="msg_detail_facebook">WWW.upsocl.com</string>
 
     <string name="menu_add">Agregar</string>
     <string name="menu_search">Buscar</string>
@@ -77,10 +76,12 @@
 
     <!-- Tabs MENU -->
     <string name="forYou">Para ti</string>
-    <string name="lastNews">Ultimas noticias</string>
+    <string name="lastNews">Portada</string>
     <string name="green">Verde</string>
+    <string name="creativity">Creatividad</string>
     <string name="food">Comida</string>
     <string name="women">Mujer</string>
     <string name="populary">Mas popular</string>
+    <string name="quiz">Quiz</string>
 
 </resources>

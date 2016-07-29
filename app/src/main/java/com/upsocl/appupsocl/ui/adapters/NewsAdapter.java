@@ -28,12 +28,14 @@ import java.util.ArrayList;
  */
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
-    ArrayList<News> news;
-    Context context;
+    private ArrayList<News> news;
+    private Context context;
+    private Boolean isHome;
 
-    public NewsAdapter(Context context) {
+    public NewsAdapter(Context context, Boolean isHome) {
         this.context = context;
         this.news = new ArrayList<>();
+        this.isHome =  isHome;
     }
 
     @Override
@@ -120,6 +122,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                     intent.putExtra("new", target);
                     intent.putExtra("position",position);
                     intent.putExtra("listNews", listNews);
+                    intent.putExtra("isHome",isHome);
                     view.getContext().startActivity(intent);
                 }
             });

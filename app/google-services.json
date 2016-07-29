@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "417856637205",
+    "project_id": "upsoclprueba"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417856637205:android:0b13bf6e4b9a8f0f",
+        "android_client_info": {
+          "package_name": "com.upsocl.appupsocl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqKVCQIhljTMoJM_ufuPpaUbb7VG7LpTQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

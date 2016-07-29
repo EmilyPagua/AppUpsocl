@@ -1,25 +1,24 @@
 package com.upsocl.appupsocl.ui.adapters;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.upsocl.appupsocl.keys.Preferences;
-import com.upsocl.appupsocl.ui.fragments.HomeFoodActivity;
-import com.upsocl.appupsocl.ui.fragments.HomeGreenActivity;
-import com.upsocl.appupsocl.ui.fragments.HomeLastNews;
-import com.upsocl.appupsocl.ui.fragments.HomeNewsActivity;
-import com.upsocl.appupsocl.ui.fragments.HomePopularyActivity;
-import com.upsocl.appupsocl.ui.fragments.HomeWomenActivity;
+import com.upsocl.appupsocl.domain.Interests;
+import com.upsocl.appupsocl.keys.CategoryKeys;
+import com.upsocl.appupsocl.ui.fragments.HomePrimaryFragment;
+import com.upsocl.appupsocl.ui.fragments.HomeSegundaryFragment;
+
+import java.util.Map;
 
 /**
  * Created by upsocl on 13-07-16.
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
-    SharedPreferences prefs;
+    private int mNumOfTabs;
+    private SharedPreferences prefs;
+    private Boolean isHome;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -31,24 +30,45 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                HomeLastNews homeLastNews = new HomeLastNews();
-                homeLastNews.setPreferences(prefs);
+                HomePrimaryFragment homeLastNews = new HomePrimaryFragment();
+                String filter= loadInterests();
+                homeLastNews.setCategoryName(filter);
+                homeLastNews.setHome(isHome);
                 return homeLastNews;
             case 1:
-                HomeNewsActivity homeNewsActivity = new HomeNewsActivity();
-                return homeNewsActivity;
+                HomeSegundaryFragment homeNews = new HomeSegundaryFragment();
+                homeNews.setHome(isHome);
+                return homeNews;
             case 2:
-                HomeGreenActivity tab2 = new HomeGreenActivity();
-                return tab2;
+                HomePrimaryFragment homeGreen = new HomePrimaryFragment();
+                homeGreen.setCategoryName(CategoryKeys.ID_CATEGORY_GREEN);
+                homeGreen.setHome(isHome);
+                return homeGreen;
             case 3:
-                HomeFoodActivity foodActivity = new HomeFoodActivity();
-                return foodActivity;
+                HomeSegundaryFragment homeCreativity = new HomeSegundaryFragment();
+                homeCreativity.setCategoryName(CategoryKeys.ID_CATEGORY_CREATIVITY);
+                homeCreativity.setHome(isHome);
+                return homeCreativity;
             case 4:
-                HomeWomenActivity womenActivity = new HomeWomenActivity();
-                return womenActivity;
+                HomePrimaryFragment  homeFood = new HomePrimaryFragment();
+                homeFood.setCategoryName(CategoryKeys.ID_CATEGORY_WOMEN);
+                homeFood.setHome(isHome);
+                return homeFood;
             case 5:
-                HomePopularyActivity popularyActivity = new HomePopularyActivity();
-                return popularyActivity;
+                HomeSegundaryFragment homeWomen = new HomeSegundaryFragment();
+                homeWomen.setCategoryName(CategoryKeys.ID_CATEGORY_FOOD);
+                homeWomen.setHome(isHome);
+                return homeWomen;
+            case 6:
+                HomePrimaryFragment homePopulary = new HomePrimaryFragment();
+                homePopulary.setCategoryName(CategoryKeys.ID_CATEGORY_POPULARY);
+                homePopulary.setHome(isHome);
+                return homePopulary;
+            case 7:
+                HomeSegundaryFragment segundaryFragment = new HomeSegundaryFragment();
+                segundaryFragment.setCategoryName(CategoryKeys.ID_CATEGORY_QUIZ);
+                segundaryFragment.setHome(isHome);
+                return segundaryFragment;
             default:
                 return null;
         }
@@ -61,5 +81,29 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     public void setPrefs(SharedPreferences prefs) {
         this.prefs = prefs;
+    }
+
+    public String loadInterests(){
+
+        Map<String, ?> map = prefs.getAll();
+        map.size();
+        String filter = "";
+
+        Interests obj;
+
+        for (Map.Entry<String, ?> e: map.entrySet()) {
+
+            if (e.getKey().equals(Interests.INTERESTS_SIZE) == false &&
+                    e.getValue().equals(true)){
+
+                obj = new Interests().getInterestByID(Integer.valueOf(e.getKey()));
+                filter = filter.concat(obj.getNameCategory()+",");
+            }
+        }
+        return filter.substring(0, filter.length()-1);
+    }
+
+    public void setHome(Boolean home) {
+        isHome = home;
     }
 }

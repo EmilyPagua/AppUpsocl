@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.appupsocl.domain.Interests;
@@ -45,11 +53,39 @@ public class DetailsActivity extends AppCompatActivity {
     private int position;
     private boolean bookmarks_save, flag_bookmarks, isBookmarks, isHome;
 
+    //Element Facebook
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+    private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
+        @Override
+        public void onSuccess(Sharer.Result result) {
+            System.out.println("onSuccess");
+        }
+
+        @Override
+        public void onCancel() {
+            System.out.println("onCancel");
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+            System.out.println("onError");
+        }
+    };
+    //fin element Facebook
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        //Content Faceboook
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        shareDialog.registerCallback(callbackManager, resultFacebookCallback);
+        //Fin content facebook
+
         obj = gs.fromJson(getIntent().getStringExtra("new"), News.class);
         position =  getIntent().getIntExtra("position",0);
         newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
@@ -128,18 +164,18 @@ public class DetailsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isHome){
-                    Intent intent = new Intent(DetailsActivity.this, HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivity(intent);
-                    DetailsActivity.this.finish();
-                }
-                onBackPressed();
+                goHomeActivity();
             }
         });
         setShareIntent(getIntent());
     }
 
+    private void goHomeActivity() {
+        Intent intent = new Intent(DetailsActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+        DetailsActivity.this.finish();
+    }
 
 
     private void enableWebView(String content){
@@ -192,16 +228,20 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.menu_item_share:
                 createShareIntent();
                 return true;
 
             case R.id.menu_item_bookmarks:
-
                 if (flag_bookmarks)
                     removePreference(item);
                 else
                     savePreferences(item) ;
+                return true;
+
+            case R.id.menu_share_facebook:
+                facebookShare();
                 return true;
 
             default:
@@ -289,5 +329,31 @@ public class DetailsActivity extends AppCompatActivity {
         this.startActivity(Intent.createChooser(shareIntent,  "Compartir: " +obj.getTitle()));
     }
 
+
+    public void facebookShare() {
+
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle(obj.getTitle())
+                    .setContentDescription(getString(R.string.msg_detail_facebook))
+                    .setContentUrl(Uri.parse(obj.getLink()))
+                    .build();
+            shareDialog.show(linkContent);
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        goHomeActivity();
+    }
 
 }

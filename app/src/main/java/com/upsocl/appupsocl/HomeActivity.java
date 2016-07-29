@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -31,9 +32,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.keys.CustomerKeys;
@@ -63,22 +70,22 @@ public class HomeActivity extends AppCompatActivity
     private SharedPreferences prefs, prefsInterests;
     private ArrayList<Interests> categoryArrayList;
     private Gson gs = new Gson();
-    private ProgressBar mRegistrationProgressBar;
     private boolean isReceiverRegistered;
 
-    private static final String TAG = "MainActivity";
     private View headerView;
     private TextView tv_username;
     private ActionBarDrawerToggle toggle;
 
-    PagerAdapter adapter;
+    private PagerAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Content Faceboook
         FacebookSdk.sdkInitialize(getApplicationContext());
+        //Fin content facebook
 
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -109,6 +116,7 @@ public class HomeActivity extends AppCompatActivity
     private void uploadPager() {
         adapter = new PagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
         adapter.setPrefs(prefsInterests);
+        adapter.setHome(true);
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
@@ -119,6 +127,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
+
 
 
     private void selectTabsOption() {
@@ -259,9 +268,11 @@ public class HomeActivity extends AppCompatActivity
         tabs.addTab(tabs.newTab().setText(R.string.forYou));
         tabs.addTab(tabs.newTab().setText(R.string.lastNews));
         tabs.addTab(tabs.newTab().setText(R.string.green));
-        tabs.addTab(tabs.newTab().setText(R.string.food));
+        tabs.addTab(tabs.newTab().setText(R.string.creativity));
         tabs.addTab(tabs.newTab().setText(R.string.women));
+        tabs.addTab(tabs.newTab().setText(R.string.food));
         tabs.addTab(tabs.newTab().setText(R.string.populary));
+        tabs.addTab(tabs.newTab().setText(R.string.quiz));
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         return tabs;
     }

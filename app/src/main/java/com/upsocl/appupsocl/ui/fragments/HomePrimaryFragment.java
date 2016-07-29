@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HomePopularyActivity extends Fragment implements Callback<ArrayList<News>> {
+public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<News>> {
 
     private RecyclerView newsList;
     private NewsAdapter adapter;
@@ -32,18 +31,20 @@ public class HomePopularyActivity extends Fragment implements Callback<ArrayList
     private LinearLayoutManager llm;
     private ProgressBar spinner;
     private TextView header_news;
+    private String categoryName;
+    private Boolean isHome;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home_populary, container, false);
+        View root = inflater.inflate(R.layout.fragment_home_primary, container, false);
         page = 1;
         loadPosts(page);
 
-        header_news = (TextView) root.findViewById(R.id.header_populary);
+        header_news = (TextView) root.findViewById(R.id.header_food);
         newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewsAdapter(getActivity());
+        adapter = new NewsAdapter(getActivity(), isHome);
         newsList.setAdapter(adapter);
         spinner = (ProgressBar) getActivity().findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
@@ -67,6 +68,7 @@ public class HomePopularyActivity extends Fragment implements Callback<ArrayList
 
     @Override
     public void success(ArrayList<News> newses, Response response) {
+
         if (newses.size()==0)
             header_news.setText("No se encontraron resultados");
 
@@ -80,7 +82,15 @@ public class HomePopularyActivity extends Fragment implements Callback<ArrayList
     }
 
     public void loadPosts(Integer paged){
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListPopulary(paged, this);
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setHome(Boolean home) {
+        isHome = home;
     }
 }
 

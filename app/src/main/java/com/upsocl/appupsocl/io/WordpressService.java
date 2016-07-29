@@ -20,38 +20,13 @@ import retrofit.http.Query;
 public interface WordpressService {
 
     @GET(ApiConstants.LIST_POSTS)
-    void getListNews(@Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListGreen(@Query(ApiConstants.FILTER_GREEN) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListFood(@Query(ApiConstants.FILTER_FOOD) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListCreativity(@Query(ApiConstants.FILTER_CREATIVITY) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListWomen(@Query(ApiConstants.FILTER_WOMEN) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListPopulary(@Query(ApiConstants.FILTER_POPULARY) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListLastNews(@Query(ApiConstants.FILTER_LASTNEWS) String category, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
-
-
-    @GET(ApiConstants.LIST_POSTS)
     void getListWord(@Query(ApiConstants.FILTER_WORD) String word, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
-
-    @GET(ApiConstants.LIST_POSTS)
-    void getListNotifications(@Query(ApiConstants.FILTER_APPNOTIFICATION) int page, Callback<ArrayList<News>> response);
 
     @GET(ApiConstants.FILTER_POST)
     void getPost(@Path("id") String page, Callback<News> response);
 
-
-
+    @GET(ApiConstants.LIST_POSTS)
+    void getListByCategoryName(@Query(ApiConstants.FILTER_CATEGORY_NAME) String categoryName, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
 
     @POST(ApiConstants.CUSTOMER)
     void saveCustomer(@Query(ApiConstants.CUSTOMER_NAME) String name,

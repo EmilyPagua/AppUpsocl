@@ -37,7 +37,7 @@ import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.domain.UserLogin;
 import com.upsocl.appupsocl.io.ApiConstants;
 import com.upsocl.appupsocl.io.WordpressApiAdapter;
-import com.upsocl.appupsocl.keys.ButtonOptionKeys;
+import com.upsocl.appupsocl.keys.CategoryKeys;
 import com.upsocl.appupsocl.keys.CustomerKeys;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
@@ -82,6 +82,8 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
     private FacebookCallback<LoginResult> callback;
 
     private ProgressDialog dialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -394,70 +396,70 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
     }
 
     public void btnCuture(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_CULTURA,btn_culture);
+        changeStatusButton(CategoryKeys.OPT_CULTURA,btn_culture);
     }
 
     public void btnCommunity(View view){
 
-        changeStatusButton(ButtonOptionKeys.OPT_COMMUNITY,btn_community);
+        changeStatusButton(CategoryKeys.OPT_COMMUNITY,btn_community);
     }
 
     public void btnQuiz(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_QUIZ,btn_quiz);
+        changeStatusButton(CategoryKeys.OPT_QUIZ,btn_quiz);
     }
 
     public void bntWorl(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_WORLD,btn_world);
+        changeStatusButton(CategoryKeys.OPT_WORLD,btn_world);
     }
 
     public void btnWomen(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_WOMEN,btn_women);
+        changeStatusButton(CategoryKeys.OPT_WOMEN,btn_women);
     }
 
     public void btnDiversity(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_DIVERSITY,btn_diversity);
+        changeStatusButton(CategoryKeys.OPT_DIVERSITY,btn_diversity);
     }
 
     public void btnGreen(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_GREEN,btn_green);
+        changeStatusButton(CategoryKeys.OPT_GREEN,btn_green);
     }
 
     public void btnColaboration(View view){
 
-        changeStatusButton(ButtonOptionKeys.OPT_COLABORATION,btn_colaboration);
+        changeStatusButton(CategoryKeys.OPT_COLABORATION,btn_colaboration);
     }
 
     public void btnInspiration(View view){
 
-        changeStatusButton(ButtonOptionKeys.OPT_INSPIRATION,btn_inspiration);
+        changeStatusButton(CategoryKeys.OPT_INSPIRATION,btn_inspiration);
     }
 
     public void btnHealth(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_HEALTH, btn_health);
+        changeStatusButton(CategoryKeys.OPT_HEALTH, btn_health);
     }
 
     public void btnRelations(View view){
 
-        changeStatusButton(ButtonOptionKeys.OPT_RELATIONS, btn_relations);
+        changeStatusButton(CategoryKeys.OPT_RELATIONS, btn_relations);
     }
 
     public void btnFamily(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_FAMILY, btn_family);
+        changeStatusButton(CategoryKeys.OPT_FAMILY, btn_family);
     }
 
     public void btnCreativity(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_CREATIVITY, btn_creativity);
+        changeStatusButton(CategoryKeys.OPT_CREATIVITY, btn_creativity);
     }
     public void btnBeauty(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_BEAUTY, btn_beauty);
+        changeStatusButton(CategoryKeys.OPT_BEAUTY, btn_beauty);
     }
 
     public void btnMovies(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_MOVIES, btn_movies);
+        changeStatusButton(CategoryKeys.OPT_MOVIES, btn_movies);
     }
 
     public void btnStyleLive(View view){
-        changeStatusButton(ButtonOptionKeys.OPT_STYLELIVE, btn_styleLive);
+        changeStatusButton(CategoryKeys.OPT_STYLELIVE, btn_styleLive);
     }
 
     private void changeStatusButton(String optCultura, Button button) {

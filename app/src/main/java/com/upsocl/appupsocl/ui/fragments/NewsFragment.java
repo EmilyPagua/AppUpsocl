@@ -53,7 +53,7 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
         header_news = (TextView) root.findViewById(R.id.header_news_search);
         newsList = (RecyclerView) root.findViewById(R.id.news_list_search);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewsAdapter(getActivity());
+        adapter = new NewsAdapter(getActivity(), false);
         newsList.setAdapter(adapter);
         spinner = (ProgressBar) getActivity().findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
@@ -68,8 +68,6 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
                 page = page + 1;
                 spinner.setVisibility(View.VISIBLE);
                 loadPosts(page);
-            } else {
-                Log.d(getTag(), "NO load more findLastCompletelyVisibleItemPosition->" + llm.findLastCompletelyVisibleItemPosition() + "---size:" + size);
             }
             }
         });

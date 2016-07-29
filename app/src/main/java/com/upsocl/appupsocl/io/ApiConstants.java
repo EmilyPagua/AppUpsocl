@@ -16,6 +16,8 @@ public class ApiConstants {
     public static final String FILTER_APPNOTIFICATION = "filter[category_name]=creatividad&filter[order]=DESC&filter[paged]";
     public static final String FILTER_POPULARY = "filter[category_name]=mas-populares&filter[paged]";
     public static final String FILTER_WORD = "filter[s]";
+    public static final String FILTER_CATEGORY_NAME = "filter[category_name]";
+
     public static final String FILTER_POST = "/posts/{id}";
 
 

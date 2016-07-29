@@ -1,8 +1,8 @@
 package com.upsocl.appupsocl.ui.fragments;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +23,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class HomeFoodActivity extends Fragment implements Callback<ArrayList<News>> {
+/**
+ * Created by upsocl on 29-07-16.
+ */
+public class HomeSegundaryFragment extends Fragment implements Callback<ArrayList<News>> {
 
     private RecyclerView newsList;
     private NewsAdapter adapter;
@@ -31,18 +34,20 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
     private LinearLayoutManager llm;
     private ProgressBar spinner;
     private TextView header_news;
+    private String categoryName;
+    private Boolean isHome;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home_food, container, false);
+        View root = inflater.inflate(R.layout.fragment_home_segundary, container, false);
         page = 1;
         loadPosts(page);
 
-        header_news = (TextView) root.findViewById(R.id.header_food);
+        header_news = (TextView) root.findViewById(R.id.header_news);
         newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewsAdapter(getActivity());
+        adapter = new NewsAdapter(getActivity(),isHome);
         newsList.setAdapter(adapter);
         spinner = (ProgressBar) getActivity().findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
@@ -64,9 +69,9 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
         return root;
     }
 
+
     @Override
     public void success(ArrayList<News> newses, Response response) {
-
         if (newses.size()==0)
             header_news.setText("No se encontraron resultados");
 
@@ -80,7 +85,14 @@ public class HomeFoodActivity extends Fragment implements Callback<ArrayList<New
     }
 
     public void loadPosts(Integer paged){
-         WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListFood(paged, this);
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setHome(Boolean home) {
+        isHome = home;
     }
 }
-

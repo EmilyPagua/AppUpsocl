@@ -111,4 +111,14 @@ public class NotificationActivity extends AppCompatActivity  {
         NotificationActivity.this.finish();
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        Intent intent = new Intent(NotificationActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+        NotificationActivity.this.finish();
+    }
+
 }

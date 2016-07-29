@@ -74,4 +74,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        Intent intent = new Intent(SearchResultsActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+        SearchResultsActivity.this.finish();
+    }
 }
