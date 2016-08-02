@@ -107,20 +107,40 @@
             android:layout_height="1dp"
             android:background="@color/cardBgColor"/>
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:onClick="logout"
-            android:text="Cerrar Sesión"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="logout"
+                android:text="Cerrar sesión Facebook"
+                android:id="@+id/logout_facebook" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="logoutGoogle"
+                android:text="Cerrar sesión Google"
+                android:id="@+id/logout_google" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="logoutTwitter"
+                android:text="Cerrar sesión Twitter"
+                android:id="@+id/logout_twitter" />
+
+        </LinearLayout>
 
     </RelativeLayout>
-
-
 </FrameLayout>
 
 

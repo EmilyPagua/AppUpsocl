@@ -71,7 +71,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
         SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
         int id_wp =prefs.getInt(CustomerKeys.DATA_USER_ID, 0);
-        if (token!=null && id_wp != 0 ){
+        if (token!=null){
             loadPosts(idPost);
         }
         // [END_EXCLUDE]

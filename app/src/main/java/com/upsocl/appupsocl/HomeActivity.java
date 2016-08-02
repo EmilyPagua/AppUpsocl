@@ -41,6 +41,13 @@ import com.facebook.login.LoginManager;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.keys.CustomerKeys;
@@ -58,7 +65,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener  {
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private SearchView searchView;
@@ -67,7 +74,7 @@ public class HomeActivity extends AppCompatActivity
     private TabLayout tabs;
     private ViewPager viewPager;
     private FrameLayout frameLayout;
-    private SharedPreferences prefs, prefsInterests;
+    private SharedPreferences prefs, prefsInterests, prefsUser;
     private ArrayList<Interests> categoryArrayList;
     private Gson gs = new Gson();
     private boolean isReceiverRegistered;
@@ -77,6 +84,8 @@ public class HomeActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
 
     private PagerAdapter adapter;
+    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInOptions gso;
 
 
     @Override
@@ -97,6 +106,7 @@ public class HomeActivity extends AppCompatActivity
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         prefsInterests =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
         setDrawer(toolbar);
@@ -110,6 +120,24 @@ public class HomeActivity extends AppCompatActivity
         uploadPreferences();
         selectDrawerOption();
         selectTabsOption();
+
+        //GOOGLE
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this , this )
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Plus.API)
+                .build();
+        //GOOGLE
+
+    }
+
+    @Override
+    public void onConnectionFailed( ConnectionResult connectionResult) {
 
     }
 
@@ -203,7 +231,8 @@ public class HomeActivity extends AppCompatActivity
                     case R.id.nav_manage:
 
                         visibleGoneElement();
-                        fragment =  new PreferencesFragment();
+                        fragment =  new PreferencesFragment(prefsUser);
+
                         fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
@@ -338,13 +367,11 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
-    public void logout(View view){
-        LoginManager.getInstance().logOut();
-        AccessToken.setCurrentAccessToken((AccessToken) null);
-        Profile.setCurrentProfile((Profile)null);
+
+    private void goActivityLogin() {
         Intent login = new Intent(HomeActivity.this, CreatePerfil.class);
         startActivity(login);
-        finish();
+        this.finish();
     }
 
     @Override
@@ -405,5 +432,31 @@ public class HomeActivity extends AppCompatActivity
             new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(imagenURL);
     }
 
+    public void logout(View view){
+        LoginManager.getInstance().logOut();
+        AccessToken.setCurrentAccessToken((AccessToken) null);
+        Profile.setCurrentProfile((Profile)null);
+        goActivityLogin();
+    }
 
+    //google
+    public void  logoutGoogle(View view){
+        if (mGoogleApiClient.isConnected()){
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            goActivityLogin();
+        }
+    }
+
+    //end google
+
+    //twitter
+    public void  logoutTwitter(View view){
+        if (mGoogleApiClient.isConnected()){
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            goActivityLogin();
+        }
+    }
+    //end twitter
 }

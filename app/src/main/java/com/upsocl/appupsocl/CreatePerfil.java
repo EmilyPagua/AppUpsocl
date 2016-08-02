@@ -1,6 +1,5 @@
 package com.upsocl.appupsocl;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,9 +11,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -30,9 +31,26 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.JsonObject;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.models.User;
 import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.domain.UserLogin;
 import com.upsocl.appupsocl.io.ApiConstants;
@@ -43,6 +61,7 @@ import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
 import com.upsocl.appupsocl.notification.RegistrationIntentService;
 
+import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +76,13 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class CreatePerfil extends Activity implements Callback<JsonObject>  {
+public class CreatePerfil extends AppCompatActivity implements Callback<JsonObject> ,
+        View.OnClickListener, GoogleApiClient.OnConnectionFailedListener  {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "YHKSSBjXVukNLxKgV2FbYAjyx";
+    private static final String TWITTER_SECRET = "ovzgDNisjtBnyPzU4CI50myqh3BUOFvRUxZHMHEITifPss5eY7";
+
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
@@ -82,17 +107,32 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
     private FacebookCallback<LoginResult> callback;
 
     private ProgressDialog dialog;
+    private LinearLayout layoutButton;
 
+    //GOOGLE Login
+    private SignInButton signInButton;
+    private GoogleSignInOptions gso;
+    private GoogleApiClient mGoogleApiClient;
+    private int RC_SIGN_IN =  100;
+    //END GOOGLE LOGIN
+
+
+    //TWITTER LOGIN
+    private TwitterLoginButton loginButtonTwitter;
+
+    //END TWITTER LOGIN
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_create_perfil);
 
         LoginManager.getInstance().logOut();
         AccessToken.setCurrentAccessToken((AccessToken) null);
-        Profile.setCurrentProfile((Profile)null);
+        Profile.setCurrentProfile((Profile) null);
 
         savePreferencesNotifications();
 
@@ -108,25 +148,25 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
         btn_inspiration = (Button) findViewById(R.id.btn_inspiration);
         btn_health = (Button) findViewById(R.id.btn_health);
         btn_family = (Button) findViewById(R.id.btn_family);
-        btn_creativity = (Button)findViewById(R.id.btn_creativity );
-        btn_beauty =  (Button) findViewById(R.id.btn_beauty);
+        btn_creativity = (Button) findViewById(R.id.btn_creativity);
+        btn_beauty = (Button) findViewById(R.id.btn_beauty);
         btn_movies = (Button) findViewById(R.id.btn_movies);
         btn_styleLive = (Button) findViewById(R.id.btn_styleLive);
         btn_relations = (Button) findViewById(R.id.btn_relations);
         btn_diversity = (Button) findViewById(R.id.btn_diversity);
+        layoutButton =  (LinearLayout) findViewById(R.id.linearLayoutButton);
 
-        loginButton = (LoginButton)findViewById(R.id.login_button);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 System.out.println(currentAccessToken);
-                if (countCategorySelected >= 3){
+                if (countCategorySelected >= 3) {
                     AccessToken.setCurrentAccessToken(currentAccessToken);
                     loginButton.setVisibility(View.GONE);
-                }
-                else
+                } else
                     LoginManager.getInstance().logOut();
             }
         };
@@ -156,9 +196,9 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
-                    Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -171,7 +211,88 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
             startService(intent);
         }
 
+        //Google
+        configureGoogleLogin();
 
+        //TWITTER
+         configureTwitterLogin();
+
+
+    }
+
+    private void configureTwitterLogin() {
+
+        loginButtonTwitter = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+        loginButtonTwitter.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                // The TwitterSession is also available through:
+                // Twitter.getInstance().core.getSessionManager().getActiveSession()
+                dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
+                        getString(R.string.msg_dialog_content), true);
+
+                TwitterSession session = result.data;
+                // TODO: Remove toast and use the TwitterSession's userID
+                // with your app's user model
+                String msg = "@" + session.getUserName();
+
+                Twitter.getApiClient(session).getAccountService()
+                        .verifyCredentials(true, false, new com.twitter.sdk.android.core.Callback<User>() {
+                            @Override
+                            public void success(Result<User> userResult) {
+
+                                //If it succeeds creating a User object from userResult.data
+                                User user = userResult.data;
+
+                                //Getting the profile image url
+                                String profileImage = user.profileImageUrl.replace("_normal", "");
+
+                                UserLogin userLogin=  new UserLogin(userResult.data.email,
+                                        user.name,
+                                        user.name,
+                                        null,
+                                        user.location,
+                                        null, 0,profileImage,
+                                        getString(R.string.name_twitter));
+
+                                new DownloadTask().execute(userLogin);
+                            }
+
+                            @Override
+                            public void failure(TwitterException exception) {
+
+                            }
+                        });
+            }
+            @Override
+            public void failure(TwitterException exception) {
+                Log.d("TwitterKit", "Login with Twitter failure", exception);
+            }
+        });
+
+    }
+
+    private void configureGoogleLogin() {
+        //Initializing google signin option
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestEmail()
+                .build();
+
+        //Initializing signinbutton
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setScopes(gso.getScopeArray());
+
+        //Initializing google api client
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Plus.API)
+                .build();
+
+        //Setting onclick listener to signing button
+        signInButton.setOnClickListener(this);
     }
 
     private void createCallbackFacebook() {
@@ -179,48 +300,38 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
         callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(final JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
 
-                if (countCategorySelected >= 3){
+                                try{
 
-                    GraphRequest request = GraphRequest.newMeRequest(
-                            loginResult.getAccessToken(),
-                            new GraphRequest.GraphJSONObjectCallback() {
+                                    Profile profile = Profile.getCurrentProfile();
+                                    UserLogin userLogin=  new UserLogin(object.getString("email"),
+                                            profile.getFirstName(),
+                                            profile.getLastName(),
+                                            convertFormat(object.getString("birthday")),
+                                            object.getJSONObject("location").getString("name"),
+                                            null, 0,profile.getProfilePictureUri(110,110).toString(),
+                                            getString(R.string.name_facebook));
 
-                                @Override
-                                public void onCompleted(final JSONObject object, GraphResponse response) {
-                                    Log.v("LoginActivity", response.toString());
-
-                                    try{
-
-                                        Profile profile = Profile.getCurrentProfile();
-                                        UserLogin userLogin=  new UserLogin(object.getString("email"),
-                                                profile.getFirstName(),
-                                                profile.getLastName(),
-                                                convertFormat(object.getString("birthday")),
-                                                object.getJSONObject("location").getString("name"),
-                                                null, 0,profile.getProfilePictureUri(110,110).toString(),
-                                                getString(R.string.name_facebook));
-
-
-                                        dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
+                                    dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
                                                 getString(R.string.msg_dialog_content), true);
 
-                                        new DownloadTask().execute(userLogin);
+                                    new DownloadTask().execute(userLogin);
 
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-
-
-                    Bundle parameters = new Bundle();
-                    parameters.putString("fields", "id,name, email,gender,birthday, location");
-                    request.setParameters(parameters);
-                    request.executeAsync();
-                }
-                else
-                    Toast.makeText(CreatePerfil.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name, email,gender,birthday, location");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
@@ -267,27 +378,24 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
     }
 
     @Override
-    protected void onStop(){
-        super.onStop();
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
-    }
-
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (listOptions.size()>=3){
-            super.onActivityResult(requestCode, resultCode, data);
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
+
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            //Calling a new function to handle signin
+            handleSignInResult(result);
+        }
+
+        loginButtonTwitter.onActivityResult(requestCode, resultCode, data);
     }
 
 
     private void saveUserWP(final UserLogin userLogin) {
-        final SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
-        final String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
-
-        userLogin.setToken(token);
 
         WordpressApiAdapter.getApiServiceCustomer(ApiConstants.BASE_URL_CUSTOMER)
                 .saveCustomer(userLogin.getFirstName(),
@@ -296,25 +404,27 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
                         userLogin.getBirthday(),
                         userLogin.getLocation(),
                         userLogin.getSocialNetwork(),
-                        token, new Callback<JsonObject>() {
+                        userLogin.getToken(), new Callback<JsonObject>() {
                             @Override
                             public void success(JsonObject object, Response response) {
+
                                 if (object.get("success").equals("true")){
                                     int id = object.get("id").getAsInt();
                                     userLogin.setId(id);
                                 }
-                                saveUser(prefs, userLogin);
+                                saveUser(userLogin);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                System.out.println(error);
+                                Log.d("Error" , error.getMessage());
 
                             }
                         });
     }
 
-    private void saveUser(SharedPreferences prefs, UserLogin userLogin) {
+    private void saveUser(UserLogin userLogin) {
+        SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.putString(CustomerKeys.DATA_USER_TOKEN, userLogin.getToken());
         editor.putString(CustomerKeys.DATA_USER_FIRST_NAME, userLogin.getFirstName());
@@ -324,6 +434,7 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
         editor.putString(CustomerKeys.DATA_USER_IMAGEN_URL, userLogin.getImagenURL());
         editor.putString(CustomerKeys.DATA_USER_EMAIL, userLogin.getEmail());
         editor.putInt(CustomerKeys.DATA_USER_ID, userLogin.getId());
+        editor.putString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, userLogin.getSocialNetwork());
         editor.commit();
     }
 
@@ -367,7 +478,6 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
         SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.clear().commit();
-
     }
 
     private class DownloadTask extends AsyncTask {
@@ -375,12 +485,13 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
 
         @Override
         protected Object doInBackground(Object[] objects) {
+            SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+            String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
+
             userLogin = (UserLogin) objects[0];
-
-            if (userLogin.getSocialNetwork().equals(getString(R.string.name_facebook))){
-                saveUserWP(userLogin);
-            }
-
+            userLogin.setToken(token);
+            saveUser(userLogin);
+            saveUserWP(userLogin);
 
             return null;
         }
@@ -487,6 +598,11 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
             }
         }
 
+        if (countCategorySelected>2){
+            layoutButton.setVisibility(View.VISIBLE);
+        }else
+            layoutButton.setVisibility(View.INVISIBLE);
+
         return flag;
     }
 
@@ -508,4 +624,59 @@ public class CreatePerfil extends Activity implements Callback<JsonObject>  {
         }
         editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).commit();
     }
+
+    //GOOGLE LOGIN
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == signInButton)
+            signIn();
+    }
+
+    private void viewMessage() {
+        Toast.makeText(CreatePerfil.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
+    }
+
+    private void signIn() {
+        //Creating an intent
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+
+        //Starting intent for result
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onConnectionFailed( ConnectionResult connectionResult) {
+
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+
+        //If the login succeed
+        if (result.isSuccess()) {
+            //Getting google account
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            //Displaying name and email
+            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            UserLogin userLogin=  new UserLogin(acct.getEmail(), acct.getFamilyName(),
+                    acct.getGivenName(),  person.getBirthday(),person.getCurrentLocation(),
+                    null,0,acct.getPhotoUrl().toString(),
+                    getString(R.string.name_google));
+
+            new DownloadTask().execute(userLogin);
+
+            //Initializing image loader
+            System.out.println(acct.getPhotoUrl().toString());
+
+            //Loading image
+        } else {
+            //If login fails
+            Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //END GOOGLE LOGIN
+
 }

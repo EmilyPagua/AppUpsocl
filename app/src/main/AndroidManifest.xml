@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <permission
         android:name="com.upsocl.appupsocl.permission.C2D_MESSAGE"
@@ -65,17 +66,17 @@
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.segundary" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.segundary"></activity>
 
         <!-- Create preferences -->
         <activity
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Login Facebook -->
@@ -91,8 +92,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
@@ -103,7 +103,6 @@
                 android:name="com.facebook.FacebookContentProvider"
                 android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
                 android:exported="true" />
-
         </activity>
 
         <!-- Resultado de busqueda -->
@@ -115,6 +114,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
@@ -128,7 +128,11 @@
         <!-- Detalle del Post -->
         <activity
             android:name=".DetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.fragments.PreferencesFragment"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -138,14 +142,25 @@
         <activity
             android:name=".ui.fragments.InterestsFragment"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".ui.fragments.HomePrimaryFragment" />
         <activity android:name=".ui.fragments.BookmarksFragment" />
         <activity
             android:name=".NotificationActivity"
             android:label="@string/app_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".GoogleActivity">
+        </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="dc15702c4f4e7da7bd7a7e9a197a75b3b8b196a0" />
     </application>
 
 </manifest>

@@ -16,7 +16,8 @@
 
     <string name="banner_ad_unit_id">/100064084/andorid_test</string>
 
-    <string name="gcm_defaultSenderId">417856637205</string>
+    <string name="gcm_defaultSenderId">451147762930</string>
+
     <string name="gcm_send_message">Token entregado con exito </string>
     <string name="msg_save_wordpress">Registro procesado</string>
     <string name="msg_dialog_title">Validando datos</string>
@@ -25,6 +26,10 @@
 
     <string name="facebook_app_id">278628459160126</string>
     <string name="msg_detail_facebook">WWW.upsocl.com</string>
+
+    <!-- Twitter -->
+    <string name="twitter_key">dc15702c4f4e7da7bd7a7e9a197a75b3b8b196a0</string>
+    <string name="twitter_secret">5e5535d59140c0181bf616d5a93688b9e9c3656ed596592fa92d9860e476fcf7</string>
 
     <string name="menu_add">Agregar</string>
     <string name="menu_search">Buscar</string>
@@ -71,8 +76,8 @@
 
     <!-- SocialNetwork -->
     <string name="name_facebook">facebook</string>
-    <string name="name_gmail">gmail.</string>
-    <string name="name_twitter">facebook</string>
+    <string name="name_google">google</string>
+    <string name="name_twitter">twitter</string>
 
     <!-- Tabs MENU -->
     <string name="forYou">Para ti</string>
@@ -83,5 +88,8 @@
     <string name="women">Mujer</string>
     <string name="populary">Mas popular</string>
     <string name="quiz">Quiz</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

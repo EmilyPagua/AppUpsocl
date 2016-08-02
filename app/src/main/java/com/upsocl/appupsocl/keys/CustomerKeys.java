@@ -14,6 +14,7 @@ public class CustomerKeys {
     public static final String DATA_USER_IMAGEN_URL = "imagenURL";
     public static final String DATA_USER_TOKEN = "token";
     public static final String DATA_USER_ID = "id_wp";
+    public static final String DATA_USER_SOCIAL_NETWORK = "social_network";
 
 
 
