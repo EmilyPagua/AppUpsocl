@@ -38,8 +38,8 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
     private String word;
     private TextView header_news;
 
-    @SuppressLint("ValidFragment")
-    public NewsFragment(String word) {
+
+    public void setWord(String word) {
         this.word = word;
     }
 

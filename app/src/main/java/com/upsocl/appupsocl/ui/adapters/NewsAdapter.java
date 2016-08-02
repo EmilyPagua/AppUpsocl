@@ -99,6 +99,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         private TextView categories;
         private News newsObj;
         private ArrayList<News> newsArrayList;
+        private ArrayList<News> newsSend;
         private int position;
 
         public NewsHolder(final View itemView, ArrayList<News> news) {
@@ -116,13 +117,27 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), DetailsActivity.class);
 
+                    int lenght = 1;
                     Gson gS = new Gson();
                     String target = gS.toJson(newsObj);
-                    String listNews = gS.toJson(newsArrayList);
                     intent.putExtra("new", target);
                     intent.putExtra("position",position);
-                    intent.putExtra("listNews", listNews);
                     intent.putExtra("isHome",isHome);
+
+                    if (newsArrayList.size()>position+1 && newsArrayList.get(position+1)!=null){
+                        intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position+1)));
+                        lenght++;}
+
+                    if (newsArrayList.size()>position+2 && newsArrayList.get(position+2)!=null){
+                        intent.putExtra("newsThree", gS.toJson(newsArrayList.get(position+2)));lenght++;}
+
+                    if (newsArrayList.size()>position+3 && newsArrayList.get(position+3)!=null){
+                        intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position+3)));lenght++;}
+
+                    if (newsArrayList.size()>position+4 && newsArrayList.get(position+4)!=null){
+                        intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position+4)));lenght++;}
+
+                    intent.putExtra("leght",lenght);
                     view.getContext().startActivity(intent);
                 }
             });

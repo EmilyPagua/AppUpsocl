@@ -29,7 +29,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
         setToolBar();
         handleIntent(getIntent());
-        setFragment(new NewsFragment(word));
+        NewsFragment newsFragment = new NewsFragment();
+        newsFragment.setWord(word);
+        setFragment(newsFragment);
     }
 
     private void setToolBar(){

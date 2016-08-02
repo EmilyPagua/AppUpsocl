@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
@@ -19,11 +18,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -40,18 +42,26 @@ import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.ui.ViewConstants;
 
 import java.util.ArrayList;
-import java.util.Map;
-
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
     private  Gson gs = new Gson();
-    private News obj;
+    private News newsPrimary, newsSegundary, newsThree, newsFour, newsFive;
     private ShareActionProvider mShareActionProvider;
-    private  ArrayList<Interests> newsArrayList;
-    float initialX =  Float.NaN;
-    private LinearLayout viewDetail;
-    private int position;
+
+   // private LinearLayout viewDetail;
+    private int leght;
     private boolean bookmarks_save, flag_bookmarks, isBookmarks, isHome;
+
+
+    private ViewFlipper vf;
+    private float init_x;
+    private String titleSendFacebook;
+    private String urlSendFacebook;
+    private List<News> newsList =  new ArrayList<>();
+
+    private MenuItem item_bookmark;
+    private News newsPosition;
 
     //Element Facebook
     CallbackManager callbackManager;
@@ -79,6 +89,11 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        //deslizar a los lados
+        vf  =(ViewFlipper) findViewById(R.id.viewFlipper);
+        vf.setOnTouchListener(new ListenerTouchViewFlipper());
+        //end deslizar a los lados
+
         //Content Faceboook
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -86,52 +101,66 @@ public class DetailsActivity extends AppCompatActivity {
         shareDialog.registerCallback(callbackManager, resultFacebookCallback);
         //Fin content facebook
 
-        obj = gs.fromJson(getIntent().getStringExtra("new"), News.class);
-        position =  getIntent().getIntExtra("position",0);
-        newsArrayList = gs.fromJson(getIntent().getStringExtra("listNews"), ArrayList.class);
+        newsPrimary = gs.fromJson(getIntent().getStringExtra("new"), News.class);
+        newsSegundary = gs.fromJson(getIntent().getStringExtra("newsSegundary"), News.class);
+        newsThree = gs.fromJson(getIntent().getStringExtra("newsThree"), News.class);
+        newsFour = gs.fromJson(getIntent().getStringExtra("newsFour"), News.class);
+        newsFive = gs.fromJson(getIntent().getStringExtra("newsFive"), News.class);;
+
+        leght =  getIntent().getIntExtra("leght",0);
 
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
         isHome =  getIntent().getBooleanExtra("isHome",false);
+        int j=1;
 
-        viewDetail = (LinearLayout) findViewById(R.id.viewDetailLinear);
-        viewDetail.setOnTouchListener(new View.OnTouchListener(){
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                int action = MotionEventCompat.getActionMasked(event);
-                float finalX = event.getX();
-
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        initialX = event.getX();
-                        return  true;
-
-                    case (MotionEvent.ACTION_MOVE):
-
-                        if (initialX < finalX)
-                            getNewsObjet(position-1);
-
-                        if (initialX > finalX)
-                            getNewsObjet(position+1);
-
-                        return true;
-                }
-                return false;
+        for (int i=0; i<leght; i++){
+            switch (i){
+                case 0:
+                    uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView);
+                    newsList.add(newsPrimary);
+                    newsPosition=newsPrimary;
+                    break;
+                case 1:
+                    uploadNews(newsSegundary, R.id.imageViewDetailSegundary, R.id.detailTextViewSegundary,
+                            R.id.detailSegundary,R.id.webViewSegundary);
+                    newsList.add(newsSegundary);
+                    break;
+                case 2:
+                    uploadNews(newsThree, R.id.imageViewDetailThree, R.id.detailTextViewThree,
+                            R.id.detailThree,R.id.webViewThree);
+                    newsList.add(newsThree);
+                    break;
+                case 3:
+                    uploadNews(newsFour, R.id.imageViewDetailFour, R.id.detailTextViewFour,
+                            R.id.detailFour,R.id.webViewFour);
+                    newsList.add(newsFour);
+                    break;
+                case 4:
+                    uploadNews(newsFive, R.id.imageViewDetailFive, R.id.detailTextViewFive,
+                            R.id.detailFive,R.id.webViewFive);
+                    newsList.add(newsFive);
+                    break;
             }
-        });
+        }
 
-        setToolBar();
-        setImage(obj.getImage());
-        setTextViewTitle(obj.getTitle());
-        setTextViewDetail(obj.getAuthor(), obj.getDate(), obj.getCategories());
-        enableWebView(obj.getContent());
+        for (int i = 4; i>leght-1;i--){
+            vf.removeViewAt(i);
+        }
         flag_bookmarks = false;
-
     }
 
-    private void setTextViewDetail(String authorCreate, String dateCreate, String category) {
+    private void uploadNews(News objNews, int imagen, int title, int detail, int webView) {
+        setToolBar();
+        setImage(objNews.getImage(), imagen);
+        setTextViewTitle(objNews.getTitle(),title);
+        setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
+        enableWebView(objNews.getContent(), webView);
+    }
 
-        TextView detail = (TextView) findViewById(R.id.detail);
+
+    private void setTextViewDetail(String authorCreate, String dateCreate, String category, int textDetail) {
+
+        TextView detail = (TextView) findViewById(textDetail);
 
         String author = "Por: "+ authorCreate;
         String  date = "El: "+ dateCreate;
@@ -178,8 +207,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-    private void enableWebView(String content){
-        WebView webView = (WebView) findViewById(R.id.webView);
+    private void enableWebView(String content, int webViewDetail){
+        WebView webView = (WebView) findViewById(webViewDetail);
         String html = ViewConstants.HTML_HEAD + content;
         html =  html.replace("\\\"","\"").replace("\\n","\n");
         webView.getSettings().setJavaScriptEnabled(true);
@@ -189,16 +218,16 @@ public class DetailsActivity extends AppCompatActivity {
         webView.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", "");
     }
 
-    private void setImage(String objImage){
-        ImageView imageview = (ImageView) findViewById(R.id.imageViewDetail);
+    private void setImage(String objImage, int image){
+        ImageView imageview = (ImageView) findViewById(image);
         String url = objImage;
         Picasso.with(getApplicationContext())
                 .load(url)
                 .into(imageview);
     }
 
-    private void setTextViewTitle(String title){
-        TextView textView = (TextView) findViewById(R.id.detailTextView);
+    private void setTextViewTitle(String title, int textTitle){
+        TextView textView = (TextView) findViewById(textTitle);
         textView.setText(title);
     }
 
@@ -206,15 +235,13 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
-        MenuItem item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
+        item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
         if (isBookmarks){
             item_bookmark.setVisible(false);
         }
 
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
-        uploadPreferences(String.valueOf(obj.getId()),item_bookmark);
-
+        uploadPreferences(newsPosition.getId());
         return true;
     }
 
@@ -223,7 +250,6 @@ public class DetailsActivity extends AppCompatActivity {
             mShareActionProvider.setShareIntent(shareIntent);
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -249,63 +275,36 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void getNewsObjet(int i) {
-        if (newsArrayList!=null){
-            if ((i>=0 ) && (i<newsArrayList.size()-1)){
-                Map<String, String> map = (Map<String, String>) newsArrayList.get(i);
-                News newsObj =  new News();
-                newsObj.setTitle(map.get("title"));
-                newsObj.setImage(map.get("image"));
-                newsObj.setContent(map.get("content"));
-                newsObj.setId(map.get("id"));
-                newsObj.setAuthor(map.get("author"));
-                newsObj.setDate(map.get("date"));
-                newsObj.setLink(map.get("link"));
-                newsObj.setCategories(map.get("categoriesName"));
 
-                Gson gS = new Gson();
-                String target = gS.toJson(newsObj);
-                String listNews = gS.toJson(newsArrayList);
-                Intent intent = new Intent(DetailsActivity.this, DetailsActivity.class);
-                intent.putExtra("new", target);
-                intent.putExtra("listNews", listNews);
-                intent.putExtra("position",i);
-                intent.putExtra("isHome",true);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
-                DetailsActivity.this.finish();
-
-            }
-        }
-    }
-
-    private void uploadPreferences(String id, MenuItem item) {
+    private void uploadPreferences(String id) {
 
         SharedPreferences prefs2 =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         String objeto = null;
         objeto = prefs2.getString(id,null);
         bookmarks_save = prefs2.getBoolean("bookmarks_save", false);
-
         if (objeto!=null){
-            item.setIcon(R.drawable.ic_bookmark_white_36dp);
+            item_bookmark.setIcon(R.drawable.ic_bookmark_white_36dp);
             flag_bookmarks = true;
         }
+        else{
+            item_bookmark.setIcon(R.drawable.ic_bookmark_border_white_36dp);
+        }
+
     }
 
     private void savePreferences(MenuItem item) {
         Gson gS = new Gson();
-        String target = gS.toJson(obj);
+        String target = gS.toJson(newsPosition);
 
         SharedPreferences prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
 
         prefs.getAll().size();
-        if (obj.getId()!="0")
+        if (newsPosition.getId()!="0")
         {
             flag_bookmarks = true;
             Toast.makeText(this, "Salvado como preferido", Toast.LENGTH_SHORT).show();
-
-            editor.putString(String.valueOf(obj.getId()), target);
+            editor.putString(String.valueOf(newsPosition.getId()), target);
             editor.commit();
             item.setIcon(R.drawable.ic_bookmark_white_36dp);
         }
@@ -316,7 +315,7 @@ public class DetailsActivity extends AppCompatActivity {
         Toast.makeText(this, "No esta como preferido", Toast.LENGTH_SHORT).show();
         SharedPreferences prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.remove(String.valueOf(obj.getId())).commit();
+        editor.remove(String.valueOf(newsPosition.getId())).commit();
         item.setIcon(R.drawable.ic_bookmark_border_white_36dp);
     }
 
@@ -325,18 +324,17 @@ public class DetailsActivity extends AppCompatActivity {
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "\n\n");
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, obj.getLink());
-        this.startActivity(Intent.createChooser(shareIntent,  "Compartir: " +obj.getTitle()));
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, newsPosition.getLink());
+        this.startActivity(Intent.createChooser(shareIntent,  "Compartir: " +newsPosition.getTitle()));
     }
-
 
     public void facebookShare() {
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle(obj.getTitle())
+                    .setContentTitle(newsPosition.getTitle())
                     .setContentDescription(getString(R.string.msg_detail_facebook))
-                    .setContentUrl(Uri.parse(obj.getLink()))
+                    .setContentUrl(Uri.parse(newsPosition.getLink()))
                     .build();
             shareDialog.show(linkContent);
         }
@@ -355,5 +353,131 @@ public class DetailsActivity extends AppCompatActivity {
 
         goHomeActivity();
     }
+
+
+
+    private class ListenerTouchViewFlipper implements View.OnTouchListener{
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    init_x=event.getX();
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    float distance =init_x-event.getX();
+
+                    if(distance>0)
+                    {
+                        vf.setInAnimation(inFromRightAnimation());
+                        vf.setOutAnimation(outToLeftAnimation());
+                        newsPosition = getItemPosition(vf.getDisplayedChild()-1);
+
+                        uploadPreferences(newsPosition.getId());
+                        vf.showPrevious();
+                    }
+
+                    if(distance<0)
+                    {
+                        vf.setInAnimation(inFromLeftAnimation());
+                        vf.setOutAnimation(outToRightAnimation());
+
+                        newsPosition = getItemPosition(vf.getDisplayedChild()+1);
+                        uploadPreferences(newsPosition.getId());
+
+                        vf.showNext();
+                    }
+
+                default:
+                    break;
+            }
+            return false;
+        }
+    }
+
+    private News getItemPosition(int postion) {
+        News newsPosition = new News();
+        System.out.println(vf.getDisplayedChild());
+        switch (postion){
+            case 0:
+                if (newsList.size()>postion)
+                    newsPosition =  newsList.get(postion);
+                else
+                    newsPosition =  newsList.get(newsList.size()-1);
+                break;
+            case 1:
+                if (newsList.size()>postion)
+                    newsPosition =  newsList.get(postion);
+                else
+                    newsPosition =  newsList.get(newsList.size()-1);
+
+                break;
+            case 2:
+                if (newsList.size()>postion)
+                    newsPosition =  newsList.get(postion);
+                else
+                    newsPosition =  newsList.get(newsList.size()-1);
+                break;
+            case 3:
+                if (newsList.size()>postion)
+                    newsPosition =  newsList.get(postion);
+                else
+                    newsPosition =  newsList.get(newsList.size()-1);
+                break;
+            default:
+                newsPosition =  newsList.get(newsList.size()-1);
+                break;
+        }
+        return newsPosition;
+    }
+
+
+    private Animation inFromRightAnimation() {
+
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT,  +1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
+                Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
+
+        inFromRight.setDuration(500);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+
+        return inFromRight;
+
+    }
+
+    private Animation outToLeftAnimation() {
+        Animation outtoLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoLeft.setDuration(500);
+        outtoLeft.setInterpolator(new AccelerateInterpolator());
+        return outtoLeft;
+    }
+
+    private Animation inFromLeftAnimation() {
+        Animation inFromLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromLeft.setDuration(500);
+        inFromLeft.setInterpolator(new AccelerateInterpolator());
+        return inFromLeft;
+    }
+
+    private Animation outToRightAnimation() {
+        Animation outtoRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, +1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoRight.setDuration(500);
+        outtoRight.setInterpolator(new AccelerateInterpolator());
+        return outtoRight;
+    }
+
 
 }
