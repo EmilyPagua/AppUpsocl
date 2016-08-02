@@ -1,8 +1,10 @@
 package com.upsocl.appupsocl.ui.fragments;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,7 @@ public class PreferencesFragment  extends Fragment {
     private Switch aSwitch;
     private RadioGroup radioGroup;
     private SharedPreferences prefs;
-    private LoginButton logoutFacebook;
+    private Button logoutFacebook;
     private Button logoutGoogle,logoutTwitter;
 
     public PreferencesFragment(SharedPreferences prefs) {
@@ -36,11 +38,10 @@ public class PreferencesFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){
         View root = inflater.inflate(R.layout.fragment_preferences, container, false);
 
-        logoutFacebook = (LoginButton) root.findViewById(R.id.logout_facebook);
+        logoutFacebook = (Button) root.findViewById(R.id.logout_facebook);
         logoutGoogle = (Button) root.findViewById(R.id.logout_google);
         logoutTwitter = (Button) root.findViewById(R.id.logout_twitter);
         String socialNetwork = prefs.getString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, null);
-
 
         validateSocialNetwork(socialNetwork);
 
@@ -85,18 +86,15 @@ public class PreferencesFragment  extends Fragment {
 
     private void validateSocialNetwork(String socialNetwork) {
         if (socialNetwork.equals(getString(R.string.name_facebook))){
-            logoutTwitter.setVisibility(View.GONE);
-            logoutGoogle.setVisibility(View.GONE);
+            logoutFacebook.setVisibility(View.VISIBLE);
             return;
         }
         if (socialNetwork.equals(getString(R.string.name_google))){
-            logoutTwitter.setVisibility(View.GONE);
-            logoutFacebook.setVisibility(View.GONE);
+            logoutGoogle.setVisibility(View.VISIBLE);
             return;
         }
         if (socialNetwork.equals(getString(R.string.name_twitter))){
-            logoutFacebook.setVisibility(View.GONE);
-            logoutGoogle.setVisibility(View.GONE);
+            logoutTwitter.setVisibility(View.VISIBLE);
             return;
         }
     }

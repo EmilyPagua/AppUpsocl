@@ -139,7 +139,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         SpannableStringBuilder sBauthor = setStyleText(author, 4,author.length());
         SpannableStringBuilder sBdetail = setStyleText(date, 3,date.length());
-        SpannableStringBuilder sBcategory = setStyleText(categories, 3,date.length());
+        SpannableStringBuilder sBcategory = setStyleText(categories, 10,categories.length());
 
         Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail, ". ",sBcategory);
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);

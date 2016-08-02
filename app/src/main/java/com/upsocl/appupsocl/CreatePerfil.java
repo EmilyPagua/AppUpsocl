@@ -252,7 +252,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                                         user.name,
                                         null,
                                         user.location,
-                                        null, 0,profileImage,
+                                        null, 0,user.profileImageUrl,
                                         getString(R.string.name_twitter));
 
                                 new DownloadTask().execute(userLogin);
@@ -666,9 +666,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                     getString(R.string.name_google));
 
             new DownloadTask().execute(userLogin);
-
-            //Initializing image loader
-            System.out.println(acct.getPhotoUrl().toString());
 
             //Loading image
         } else {

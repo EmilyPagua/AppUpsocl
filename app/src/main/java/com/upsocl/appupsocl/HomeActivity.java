@@ -3,10 +3,10 @@ package com.upsocl.appupsocl;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -18,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -27,20 +28,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
+import com.facebook.AccessToken;;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -86,6 +80,7 @@ public class HomeActivity extends AppCompatActivity
     private PagerAdapter adapter;
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInOptions gso;
+    boolean exit = false;
 
 
     @Override
@@ -433,18 +428,24 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void logout(View view){
-        LoginManager.getInstance().logOut();
-        AccessToken.setCurrentAccessToken((AccessToken) null);
-        Profile.setCurrentProfile((Profile)null);
-        goActivityLogin();
+        createSimpleDialog();
+        if (exit){
+            LoginManager.getInstance().logOut();
+            AccessToken.setCurrentAccessToken((AccessToken) null);
+            Profile.setCurrentProfile((Profile)null);
+            goActivityLogin();
+        }
     }
 
     //google
     public void  logoutGoogle(View view){
         if (mGoogleApiClient.isConnected()){
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            goActivityLogin();
+            createSimpleDialog();
+            if (exit){
+                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                mGoogleApiClient.disconnect();
+                goActivityLogin();
+            }
         }
     }
 
@@ -452,11 +453,38 @@ public class HomeActivity extends AppCompatActivity
 
     //twitter
     public void  logoutTwitter(View view){
-        if (mGoogleApiClient.isConnected()){
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            goActivityLogin();
-        }
+        createSimpleDialog();
+       if (exit){
+           goActivityLogin();
+       }
     }
     //end twitter
+
+    //Create dialogeMessage
+    //Create dialogeMessage
+    public void createSimpleDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Cerrar sesión");
+        dialog.setMessage("Esta seguro que desea cerrar sessión?")
+                .setCancelable(false)
+                .setPositiveButton("Si", new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        exit = true;
+                        goActivityLogin();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("aun no finaliza");
+                    }
+                });
+
+        AlertDialog alertDialog =  dialog.create();
+        alertDialog.show();
+    }
+    //End dialogeMessage
 }

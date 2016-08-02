@@ -121,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="logout"
                 android:text="Cerrar sesión Facebook"
+                android:visibility="gone"
                 android:id="@+id/logout_facebook" />
 
 
@@ -128,6 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="logoutGoogle"
+                android:visibility="gone"
                 android:text="Cerrar sesión Google"
                 android:id="@+id/logout_google" />
 
@@ -135,6 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="logoutTwitter"
+                android:visibility="gone"
                 android:text="Cerrar sesión Twitter"
                 android:id="@+id/logout_twitter" />
 
