@@ -92,4 +92,19 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="about_us_1">¿Qué pasaría si dejamos de usar Internet para ver a un perro
+        persiguiendo su cola o una persona cayéndose a un río y empezáramos  a usarlo para
+        esparcir ideas que puedan cambiar la forma en que vemos el mundo?
+        ¿Qué pasaría si tomamos esa enorme cantidad de ideas que no están disponibles en español y
+        elimináramos la brecha del idioma?… Así nació Upsocl</string>
+
+    <string name="about_us_2">Somos una compañía de medios con la misión de volver a conectar a
+        las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser
+        un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
+
+       <string name="mean_detail">    Somos una compañía de medios con la misión de volver a conectar
+           a las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan
+           ser un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
+
+
 </resources>

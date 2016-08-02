@@ -28,9 +28,9 @@
                     android:title="Preferencia" />
 
                 <item
-                    android:id="@+id/nav_help"
-                    android:icon="@android:drawable/ic_menu_help"
-                    android:title="Ayuda" />
+                    android:id="@+id/nav_us"
+                    android:icon="@android:drawable/ic_dialog_info"
+                    android:title="Sobre nosotros" />
 
             </group>
 

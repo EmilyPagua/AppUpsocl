@@ -236,7 +236,7 @@ public class HomeActivity extends AppCompatActivity
                         fragmentTransacction = true;
 
                         break;
-                    case R.id.nav_help:
+                    case R.id.nav_us:
 
                         visibleGoneElement();
                         fragment =  new HelpFragment();
@@ -342,7 +342,7 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_manage:
 
                 break;
-            case R.id.nav_help:
+            case R.id.nav_us:
                 drawer.openDrawer(GravityCompat.START);
 
                 break;
