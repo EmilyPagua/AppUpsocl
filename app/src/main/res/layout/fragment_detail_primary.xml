@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:transitionGroup="false"
+    android:id="@+id/viewPrimary"
+    tools:context=".DetailsActivity"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:touchscreenBlocksFocus="false">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_detail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:background="@color/cardtextColor"
+            tools:context="com.upsocl.upsocl.DetailActivity"
+            android:weightSum="1"
+            android:id="@+id/viewDetailLinear"
+            tools:ignore="WebViewLayout">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/heigny_image_detail"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder"
+                android:id="@+id/imageViewDetail" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailTextView"
+                android:paddingTop="@dimen/margin_webview"
+                android:textSize="26dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="primary"
+                android:layout_below="@+id/detailTextView"
+                android:id="@+id/detail" />
+
+            <com.google.android.gms.ads.AdView
+                android:layout_marginTop="5dp"
+                android:id="@+id/adView_primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+            </com.google.android.gms.ads.AdView>
+
+
+            <WebView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/webView"
+                android:layout_below="@+id/detail"
+                android:layout_margin="@dimen/margin_webview"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

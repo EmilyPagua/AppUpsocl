@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionGroup="false"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/viewDetailrelative"
+    android:touchscreenBlocksFocus="false">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_detail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:background="@color/cardtextColor"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            tools:context="com.upsocl.upsocl.DetailActivity"
+            android:weightSum="1"
+            android:id="@+id/viewDetailLinear"
+            tools:ignore="WebViewLayout">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/heigny_image_detail"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder"
+                android:id="@+id/imageViewDetailFive" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailTextViewFive"
+                android:paddingTop="@dimen/margin_webview"
+                android:textSize="26dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="five"
+                android:layout_below="@+id/detailTextViewFive"
+                android:id="@+id/detailFive" />
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/webViewFive"
+                android:layout_below="@+id/detailFive"
+                android:layout_margin="@dimen/margin_webview"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
