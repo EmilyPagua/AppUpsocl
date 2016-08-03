@@ -1,10 +1,12 @@
 package com.upsocl.appupsocl;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -34,12 +38,15 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.domain.News;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.ui.ViewConstants;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +63,13 @@ public class DetailsActivity extends AppCompatActivity {
 
     private ViewFlipper vf;
     private float init_x;
-    private String titleSendFacebook;
-    private String urlSendFacebook;
     private List<News> newsList =  new ArrayList<>();
 
     private MenuItem item_bookmark;
     private News newsPosition;
+
+    //Publicity
+    private AdView mAdView;
 
     //Element Facebook
     CallbackManager callbackManager;
@@ -89,6 +97,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        setToolBar();
+        setWindowsColor();
+
         //deslizar a los lados
         vf  =(ViewFlipper) findViewById(R.id.viewFlipper);
         vf.setOnTouchListener(new ListenerTouchViewFlipper());
@@ -111,50 +122,74 @@ public class DetailsActivity extends AppCompatActivity {
 
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
         isHome =  getIntent().getBooleanExtra("isHome",false);
-        int j=1;
 
-        for (int i=0; i<leght; i++){
-            switch (i){
-                case 0:
-                    uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView);
-                    newsList.add(newsPrimary);
-                    newsPosition=newsPrimary;
-                    break;
-                case 1:
-                    uploadNews(newsSegundary, R.id.imageViewDetailSegundary, R.id.detailTextViewSegundary,
-                            R.id.detailSegundary,R.id.webViewSegundary);
-                    newsList.add(newsSegundary);
-                    break;
-                case 2:
-                    uploadNews(newsThree, R.id.imageViewDetailThree, R.id.detailTextViewThree,
-                            R.id.detailThree,R.id.webViewThree);
-                    newsList.add(newsThree);
-                    break;
-                case 3:
-                    uploadNews(newsFour, R.id.imageViewDetailFour, R.id.detailTextViewFour,
-                            R.id.detailFour,R.id.webViewFour);
-                    newsList.add(newsFour);
-                    break;
-                case 4:
-                    uploadNews(newsFive, R.id.imageViewDetailFive, R.id.detailTextViewFive,
-                            R.id.detailFive,R.id.webViewFive);
-                    newsList.add(newsFive);
-                    break;
-            }
-        }
+        createListNews();
 
         for (int i = 4; i>leght-1;i--){
             vf.removeViewAt(i);
         }
         flag_bookmarks = false;
+
+        MobileAds.initialize(this,"ca-app-pub-3940256099942544/6300978111");
+
+        mAdView = (AdView) findViewById(R.id.adView_primary);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        mAdView.loadAd(adRequest);
     }
 
-    private void uploadNews(News objNews, int imagen, int title, int detail, int webView) {
-        setToolBar();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setWindowsColor() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.color_primary_dark_home));
+    }
+
+
+    public void createListNews() {
+        for (int i=0; i<leght; i++){
+            switch (i){
+                case 0:
+                    uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView, R.id.adView_primary);
+                    newsList.add(newsPrimary);
+                    newsPosition=newsPrimary;
+                    break;
+                case 1:
+                    uploadNews(newsSegundary, R.id.imageViewDetailSegundary, R.id.detailTextViewSegundary,
+                            R.id.detailSegundary,R.id.webViewSegundary, 0);
+                    newsList.add(newsSegundary);
+                    break;
+                case 2:
+                    uploadNews(newsThree, R.id.imageViewDetailThree, R.id.detailTextViewThree,
+                            R.id.detailThree,R.id.webViewThree,0);
+                    newsList.add(newsThree);
+                    break;
+                case 3:
+                    uploadNews(newsFour, R.id.imageViewDetailFour, R.id.detailTextViewFour,
+                            R.id.detailFour,R.id.webViewFour, 0);
+                    newsList.add(newsFour);
+                    break;
+                case 4:
+                    uploadNews(newsFive, R.id.imageViewDetailFive, R.id.detailTextViewFive,
+                            R.id.detailFive,R.id.webViewFive, 0);
+                    newsList.add(newsFive);
+                    break;
+            }
+        }
+    }
+
+    private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int adView) {
         setImage(objNews.getImage(), imagen);
         setTextViewTitle(objNews.getTitle(),title);
         setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
         enableWebView(objNews.getContent(), webView);
+
+        if (adView!=0){
+
+        }
     }
 
 
@@ -233,7 +268,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+       getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
         item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
         if (isBookmarks){
@@ -479,5 +514,32 @@ public class DetailsActivity extends AppCompatActivity {
         return outtoRight;
     }
 
+
+    /** Called when leaving the activity */
+    @Override
+    public void onPause() {
+         if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    /** Called when returning to the activity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    /** Called before the activity is destroyed */
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
 
 }

@@ -15,6 +15,8 @@
     <string name="title_activity_principal">PrincipalActivity</string>
 
     <string name="banner_ad_unit_id">/100064084/andorid_test</string>
+    <string name="banner_ad_unit_id_2">ca-app-pub-3940256099942544/6300978111</string>
+
 
     <string name="gcm_defaultSenderId">451147762930</string>
 
@@ -102,9 +104,21 @@
         las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser
         un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
 
-       <string name="mean_detail">    Somos una compañía de medios con la misión de volver a conectar
+    <string name="mean_detail">    Somos una compañía de medios con la misión de volver a conectar
            a las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan
            ser un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
 
 
+    <string name="welcome">Theme Example</string>
+
+    <string-array name="themes">
+        <item>Theme1</item>
+        <item>Theme2</item>
+    </string-array>
+
+    <string name="OK">OK</string>
+    <string name="def_theme">Theme1</string>
+    <string name="theme_summary">Appearance</string>
+    <string name="theme_dialog_title">Theme</string>
+    <string name="settings">Settings</string>
 </resources>

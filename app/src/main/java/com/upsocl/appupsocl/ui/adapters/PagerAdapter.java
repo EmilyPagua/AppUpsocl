@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.upsocl.appupsocl.R;
 import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.keys.CategoryKeys;
 import com.upsocl.appupsocl.ui.fragments.HomePrimaryFragment;

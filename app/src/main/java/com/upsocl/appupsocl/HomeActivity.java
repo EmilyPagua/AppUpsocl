@@ -1,5 +1,7 @@
 package com.upsocl.appupsocl;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,8 +9,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -26,6 +33,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +44,8 @@ import com.facebook.AccessToken;;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -42,12 +53,14 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.keys.CustomerKeys;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
 import com.upsocl.appupsocl.ui.DownloadImage;
+import com.upsocl.appupsocl.ui.ThemePreferenceActivity;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 import com.upsocl.appupsocl.ui.fragments.HelpFragment;
@@ -81,34 +94,38 @@ public class HomeActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInOptions gso;
     boolean exit = false;
+    private Toolbar toolbar;
+    private int SETTINGS_ACTION = 1;
+    private int tabPosition;
+    private AppBarLayout appBarLayout;
 
-
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Theme
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
         //Content Faceboook
         FacebookSdk.sdkInitialize(getApplicationContext());
         //Fin content facebook
 
-        setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.inflateHeaderView(R.layout.nav_header_home);
         tv_username = (TextView) headerView.findViewById(R.id.tv_username);
-        frameLayout= (FrameLayout) findViewById(R.id.content_frame);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        prefs =  getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
-        prefsInterests =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
-        prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
-
-        setSupportActionBar(toolbar);
-        setDrawer(toolbar);
+        frameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layoutHome);
+        prefs = getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
+        prefsInterests = getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        prefsUser = getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        appBarLayout =(AppBarLayout) findViewById(R.id.app_bar_layout_home);
 
         tabs = createTabLayout();
-
         uploadPager();
+        setSupportActionBar(toolbar);
+        setDrawer(toolbar);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -122,13 +139,16 @@ public class HomeActivity extends AppCompatActivity
                 .requestEmail()
                 .build();
 
+        // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this , this )
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addApi(Plus.API)
-                .build();
+                .addApi(AppIndex.API).build();
         //GOOGLE
 
+        setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
     }
 
     @Override
@@ -151,12 +171,53 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
     }
 
-
+    @NonNull
+    private TabLayout createTabLayout() {
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.addTab(tabs.newTab().setText(R.string.forYou));
+        tabs.addTab(tabs.newTab().setText(R.string.lastNews));
+        tabs.addTab(tabs.newTab().setText(R.string.green));
+        tabs.addTab(tabs.newTab().setText(R.string.creativity));
+        tabs.addTab(tabs.newTab().setText(R.string.women));
+        tabs.addTab(tabs.newTab().setText(R.string.food));
+        tabs.addTab(tabs.newTab().setText(R.string.populary));
+        tabs.addTab(tabs.newTab().setText(R.string.quiz));
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+        return tabs;
+    }
 
     private void selectTabsOption() {
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                tabPosition = tab.getPosition();
+                switch (tabPosition){
+                    case 0:
+                        setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
+                        break;
+                    case 1:
+                        setColorBarLayout(R.color.primary_dark_foryou,R.color.primary_foryou);
+                        break;
+                    case 2:
+                        setColorBarLayout(R.color.primary_dark_green,R.color.primary_green);
+                        break;
+                    case 3:
+                        setColorBarLayout(R.color.primary_dark_community,R.color.primary_community);
+                        break;
+                    case 4:
+                        setColorBarLayout(R.color.primary_dark_women,R.color.primary_women);
+                        break;
+                    case 5:
+                        setColorBarLayout(R.color.primary_dark_food,R.color.primary_food);
+                        break;
+                    case 6:
+                        setColorBarLayout(R.color.primary_dark_populary,R.color.primary_populary);
+                        break;
+                    case 7:
+                        setColorBarLayout(R.color.primary_dark_quiz,R.color.primary_quiz);
+                        break;
+                }
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -181,7 +242,7 @@ public class HomeActivity extends AppCompatActivity
                 boolean fragmentTransacction = false;
                 Fragment fragment = null;
                 FragmentManager fragmentManager =  null;
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layoutHome);
 
                 if (countPreference()<=3){
                     Toast.makeText(HomeActivity.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
@@ -210,9 +271,9 @@ public class HomeActivity extends AppCompatActivity
 
                         fragmentTransacction = true;
 
+
                         break;
                     case R.id.nav_interests:
-
                         visibleGoneElement();
                         SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
                         fragment =  new InterestsFragment( prefs);
@@ -224,7 +285,6 @@ public class HomeActivity extends AppCompatActivity
                         fragmentTransacction = true;
                         break;
                     case R.id.nav_manage:
-
                         visibleGoneElement();
                         fragment =  new PreferencesFragment(prefsUser);
 
@@ -246,19 +306,26 @@ public class HomeActivity extends AppCompatActivity
                                 .commit();
 
                         fragmentTransacction = true;
-
                         break;
-
                 }
                 if (fragmentTransacction){
                     getSupportActionBar().setTitle(item.getTitle());
-
                 }
 
                 drawer.closeDrawers();
                 return true;
             }
         });
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setColorBarLayout(int statusBarColor, int barLayoutColor) {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(statusBarColor));
+
+        appBarLayout.setBackgroundColor(Color.parseColor(getString(barLayoutColor)));
     }
 
     private int countPreference() {
@@ -284,26 +351,12 @@ public class HomeActivity extends AppCompatActivity
         tabs.setVisibility(View.GONE);
         viewPager.setVisibility(View.INVISIBLE);
         viewPager.setVisibility(View.GONE);
-    }
-
-    @NonNull
-    private TabLayout createTabLayout() {
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText(R.string.forYou));
-        tabs.addTab(tabs.newTab().setText(R.string.lastNews));
-        tabs.addTab(tabs.newTab().setText(R.string.green));
-        tabs.addTab(tabs.newTab().setText(R.string.creativity));
-        tabs.addTab(tabs.newTab().setText(R.string.women));
-        tabs.addTab(tabs.newTab().setText(R.string.food));
-        tabs.addTab(tabs.newTab().setText(R.string.populary));
-        tabs.addTab(tabs.newTab().setText(R.string.quiz));
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        return tabs;
+        setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layoutHome);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -330,7 +383,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layoutHome);
 
         switch (item.getItemId()){
             case R.id.nav_bookmarks:
@@ -461,7 +514,6 @@ public class HomeActivity extends AppCompatActivity
     //end twitter
 
     //Create dialogeMessage
-    //Create dialogeMessage
     public void createSimpleDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Cerrar sesión");
@@ -485,6 +537,46 @@ public class HomeActivity extends AppCompatActivity
 
         AlertDialog alertDialog =  dialog.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        mGoogleApiClient.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Home Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.upsocl.appupsocl/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Home Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.upsocl.appupsocl/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
+        mGoogleApiClient.disconnect();
     }
     //End dialogeMessage
 }

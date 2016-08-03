@@ -162,7 +162,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                System.out.println(currentAccessToken);
                 if (countCategorySelected >= 3) {
                     AccessToken.setCurrentAccessToken(currentAccessToken);
                     loginButton.setVisibility(View.GONE);
