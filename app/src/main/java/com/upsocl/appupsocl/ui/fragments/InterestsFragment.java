@@ -25,9 +25,6 @@ public class InterestsFragment extends Fragment {
     private RecyclerView interestList;
     private InterestsAdapter adapter;
 
-    public InterestsFragment(SharedPreferences prefs) {
-        this.preferences = prefs;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public class InterestsFragment extends Fragment {
         Map<String, ?> map = preferences.getAll();
         map.size();
         interestses= new ArrayList<>();
-        int i = 0;
 
         Interests obj;
 
@@ -76,4 +72,11 @@ public class InterestsFragment extends Fragment {
         adapter.addAll(interestses);
     }
 
+    public SharedPreferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(SharedPreferences preferences) {
+        this.preferences = preferences;
+    }
 }

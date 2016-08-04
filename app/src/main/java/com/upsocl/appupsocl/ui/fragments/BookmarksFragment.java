@@ -33,12 +33,10 @@ public class BookmarksFragment extends Fragment  {
     private ListView newsListView;
     private ArrayAdapter<News> newsArrayAdapter;
 
-    public BookmarksFragment(SharedPreferences preferences) {
-        this.preferences=preferences;
-    }
 
     public static BookmarksFragment newInstance(SharedPreferences preferences){
-        BookmarksFragment fragment =  new BookmarksFragment(preferences);
+        BookmarksFragment fragment =  new BookmarksFragment();
+        fragment.setPreferences(preferences);
         return fragment;
 
     }
@@ -86,7 +84,6 @@ public class BookmarksFragment extends Fragment  {
             newses.add(news);
         }
     }
-
     private String getElement(JsonElement jsonElement) {
         if (jsonElement!=null)
             return jsonElement.getAsString();
@@ -94,5 +91,11 @@ public class BookmarksFragment extends Fragment  {
             return null;
     }
 
+    public SharedPreferences getPreferences() {
+        return preferences;
+    }
 
+    public void setPreferences(SharedPreferences preferences) {
+        this.preferences = preferences;
+    }
 }

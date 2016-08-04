@@ -3,14 +3,18 @@ package com.upsocl.appupsocl;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -156,6 +160,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         btn_diversity = (Button) findViewById(R.id.btn_diversity);
         layoutButton =  (LinearLayout) findViewById(R.id.linearLayoutButton);
 
+        //FACEBOOOK LOGIN
         loginButton = (LoginButton) findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
 
@@ -180,6 +185,8 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         profileTracker.startTracking();
 
         createCallbackFacebook();
+
+        //END FACEBOOK LOGIN
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
         loginButton.registerCallback(callbackManager, callback);
 
@@ -205,10 +212,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         clearPreferencesLogin();
 
         registerReceiver();
-        if (checkPlayServices()) {
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-        }
+        wordpressRegisterReceiver();
 
         //Google
         configureGoogleLogin();
@@ -219,56 +223,55 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
 
     }
 
+    private void wordpressRegisterReceiver() {
+        if (checkPlayServices()) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
     private void configureTwitterLogin() {
 
         loginButtonTwitter = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         loginButtonTwitter.setCallback(new com.twitter.sdk.android.core.Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                // The TwitterSession is also available through:
-                // Twitter.getInstance().core.getSessionManager().getActiveSession()
-                dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
-                        getString(R.string.msg_dialog_content), true);
 
+                uploadDialog();
                 TwitterSession session = result.data;
-                // TODO: Remove toast and use the TwitterSession's userID
-                // with your app's user model
-                String msg = "@" + session.getUserName();
+                    // with your app's user model
 
                 Twitter.getApiClient(session).getAccountService()
                         .verifyCredentials(true, false, new com.twitter.sdk.android.core.Callback<User>() {
                             @Override
                             public void success(Result<User> userResult) {
 
-                                //If it succeeds creating a User object from userResult.data
+                                    //If it succeeds creating a User object from userResult.data
                                 User user = userResult.data;
-
-                                //Getting the profile image url
-                                String profileImage = user.profileImageUrl.replace("_normal", "");
-
-                                UserLogin userLogin=  new UserLogin(userResult.data.email,
-                                        user.name,
+                                UserLogin userLogin = new UserLogin(userResult.data.email,
                                         user.name,
                                         null,
+                                        null,
                                         user.location,
-                                        null, 0,user.profileImageUrl,
+                                        null, 0, user.profileImageUrl,
                                         getString(R.string.name_twitter));
 
-                                new DownloadTask().execute(userLogin);
-                            }
+                                    new DownloadTask().execute(userLogin);
+                                }
 
                             @Override
                             public void failure(TwitterException exception) {
+                                Log.d("TwitterException", "Login with Twitter failure", exception);
 
                             }
                         });
-            }
-            @Override
-            public void failure(TwitterException exception) {
-                Log.d("TwitterKit", "Login with Twitter failure", exception);
-            }
-        });
+                }
 
+                @Override
+                public void failure(TwitterException exception) {
+                    createSimpleDialog();
+                }
+            });
     }
 
     private void configureGoogleLogin() {
@@ -317,8 +320,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                                             null, 0,profile.getProfilePictureUri(110,110).toString(),
                                             getString(R.string.name_facebook));
 
-                                    dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
-                                                getString(R.string.msg_dialog_content), true);
+                                    uploadDialog();
 
                                     new DownloadTask().execute(userLogin);
 
@@ -340,9 +342,14 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
 
             @Override
             public void onError(FacebookException error) {
-
+                createSimpleDialog();
             }
         };
+    }
+
+    private void uploadDialog() {
+        dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
+                    getString(R.string.msg_dialog_content), true);
     }
 
     @Override
@@ -388,9 +395,11 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             //Calling a new function to handle signin
             handleSignInResult(result);
-        }
 
+        }
         loginButtonTwitter.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
 
@@ -470,7 +479,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
 
     @Override
     public void failure(RetrofitError error) {
-
+        System.out.println(":  " + error);
     }
 
     private void savePreferencesNotifications(){
@@ -484,6 +493,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
 
         @Override
         protected Object doInBackground(Object[] objects) {
+
             SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
             String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
 
@@ -631,29 +641,45 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
 
         if (v == signInButton)
             signIn();
+
     }
 
-    private void viewMessage() {
-        Toast.makeText(CreatePerfil.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
-    }
 
     private void signIn() {
-        //Creating an intent
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        if (isConnect()==true){
+            //Creating an intent
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            //Starting intent for result
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
+        else{
+            createSimpleDialog();
+        }
+    }
 
-        //Starting intent for result
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    private boolean isConnect() {
+
+        boolean bConectado = false;
+        ConnectivityManager connec = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] redes = connec.getAllNetworkInfo();
+        for (int i = 0; i < 2; i++) {
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                bConectado = true;
+            }
+        }
+        return bConectado;
     }
 
     @Override
     public void onConnectionFailed( ConnectionResult connectionResult) {
-
+        uploadDialog();
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
 
         //If the login succeed
         if (result.isSuccess()) {
+            uploadDialog();
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
 
@@ -664,15 +690,38 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                     null,0,acct.getPhotoUrl().toString(),
                     getString(R.string.name_google));
 
+
             new DownloadTask().execute(userLogin);
 
             //Loading image
         } else {
             //If login fails
             Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
+
         }
     }
 
     //END GOOGLE LOGIN
+
+
+    public void createSimpleDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Error");
+        dialog.setMessage(getString(R.string.msg_session_not_found))
+                .setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        createCallbackFacebook();
+                        configureTwitterLogin();
+                        wordpressRegisterReceiver();
+                    }
+                });
+
+        AlertDialog alertDialog =  dialog.create();
+        alertDialog.show();
+    }
 
 }

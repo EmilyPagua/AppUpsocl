@@ -46,6 +46,7 @@
     <!-- CREATE PERFIL BUTTON -->
     <string name="msg_createPerfil">Selecciona al menos tres categorias para personalizar tu feed.</string>
     <string name="msg_select_category">Debe seleccionar al menos 3 categorias.</string>
+    <string name="msg_session_not_found">No ha podido inicial sesión, verifique su conexión a internet</string>
     <string name="btn_beauty">Belleza</string>
     <string name="btn_colaboration">Colaboración</string>
     <string name="btn_community">Comunidad</string>

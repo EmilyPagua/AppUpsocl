@@ -13,6 +13,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -147,6 +150,26 @@ public class HomeActivity extends AppCompatActivity
         //GOOGLE
 
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
+
+
+        //RegistrationToken Wordpress
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                if (sentToken) {
+                    Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        //RegistrationToken Wordpress
+
     }
 
     @Override
@@ -269,12 +292,13 @@ public class HomeActivity extends AppCompatActivity
 
                         fragmentTransacction = true;
 
-
                         break;
                     case R.id.nav_interests:
                         visibleGoneElement();
                         SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
-                        fragment =  new InterestsFragment( prefs);
+                        InterestsFragment interestsFragment = new InterestsFragment();
+                        interestsFragment.setPreferences(prefs);
+                        fragment =  interestsFragment;
                         fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
@@ -284,8 +308,9 @@ public class HomeActivity extends AppCompatActivity
                         break;
                     case R.id.nav_manage:
                         visibleGoneElement();
-                        fragment =  new PreferencesFragment(prefsUser);
-
+                        PreferencesFragment preferenceActivity = new PreferencesFragment();
+                        preferenceActivity.setPrefs(prefsUser);
+                        fragment =  preferenceActivity;
                         fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
@@ -589,6 +614,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         Log.v("HomeActivity", "onResume");
+        setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
         uploadPager();
         registerReceiver();
 
@@ -601,4 +627,8 @@ public class HomeActivity extends AppCompatActivity
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         isReceiverRegistered = false;
     }
+
+    //TOKENT WORDPRESS
+
+    //END TOKENT WORDPRESS
 }

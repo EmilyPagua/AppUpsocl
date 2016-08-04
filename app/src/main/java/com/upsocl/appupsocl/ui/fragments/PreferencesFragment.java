@@ -1,10 +1,8 @@
 package com.upsocl.appupsocl.ui.fragments;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +11,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
-import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.upsocl.appupsocl.R;
 import com.upsocl.appupsocl.keys.CustomerKeys;
 
@@ -26,13 +22,6 @@ public class PreferencesFragment  extends Fragment {
     private Button logoutFacebook;
     private Button logoutGoogle,logoutTwitter;
 
-    public PreferencesFragment(SharedPreferences prefs) {
-        this.prefs =  prefs;
-    }
-
-    public PreferencesFragment() {
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){

@@ -78,6 +78,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <provider
+                android:name="com.facebook.FacebookContentProvider"
+                android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
+                android:exported="true" />
         </activity>
 
         <!-- Login Facebook -->
@@ -100,10 +105,6 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultsActivity" />
 
-            <provider
-                android:name="com.facebook.FacebookContentProvider"
-                android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
-                android:exported="true" />
         </activity>
 
         <!-- Resultado de busqueda -->
@@ -180,6 +181,7 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
     </application>
 
 </manifest>
