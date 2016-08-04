@@ -99,7 +99,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         private TextView categories;
         private News newsObj;
         private ArrayList<News> newsArrayList;
-        private ArrayList<News> newsSend;
         private int position;
 
         public NewsHolder(final View itemView, ArrayList<News> news) {
@@ -122,7 +121,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                     String target = gS.toJson(newsObj);
                     intent.putExtra("new", target);
                     intent.putExtra("position",position);
-                    intent.putExtra("isHome",isHome);
+                    intent.putExtra("isBookmarks",false);
 
                     if (newsArrayList.size()>position+1 && newsArrayList.get(position+1)!=null){
                         intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position+1)));

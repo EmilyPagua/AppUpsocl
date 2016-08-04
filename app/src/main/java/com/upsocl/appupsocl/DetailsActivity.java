@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +41,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.appupsocl.domain.News;
@@ -58,7 +60,7 @@ public class DetailsActivity extends AppCompatActivity {
 
    // private LinearLayout viewDetail;
     private int leght;
-    private boolean bookmarks_save, flag_bookmarks, isBookmarks, isHome;
+    private boolean bookmarks_save, flag_bookmarks, isBookmarks;
 
 
     private ViewFlipper vf;
@@ -70,6 +72,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     //Publicity
     private AdView mAdView;
+
+    private FloatingActionButton fabNext;
 
     //Element Facebook
     CallbackManager callbackManager;
@@ -95,10 +99,24 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_prueba);
 
         setToolBar();
         setWindowsColor();
+
+        //IMAGEN NEXT - PREV
+        FloatingActionButton fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
+        fabNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                newsPosition = getItemPosition(vf.getDisplayedChild()+1);
+                uploadPreferences(newsPosition.getId());
+                vf.showNext();
+            }
+        });
+        //
 
         //deslizar a los lados
         vf  =(ViewFlipper) findViewById(R.id.viewFlipper);
@@ -121,23 +139,16 @@ public class DetailsActivity extends AppCompatActivity {
         leght =  getIntent().getIntExtra("leght",0);
 
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
-        isHome =  getIntent().getBooleanExtra("isHome",false);
+
+        uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView, R.id.adView_primary_one, R.id.adView_primary_two);
+        newsList.add(newsPrimary);
+        newsPosition=newsPrimary;
 
         createListNews();
 
         for (int i = 4; i>leght-1;i--){
             vf.removeViewAt(i);
         }
-        flag_bookmarks = false;
-
-        MobileAds.initialize(this,"ca-app-pub-3940256099942544/6300978111");
-
-        mAdView = (AdView) findViewById(R.id.adView_primary);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        // Start loading the ad in the background.
-        mAdView.loadAd(adRequest);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -152,44 +163,47 @@ public class DetailsActivity extends AppCompatActivity {
     public void createListNews() {
         for (int i=0; i<leght; i++){
             switch (i){
-                case 0:
-                    uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView, R.id.adView_primary);
-                    newsList.add(newsPrimary);
-                    newsPosition=newsPrimary;
-                    break;
                 case 1:
                     uploadNews(newsSegundary, R.id.imageViewDetailSegundary, R.id.detailTextViewSegundary,
-                            R.id.detailSegundary,R.id.webViewSegundary, 0);
+                            R.id.detailSegundary,R.id.webViewSegundary, R.id.adView_segundary_one,R.id.adView_segundary_two );
                     newsList.add(newsSegundary);
                     break;
                 case 2:
                     uploadNews(newsThree, R.id.imageViewDetailThree, R.id.detailTextViewThree,
-                            R.id.detailThree,R.id.webViewThree,0);
+                            R.id.detailThree,R.id.webViewThree,R.id.adView_three_one, R.id.adView_three_two);
                     newsList.add(newsThree);
                     break;
                 case 3:
                     uploadNews(newsFour, R.id.imageViewDetailFour, R.id.detailTextViewFour,
-                            R.id.detailFour,R.id.webViewFour, 0);
+                            R.id.detailFour,R.id.webViewFour, R.id.adView_four_one, R.id.adView_four_two);
                     newsList.add(newsFour);
                     break;
                 case 4:
                     uploadNews(newsFive, R.id.imageViewDetailFive, R.id.detailTextViewFive,
-                            R.id.detailFive,R.id.webViewFive, 0);
+                            R.id.detailFive,R.id.webViewFive, R.id.adView_five_one, R.id.adView_five_two);
                     newsList.add(newsFive);
                     break;
             }
         }
     }
 
-    private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int adView) {
+    private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int adViewOne, int adViewTwo) {
         setImage(objNews.getImage(), imagen);
         setTextViewTitle(objNews.getTitle(),title);
         setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
         enableWebView(objNews.getContent(), webView);
 
-        if (adView!=0){
+        createAdView(adViewOne);
+        createAdView(adViewTwo);
 
-        }
+    }
+
+    private void createAdView(int adViewOne) {
+        flag_bookmarks = false;
+        mAdView = (AdView) findViewById(adViewOne);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        // Start loading the ad in the background.
+        mAdView.loadAd(adRequest);
     }
 
 
@@ -228,17 +242,10 @@ public class DetailsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goHomeActivity();
+                onBackPressed();
             }
         });
         setShareIntent(getIntent());
-    }
-
-    private void goHomeActivity() {
-        Intent intent = new Intent(DetailsActivity.this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
-        DetailsActivity.this.finish();
     }
 
 
@@ -273,6 +280,7 @@ public class DetailsActivity extends AppCompatActivity {
         item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
         if (isBookmarks){
             item_bookmark.setVisible(false);
+            fabNext.setVisibility(View.GONE);
         }
 
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
@@ -382,12 +390,6 @@ public class DetailsActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-
-        goHomeActivity();
-    }
 
 
 
@@ -408,7 +410,6 @@ public class DetailsActivity extends AppCompatActivity {
                         vf.setInAnimation(inFromRightAnimation());
                         vf.setOutAnimation(outToLeftAnimation());
                         newsPosition = getItemPosition(vf.getDisplayedChild()-1);
-
                         uploadPreferences(newsPosition.getId());
                         vf.showPrevious();
                     }
@@ -420,7 +421,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                         newsPosition = getItemPosition(vf.getDisplayedChild()+1);
                         uploadPreferences(newsPosition.getId());
-
                         vf.showNext();
                     }
 

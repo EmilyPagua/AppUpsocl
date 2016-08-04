@@ -28,6 +28,8 @@
             android:padding="5dp"
             android:textColor="#222"
             android:text="Titulo"
+            android:layout_marginLeft="@dimen/margin_webview"
+            android:layout_marginRight="@dimen/margin_webview"
             android:textStyle="bold"
             android:textSize="16dp" />
 
@@ -40,6 +42,8 @@
             android:text="Descripcion"
             android:textColor="#666"
             android:id="@+id/data_post"
+            android:layout_marginLeft="@dimen/margin_webview"
+            android:layout_marginRight="@dimen/margin_webview"
             android:textSize="12dp" />
 
         <TextView
@@ -51,6 +55,8 @@
             android:text="Category"
             android:textColor="#666"
             android:id="@+id/categories"
+            android:layout_marginLeft="@dimen/margin_webview"
+            android:layout_marginRight="@dimen/margin_webview"
             android:textSize="12dp" />
 
 

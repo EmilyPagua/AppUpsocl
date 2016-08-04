@@ -90,13 +90,16 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(view.getContext(), DetailsActivity.class);
+                Intent intent = new Intent(context, DetailsActivity.class);
                 Gson gS = new Gson();
                 String target = gS.toJson(news);
                 intent.putExtra("new", target);
                 intent.putExtra("position","0");
                 intent.putExtra("isBookmarks",true);
-                view.getContext().startActivity(intent);
+                intent.putExtra("leght",1);
+                context.startActivity(intent);
+
+
             }
         });
 

@@ -214,7 +214,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         configureGoogleLogin();
 
         //TWITTER
-         configureTwitterLogin();
+        configureTwitterLogin();
 
 
     }
@@ -498,10 +498,10 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         @Override
         protected void onPostExecute(Object o) {
             Intent intent = new Intent(CreatePerfil.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             CreatePerfil.this.finish();
             super.onPostExecute(o);
+
         }
     }
 

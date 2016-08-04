@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -30,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,14 +53,12 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
 import com.upsocl.appupsocl.domain.Interests;
 import com.upsocl.appupsocl.keys.CustomerKeys;
 import com.upsocl.appupsocl.keys.Preferences;
 import com.upsocl.appupsocl.notification.QuickstartPreferences;
 import com.upsocl.appupsocl.ui.DownloadImage;
-import com.upsocl.appupsocl.ui.ThemePreferenceActivity;
 import com.upsocl.appupsocl.ui.adapters.PagerAdapter;
 import com.upsocl.appupsocl.ui.fragments.BookmarksFragment;
 import com.upsocl.appupsocl.ui.fragments.HelpFragment;
@@ -422,18 +420,6 @@ public class HomeActivity extends AppCompatActivity
         this.finish();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver();
-    }
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        isReceiverRegistered = false;
-        super.onPause();
-    }
 
     public void btnNotification(View view){
 
@@ -557,6 +543,7 @@ public class HomeActivity extends AppCompatActivity
                 Uri.parse("android-app://com.upsocl.appupsocl/http/host/path")
         );
         AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);
+        Log.v("HomeActivity", "Restart");
     }
 
     @Override
@@ -577,6 +564,41 @@ public class HomeActivity extends AppCompatActivity
         );
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
         mGoogleApiClient.disconnect();
+
+        Log.v("HomeActivity", "Restart");
     }
     //End dialogeMessage
+
+
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //Nuestro código a ejecutar en este momento
+        Log.v("HomeActivity", "onDestroy");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+
+        Log.v("HomeActivity", "onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v("HomeActivity", "onResume");
+        uploadPager();
+        registerReceiver();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v("HomeActivity", "onPause");
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        isReceiverRegistered = false;
+    }
 }
