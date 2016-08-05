@@ -81,12 +81,13 @@
         <activity
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
-            <provider
-                android:name="com.facebook.FacebookContentProvider"
-                android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
-                android:exported="true" />
+
         </activity>
 
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
+            android:exported="true" />
         <!-- Login Facebook -->
         <activity
             android:name="com.facebook.FacebookActivity"
