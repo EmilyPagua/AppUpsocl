@@ -42,7 +42,6 @@ public class PreferencesFragment  extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     aSwitch.setChecked(true);
-                    //FIXME
                 }else{
                     radioGroup.clearCheck();
                     aSwitch.setChecked(false);

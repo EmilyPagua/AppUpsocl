@@ -92,7 +92,6 @@
     <string name="populary">Mas popular</string>
     <string name="quiz">Quiz</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="about_us_1">¿Qué pasaría si dejamos de usar Internet para ver a un perro
@@ -122,4 +121,9 @@
     <string name="theme_summary">Appearance</string>
     <string name="theme_dialog_title">Theme</string>
     <string name="settings">Settings</string>
+
+    <string name="banner_up">ca-mb-app-pub-7682123866908966/2346534963</string>
+    <string name="banner_down">ca-mb-app-pub-7682123866908966/7102497723</string>
+    <string name="banner_popup">ca-mb-app-pub-7682123866908966/8579205603</string>
+
 </resources>

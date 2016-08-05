@@ -134,7 +134,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_create_perfil);
 
-        LoginManager.getInstance().logOut();
+        //LoginManager.getInstance().logOut(); //FIXME
         AccessToken.setCurrentAccessToken((AccessToken) null);
         Profile.setCurrentProfile((Profile) null);
 
@@ -170,8 +170,8 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                 if (countCategorySelected >= 3) {
                     AccessToken.setCurrentAccessToken(currentAccessToken);
                     loginButton.setVisibility(View.GONE);
-                } else
-                    LoginManager.getInstance().logOut();
+                } //else
+                    //LoginManager.getInstance().logOut(); //FIXME
             }
         };
 

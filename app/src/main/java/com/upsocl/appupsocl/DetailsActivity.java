@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +39,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.Sharer;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.appupsocl.domain.News;
@@ -70,8 +70,10 @@ public class DetailsActivity extends AppCompatActivity {
     private MenuItem item_bookmark;
     private News newsPosition;
 
-    //Publicity
+    //PUBLICITY
     private AdView mAdView;
+    InterstitialAd mInterstitialAd;
+    //END PUBLICITY
 
     private FloatingActionButton fabNext;
 
@@ -140,7 +142,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
 
-        uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView, R.id.adView_primary_one, R.id.adView_primary_two);
+        uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView, R.id.adView_primary_one,R.id.adView_primary_two);
         newsList.add(newsPrimary);
         newsPosition=newsPrimary;
 
@@ -149,7 +151,42 @@ public class DetailsActivity extends AppCompatActivity {
         for (int i = 4; i>leght-1;i--){
             vf.removeViewAt(i);
         }
+
+
+        //PUBLICITY
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-mb-app-pub-7682123866908966/8579205603");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                beginPlayingGame();
+            }
+        });
+        requestNewInterstitial();
+
+        beginPlayingGame();
+
+        //END PUBLICITY
     }
+
+    //PUBLICITY
+
+    private void beginPlayingGame() {
+        // Play for a while, then display the New Game Button
+        System.out.println("-------------------------------------------------------");
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    //END PUBLICITY
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setWindowsColor() {
@@ -188,21 +225,18 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int adViewOne, int adViewTwo) {
+        createAdView(adViewOne);
         setImage(objNews.getImage(), imagen);
         setTextViewTitle(objNews.getTitle(),title);
         setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
         enableWebView(objNews.getContent(), webView);
-
-        createAdView(adViewOne);
         createAdView(adViewTwo);
-
     }
 
     private void createAdView(int adViewOne) {
         flag_bookmarks = false;
         mAdView = (AdView) findViewById(adViewOne);
         AdRequest adRequest = new AdRequest.Builder().build();
-        // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
     }
 
@@ -464,6 +498,13 @@ public class DetailsActivity extends AppCompatActivity {
                 newsPosition =  newsList.get(newsList.size()-1);
                 break;
         }
+
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            beginPlayingGame();
+        }
+
         return newsPosition;
     }
 
