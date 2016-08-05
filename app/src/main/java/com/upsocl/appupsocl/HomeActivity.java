@@ -1,7 +1,6 @@
 package com.upsocl.appupsocl;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,8 +12,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -43,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;;
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
@@ -96,7 +93,6 @@ public class HomeActivity extends AppCompatActivity
     private GoogleSignInOptions gso;
     boolean exit = false;
     private Toolbar toolbar;
-    private int SETTINGS_ACTION = 1;
     private int tabPosition;
     private AppBarLayout appBarLayout;
 
@@ -440,7 +436,7 @@ public class HomeActivity extends AppCompatActivity
 
 
     private void goActivityLogin() {
-        Intent login = new Intent(HomeActivity.this, CreatePerfil.class);
+        Intent login = new Intent(HomeActivity.this, MainActivity.class);
         startActivity(login);
         this.finish();
     }
@@ -479,10 +475,10 @@ public class HomeActivity extends AppCompatActivity
     private void uploadPreferences() {
 
         SharedPreferences prefs2 =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
-        String userName = null, userLastName = null, imagenURL=null;
+        String userName = "", userLastName = "", imagenURL=null;
 
-        userName = prefs2.getString(CustomerKeys.DATA_USER_FIRST_NAME,"Nombre");
-        userLastName = prefs2.getString(CustomerKeys.DATA_USER_LAST_NAME,"Apellido");
+        userName = prefs2.getString(CustomerKeys.DATA_USER_FIRST_NAME," ");
+        userLastName = prefs2.getString(CustomerKeys.DATA_USER_LAST_NAME," ");
         imagenURL = prefs2.getString(CustomerKeys.DATA_USER_IMAGEN_URL,null);
 
         tv_username.setText(userName +" " +userLastName);
@@ -577,7 +573,7 @@ public class HomeActivity extends AppCompatActivity
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
+       Action viewAction = Action.newAction(  //FIXME
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Home Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
@@ -589,7 +585,6 @@ public class HomeActivity extends AppCompatActivity
         );
         AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction);
         mGoogleApiClient.disconnect();
-
         Log.v("HomeActivity", "Restart");
     }
     //End dialogeMessage

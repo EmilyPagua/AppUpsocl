@@ -75,8 +75,6 @@ public class DetailsActivity extends AppCompatActivity {
     InterstitialAd mInterstitialAd;
     //END PUBLICITY
 
-    private FloatingActionButton fabNext;
-
     //Element Facebook
     CallbackManager callbackManager;
     ShareDialog shareDialog;
@@ -314,7 +312,6 @@ public class DetailsActivity extends AppCompatActivity {
         item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
         if (isBookmarks){
             item_bookmark.setVisible(false);
-            fabNext.setVisibility(View.GONE);
         }
 
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);

@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -134,7 +135,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_create_perfil);
 
-        //LoginManager.getInstance().logOut(); //FIXME
+        LoginManager.getInstance().logOut();
         AccessToken.setCurrentAccessToken((AccessToken) null);
         Profile.setCurrentProfile((Profile) null);
 
@@ -160,75 +161,180 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         btn_diversity = (Button) findViewById(R.id.btn_diversity);
         layoutButton =  (LinearLayout) findViewById(R.id.linearLayoutButton);
 
-        //FACEBOOOK LOGIN
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        callbackManager = CallbackManager.Factory.create();
+        uploadData();
 
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if (countCategorySelected >= 3) {
-                    AccessToken.setCurrentAccessToken(currentAccessToken);
-                    loginButton.setVisibility(View.GONE);
-                } //else
-                    //LoginManager.getInstance().logOut(); //FIXME
-            }
-        };
+        if (isConnect()==true){
+            //FACEBOOOK LOGIN
+            loginButton = (LoginButton) findViewById(R.id.login_button);
+            callbackManager = CallbackManager.Factory.create();
 
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-            }
-        };
-
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
-
-        createCallbackFacebook();
-
-        //END FACEBOOK LOGIN
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
-        loginButton.registerCallback(callbackManager, callback);
-
-
-        uploadCategory();
-
-        //RegistrationToken Wordpress
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    //Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                } else {
-                   // Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+            accessTokenTracker = new AccessTokenTracker() {
+                @Override
+                protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                    if (countCategorySelected >= 3) {
+                        AccessToken.setCurrentAccessToken(currentAccessToken);
+                        loginButton.setVisibility(View.GONE);
+                    } //else
+                    LoginManager.getInstance().logOut();
                 }
-            }
-        };
+            };
 
-        clearPreferencesLogin();
+            profileTracker = new ProfileTracker() {
+                @Override
+                protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                }
+            };
 
-        registerReceiver();
-        wordpressRegisterReceiver();
+            accessTokenTracker.startTracking();
+            profileTracker.startTracking();
 
-        //Google
-        configureGoogleLogin();
+            createCallbackFacebook();
 
-        //TWITTER
-        configureTwitterLogin();
+            //END FACEBOOK LOGIN
+            loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
+            loginButton.registerCallback(callbackManager, callback);
 
+            //Google
+            configureGoogleLogin();
 
+            //TWITTER
+            configureTwitterLogin();
+
+            //RegistrationToken Wordpress
+            mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    boolean sentToken = sharedPreferences
+                            .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                    if (sentToken) {
+                        //Toast.makeText(CreatePerfil.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Toast.makeText(CreatePerfil.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+
+            registerReceiver();
+            wordpressRegisterReceiver();
+
+        }else{
+            createSimpleDialog();
+
+        }
     }
 
+    private void uploadData() {
+
+        listOptions = (ArrayList<Interests>) new Interests().createList();
+        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.clear().commit();
+        int sizeList =  listOptions.size();
+        for (int i =0; i<sizeList; i++){
+            editor.putBoolean(String.valueOf(listOptions.get(i).getId()), false).commit();
+        }
+        editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).commit();
+
+        SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorUser =  prefsUser.edit();
+        editorUser.clear().commit();
+    }
+
+
     private void wordpressRegisterReceiver() {
+
         if (checkPlayServices()) {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
     }
+
+    private boolean isConnect() {
+
+        boolean bConectado = false;
+        ConnectivityManager connec = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] redes = connec.getAllNetworkInfo();
+        for (int i = 0; i < 2; i++) {
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                bConectado = true;
+            }
+        }
+        return bConectado;
+    }
+
+    private void createCallbackFacebook() {
+
+        callback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(final JSONObject object, GraphResponse response) {
+                                try{
+                                    UserLogin userLogin=  new UserLogin(object.getString("email"),
+                                            object.getString("name") + " " + object.getString("last_name"),
+                                            "",
+                                            null,
+                                            object.getJSONObject("location").getString("name"),
+                                            null, 0,"http://graph.facebook.com/"+object.getString("id")+"/picture?type=large",
+                                            getString(R.string.name_facebook));
+
+                                    uploadDialog();
+
+                                    new DownloadTask().execute(userLogin);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name, email,gender,birthday, location");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                createCallbackFacebook();
+                configureTwitterLogin();
+                wordpressRegisterReceiver();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                createSimpleDialog();
+            }
+        };
+    }
+
+    private void configureGoogleLogin() {
+        //Initializing google signin option
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestEmail()
+                .build();
+
+        //Initializing signinbutton
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setScopes(gso.getScopeArray());
+
+        //Initializing google api client
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this , this )
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Plus.API)
+                .build();
+
+        //Setting onclick listener to signing button
+        signInButton.setOnClickListener(this);
+    }
+
 
     private void configureTwitterLogin() {
 
@@ -250,7 +356,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                                 User user = userResult.data;
                                 UserLogin userLogin = new UserLogin(userResult.data.email,
                                         user.name,
-                                        null,
+                                        "",
                                         null,
                                         user.location,
                                         null, 0, user.profileImageUrl,
@@ -274,78 +380,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
             });
     }
 
-    private void configureGoogleLogin() {
-        //Initializing google signin option
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
-                .requestEmail()
-                .build();
-
-        //Initializing signinbutton
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
-        signInButton.setScopes(gso.getScopeArray());
-
-        //Initializing google api client
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .addApi(Plus.API)
-                .build();
-
-        //Setting onclick listener to signing button
-        signInButton.setOnClickListener(this);
-    }
-
-    private void createCallbackFacebook() {
-
-        callback = new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(final JSONObject object, GraphResponse response) {
-                                Log.v("LoginActivity", response.toString());
-
-                                try{
-
-                                    Profile profile = Profile.getCurrentProfile();
-                                    UserLogin userLogin=  new UserLogin(object.getString("email"),
-                                            profile.getFirstName(),
-                                            profile.getLastName(),
-                                            convertFormat(object.getString("birthday")),
-                                            object.getJSONObject("location").getString("name"),
-                                            null, 0,profile.getProfilePictureUri(110,110).toString(),
-                                            getString(R.string.name_facebook));
-
-                                    uploadDialog();
-
-                                    new DownloadTask().execute(userLogin);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name, email,gender,birthday, location");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                createSimpleDialog();
-            }
-        };
-    }
 
     private void uploadDialog() {
         dialog = ProgressDialog.show(CreatePerfil.this, getString(R.string.msg_dialog_title),
@@ -360,12 +394,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
 
     }
 
-    private void clearPreferencesLogin() {
-
-        SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor =  prefs.edit();
-        editor.clear().commit();
-    }
 
     private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
@@ -408,9 +436,9 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         WordpressApiAdapter.getApiServiceCustomer(ApiConstants.BASE_URL_CUSTOMER)
                 .saveCustomer(userLogin.getFirstName(),
                         userLogin.getLastName(),
-                        userLogin.getEmail(),
-                        userLogin.getBirthday(),
-                        userLogin.getLocation(),
+                        isNull(userLogin.getEmail()),
+                        "",
+                        isNull(userLogin.getLocation()),
                         userLogin.getSocialNetwork(),
                         userLogin.getToken(), new Callback<JsonObject>() {
                             @Override
@@ -419,16 +447,22 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                                 if (object.get("success").equals("true")){
                                     int id = object.get("id").getAsInt();
                                     userLogin.setId(id);
+                                    saveUser(userLogin);
                                 }
-                                saveUser(userLogin);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
                                 Log.d("Error" , error.getMessage());
-
                             }
                         });
+    }
+
+    private String isNull(String userLogin) {
+        if (userLogin==null)
+            return "";
+        else
+        return userLogin;
     }
 
     private void saveUser(UserLogin userLogin) {
@@ -621,18 +655,8 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         SharedPreferences.Editor editor =  prefs.edit();
         editor.putBoolean(String.valueOf(objet), flag).commit();
     }
-    private void uploadCategory() {
 
-        listOptions = (ArrayList<Interests>) new Interests().createList();
-        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor =  prefs.edit();
-        editor.clear().commit();
-        int sizeList =  listOptions.size();
-        for (int i =0; i<sizeList; i++){
-            editor.putBoolean(String.valueOf(listOptions.get(i).getId()), false).commit();
-        }
-        editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).commit();
-    }
+
 
     //GOOGLE LOGIN
 
@@ -657,18 +681,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         }
     }
 
-    private boolean isConnect() {
-
-        boolean bConectado = false;
-        ConnectivityManager connec = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] redes = connec.getAllNetworkInfo();
-        for (int i = 0; i < 2; i++) {
-            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
-                bConectado = true;
-            }
-        }
-        return bConectado;
-    }
 
     @Override
     public void onConnectionFailed( ConnectionResult connectionResult) {
@@ -682,12 +694,23 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
             uploadDialog();
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
-
+            Uri urlImagen;
+            String urlIma =null;
             //Displaying name and email
+
             Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            UserLogin userLogin=  new UserLogin(acct.getEmail(), acct.getFamilyName(),
-                    acct.getGivenName(),  person.getBirthday(),person.getCurrentLocation(),
-                    null,0,acct.getPhotoUrl().toString(),
+            urlImagen = acct.getPhotoUrl();
+            if (urlImagen==null)
+                urlIma = person.getImage().getUrl();
+            else
+                urlIma = urlImagen.toString();
+
+            UserLogin userLogin=  new UserLogin(acct.getEmail(),
+                    acct.getGivenName() +" "+acct.getFamilyName(),
+                    "",
+                    person.getBirthday(),
+                    person.getCurrentLocation(),
+                    null,0,urlIma,
                     getString(R.string.name_google));
 
 
@@ -717,6 +740,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                         createCallbackFacebook();
                         configureTwitterLogin();
                         wordpressRegisterReceiver();
+                        finish();
                     }
                 });
 

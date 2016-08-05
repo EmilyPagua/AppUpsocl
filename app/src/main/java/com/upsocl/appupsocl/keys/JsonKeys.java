@@ -1,4 +1,4 @@
-package com.upsocl.appupsocl.io.model;
+package com.upsocl.appupsocl.keys;
 
 /**
  * Created by leninluque on 12-11-15.

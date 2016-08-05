@@ -81,6 +81,10 @@
         <activity
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
+            <provider
+                android:name="com.facebook.FacebookContentProvider"
+                android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
+                android:exported="true" />
         </activity>
 
         <!-- Login Facebook -->
@@ -135,17 +139,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.fragments.PreferencesFragment"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.fragments.HelpFragment"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.fragments.InterestsFragment"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.fragments.HomePrimaryFragment" />
-        <activity android:name=".ui.fragments.BookmarksFragment" />
-        <activity
             android:name=".NotificationActivity"
             android:label="@string/app_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -156,10 +149,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity android:name=".GoogleActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"

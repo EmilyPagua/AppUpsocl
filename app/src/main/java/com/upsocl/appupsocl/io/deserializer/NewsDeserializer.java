@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.upsocl.appupsocl.domain.News;
-import com.upsocl.appupsocl.io.model.JsonKeys;
+import com.upsocl.appupsocl.keys.JsonKeys;
 
 
 import java.lang.reflect.Type;
