@@ -147,25 +147,6 @@ public class HomeActivity extends AppCompatActivity
 
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
 
-
-        //RegistrationToken Wordpress
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        //RegistrationToken Wordpress
-
     }
 
     @Override
@@ -290,6 +271,8 @@ public class HomeActivity extends AppCompatActivity
 
                         break;
                     case R.id.nav_interests:
+
+                        Toast.makeText(HomeActivity.this, R.string.msg_selected_category_preferences, Toast.LENGTH_SHORT).show();
                         visibleGoneElement();
                         SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
                         InterestsFragment interestsFragment = new InterestsFragment();

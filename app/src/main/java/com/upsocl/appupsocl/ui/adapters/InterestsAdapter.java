@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.upsocl.appupsocl.R;
 import com.upsocl.appupsocl.domain.Interests;
@@ -40,11 +41,15 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
     @Override
     public void onBindViewHolder(InterestsHolder holder, int position) {
         holder.setPosition(position);
-        holder.checkBox.setChecked(interests.get(position).getIsCheck());
-        holder.checkBox.setText(interests.get(position).getTitle());
-        holder.image.setImageResource(interests.get(position).getImagen());
 
+        holder.image.setImageResource(interests.get(position).getImagen());
+        holder.txtCategory.setText(interests.get(position).getTitle());
         holder.setInterestObj(interests.get(position));
+        if (interests.get(position).getIsCheck())
+            holder.checkBox.setChecked(interests.get(position).getIsCheck());
+        else
+
+            holder.checkBox.setVisibility(View.INVISIBLE);
     }
 
 
@@ -77,6 +82,7 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
         private Interests objet;
         private ArrayList<Interests> newsArrayList;
         private int position;
+        private TextView txtCategory;
 
         public InterestsHolder(final View itemView, ArrayList<Interests> interestses) {
 
@@ -84,6 +90,7 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
             checkBox = (CheckBox) itemView.findViewById(R.id.idCategory);
             newsArrayList =  interestses;
             image = (ImageView) itemView.findViewById(R.id.img_interest);
+            txtCategory =(TextView) itemView.findViewById(R.id.txtCategory);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,6 +101,9 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
 
                     newsArrayList.get(position).setIsCheck(flag);
                     savePreferences(objet.getId(), flag);
+                    if (flag)
+                        checkBox.setVisibility(View.VISIBLE);
+
                     notifyDataSetChanged();
                 }
             });

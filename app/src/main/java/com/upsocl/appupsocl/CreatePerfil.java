@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -92,7 +91,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String TAG = "CreatePerfil";
+    private static final String TAG = "CreateProfile";
 
 
     private LoginButton loginButton;
@@ -276,7 +275,7 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
                             public void onCompleted(final JSONObject object, GraphResponse response) {
                                 try{
                                     UserLogin userLogin=  new UserLogin(object.getString("email"),
-                                            object.getString("name") + " " + object.getString("last_name"),
+                                            object.getString("name") ,
                                             "",
                                             null,
                                             object.getJSONObject("location").getString("name"),
@@ -478,24 +477,6 @@ public class CreatePerfil extends AppCompatActivity implements Callback<JsonObje
         editor.putInt(CustomerKeys.DATA_USER_ID, userLogin.getId());
         editor.putString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, userLogin.getSocialNetwork());
         editor.commit();
-    }
-
-    @Nullable
-    private String convertFormat(String birthday) {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-
-        Date date =  null;
-        try {
-
-            date = formatter.parse(birthday);
-            return formatter2.format(date);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private void registerReceiver(){

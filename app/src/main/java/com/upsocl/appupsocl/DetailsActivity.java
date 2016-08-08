@@ -72,7 +72,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     //PUBLICITY
     private AdView mAdView;
-    InterstitialAd mInterstitialAd;
+    private InterstitialAd mInterstitialAd;
     //END PUBLICITY
 
     //Element Facebook
@@ -173,7 +173,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void beginPlayingGame() {
         // Play for a while, then display the New Game Button
-        System.out.println("-------------------------------------------------------");
     }
 
     private void requestNewInterstitial() {
@@ -577,7 +576,29 @@ public class DetailsActivity extends AppCompatActivity {
         if (mAdView != null) {
             mAdView.destroy();
         }
+
         super.onDestroy();
+    }
+
+    @Override
+    public void onStop() {
+        clearWebView(R.id.webView);
+        clearWebView(R.id.webViewSegundary);
+        clearWebView(R.id.webViewThree);
+        clearWebView(R.id.webViewFour);
+        clearWebView(R.id.webViewFive);
+
+        vf.clearAnimation();
+        this.finish();
+        super.onStop();
+    }
+
+    private void clearWebView(int webViewDetail) {
+        WebView webView = (WebView) findViewById(webViewDetail);
+        webView.stopLoading();
+        webView.removeAllViews();
+        webView.destroy();
+        webView = null;
     }
 
 }

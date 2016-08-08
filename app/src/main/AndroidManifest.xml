@@ -25,6 +25,7 @@
         <!-- Actividad principal - Login -->
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.segundary" >
 
             <intent-filter>
@@ -79,6 +80,7 @@
 
         <!-- Create preferences -->
         <activity
+            android:screenOrientation="portrait"
             android:name=".CreatePerfil"
             android:theme="@style/AppTheme.segundary">
 
@@ -88,8 +90,10 @@
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
             android:exported="true" />
+
         <!-- Login Facebook -->
         <activity
+            android:screenOrientation="portrait"
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
@@ -97,6 +101,7 @@
 
         <!-- home -->
         <activity
+            android:screenOrientation="portrait"
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -112,6 +117,7 @@
 
         <!-- Resultado de busqueda -->
         <activity
+            android:screenOrientation="portrait"
             android:name=".SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:launchMode="singleTop"
@@ -133,6 +139,7 @@
 
         <!-- Detalle del Post -->
         <activity
+            android:screenOrientation="portrait"
             android:name=".DetailsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -140,6 +147,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".NotificationActivity"
             android:label="@string/app_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -162,11 +170,13 @@
 
         <!-- Include the AdActivity configChanges and theme. -->
         <activity
+            android:screenOrientation="portrait"
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".PruebaActivity"
             android:label="@string/title_activity_prueba"
             android:theme="@style/AppTheme.NoActionBar">

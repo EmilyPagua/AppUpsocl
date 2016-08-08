@@ -36,15 +36,10 @@ public class ApiConstants {
     //http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=creatividad/filter[category_name]=verde
     //http://upsocl.com/wp-json/wp/v2/posts/16558
 
-   // "categories": [723, 52], [723, 52],
-
     //Sender ID: 149087864796
     //Server API key AIzaSyDqPOHOJq0dwmEewLpTuOqP0Y3U95-QB9g
     //filter[category_name]=creatividad&filter[category_name]=verde
     //http://quiz.upsocl.com/dev/wp-json/wp/v2/customers?name=emily&last_name=pagua&email=emily@gmail.com&birthday=1990-02-01&location=caracas&social_network_login=dsf&registration_id=3
 
-    //http://quiz.upsocl.com/dev/wp-json/wp/v2/customers?name=Mily&last_name=pagua&email=emily@gmail.com&birthday=1990-02-01&location=caracas&social_network_login=dsf&registration_id=3/?name
-    //http://quiz.upsocl.com/dev/wp-json/wp/v2/customers?name=Mily&last_name=Pagua&email=emilyfpg%40gmail.com&birthday=1990-06-07&location=Caracas%2C+Venezuela&registration_id=asdfasfdasfgvbn436345673657-456745784578-
-    //http://wpruebas.dev/wp-json/posts?filter[cat]=5
 }
 

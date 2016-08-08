@@ -22,6 +22,7 @@
 
     <string name="gcm_send_message">Token entregado con exito </string>
     <string name="msg_save_wordpress">Registro procesado</string>
+    <string name="msg_selected_category_preferences">Seleccione las categorias de su preferencia</string>
     <string name="msg_dialog_title">Validando datos</string>
     <string name="msg_dialog_content">Espere, procesando datos..!</string>
     <string name="token_error_message">Error en token</string>
@@ -104,9 +105,8 @@
         las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser
         un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
 
-    <string name="mean_detail">    Somos una compañía de medios con la misión de volver a conectar
-           a las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan
-           ser un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
+    <string name="mean_detail"> Teníamos una idea y misión muy clara de lo que queríamos hacer, faltaba el nombre…
+        Upsocl es la unión de dos palabras: “up”, arriba en inglés y nuestra propia versión de la abreviación de “social”.  Pero tú le puedes decir como quieras.</string>
 
 
     <string name="welcome">Theme Example</string>

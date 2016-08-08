@@ -11,7 +11,6 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#BDBDBD"
         android:layout_height="match_parent">
 
         <ImageView
@@ -51,22 +50,22 @@
             android:background="@color/cardBgColor"/>
 
             <ImageButton
-                android:background="#BDBDBD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ima_bookmarks"
                 android:layout_below="@+id/line1"
                 android:onClick="share"
+                android:background="@color/tw__solid_white"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_bookmark_white_36dp"/>
+                android:src="@mipmap/ic_bookmarks"/>
 
             <ImageButton
-                android:background="#BDBDBD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ima_share"
-                android:src="@drawable/ic_share_white_36dp"
+                android:src="@mipmap/ic_share"
                 android:layout_below="@+id/line1"
+                android:background="@color/tw__solid_white"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 />

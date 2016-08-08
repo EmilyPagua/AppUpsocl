@@ -60,6 +60,7 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
         ima_bookmarks = (ImageButton)convertView.findViewById(R.id.ima_bookmarks);
         ima_share = (ImageButton) convertView.findViewById(R.id.ima_share);
 
+
         String author = "Por: "+news.getAuthor();
         String  date = "El: "+news.getDate();
 
