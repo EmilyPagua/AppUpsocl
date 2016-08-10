@@ -92,17 +92,8 @@
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85458c0f-4c40-48bf-8585-dfab3ec1a465" name="Default" comment="Agregado el refresh de la lista de post en cada aplicación">
+    <list default="true" id="85458c0f-4c40-48bf-8585-dfab3ec1a465" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/HomeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/HomePrimaryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/HomePrimaryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/HomeSegundaryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/HomeSegundaryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/InterestsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/InterestsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/NewsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/NewsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home_primary.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home_primary.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home_segundary.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home_segundary.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_news.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_news.xml" />
     </list>
     <list id="7a0291b1-e861-4b26-98a0-e57e50c9eda6" name="Cambios" comment="eliminado algunos archivos que no se usan" />
     <ignored path="AppUpsocl.iws" />
@@ -3749,7 +3740,13 @@
       <option name="project" value="LOCAL" />
       <updated>1470861807479</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Agregado el actualizar de la lista de post en cada aplicación, el actualizar de la busqueda.">
+      <created>1470865659295</created>
+      <option name="number" value="00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1470865659295</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3842,7 +3839,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Modificado opciones del menu lateral junto con el contenido que poseen" />
     <MESSAGE value="creadas categorias e intereses." />
     <MESSAGE value="agregado el author al detalle de los posts" />
     <MESSAGE value="creadas las notificaciones, modificado crear perfil, y home.." />
@@ -3867,7 +3863,8 @@
     <MESSAGE value="modificado Manifes, error en provide de facebook" />
     <MESSAGE value="Modificado nombre de paquete del proyecto, modificado nombre de la clase perfil.&#10;" />
     <MESSAGE value="Modificado nombre de paquete del proyecto, modificado nombre de la clase perfil. &#10;Modificado login de google y facebook&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modificado nombre de paquete del proyecto, modificado nombre de la clase perfil. &#10;Modificado login de google y facebook&#10;" />
+    <MESSAGE value="Agregado el actualizar de la lista de post en cada aplicación, el actualizar de la busqueda." />
+    <option name="LAST_COMMIT_MESSAGE" value="Agregado el actualizar de la lista de post en cada aplicación, el actualizar de la busqueda." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
