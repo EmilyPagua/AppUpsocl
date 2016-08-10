@@ -69,14 +69,11 @@ import com.upsocl.upsoclapp.ui.fragments.InterestsFragment;
 import com.upsocl.upsoclapp.ui.fragments.PreferencesFragment;
 import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
-
-import java.util.ArrayList;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener  {
 
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
     private SearchView searchView;
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -84,7 +81,6 @@ public class HomeActivity extends AppCompatActivity
     private ViewPager viewPager;
     private FrameLayout frameLayout;
     private SharedPreferences prefs, prefsInterests, prefsUser;
-    private ArrayList<Interests> categoryArrayList;
     private Gson gs = new Gson();
 
     private View headerView;
@@ -99,8 +95,7 @@ public class HomeActivity extends AppCompatActivity
     private int tabPosition;
     private AppBarLayout appBarLayout;
 
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private boolean isReceiverRegistered;
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -152,64 +147,8 @@ public class HomeActivity extends AppCompatActivity
         //GOOGLE
 
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
-
-
-
-        //RegistrationToken Wordpress
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                /*if (sentToken) {
-                    Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                } else {
-                     Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                }*/
-            }
-        };
-
-        registerReceiver();
-        wordpressRegisterReceiver();
-        //RegistrationToken Wordpress
-
-    }
-    //RegistrationToken Wordpress
-
-    private void registerReceiver(){
-        if(!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
-            isReceiverRegistered = true;
-        }
     }
 
-    private void wordpressRegisterReceiver() {
-
-        if (checkPlayServices()) {
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-        }
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.i("Home Activity", "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-    //END RegistrationToken Wordpress
 
     @Override
     public void onConnectionFailed( ConnectionResult connectionResult) {
@@ -499,8 +438,6 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-
-
     private void goActivityLogin() {
 
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
@@ -551,7 +488,6 @@ public class HomeActivity extends AppCompatActivity
         imagenURL = prefs2.getString(CustomerKeys.DATA_USER_IMAGEN_URL,null);
 
         tv_username.setText(userName +" " +userLastName);
-        categoryArrayList = gs.fromJson(getIntent().getStringExtra("listCategory"), ArrayList.class);
         if (imagenURL!=null)
             new DownloadImage((ImageView)headerView.findViewById(R.id.img_profile),getResources()).execute(imagenURL);
     }
@@ -619,42 +555,12 @@ public class HomeActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        mGoogleApiClient.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Home Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.upsocl.appupsocl/http/host/path")
-        );
-//        AppIndex.AppIndexApi.start(mGoogleApiClient, viewAction);  //FIXME
-        Log.v("HomeActivity", "Restart");
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       Action viewAction = Action.newAction(  //FIXME
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Home Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.upsocl.appupsocl/http/host/path")
-        );
-       // AppIndex.AppIndexApi.end(mGoogleApiClient, viewAction); //FIXME
-        // mGoogleApiClient.disconnect();  //FIXME
-        Log.v("HomeActivity", "Restart");
     }
     //End dialogeMessage
 
@@ -680,7 +586,6 @@ public class HomeActivity extends AppCompatActivity
 
         Log.v("HomeActivity", "onResume");
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
-        registerReceiver();
         uploadPager();
 
     }
@@ -689,7 +594,5 @@ public class HomeActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         Log.v("HomeActivity", "onPause");
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
-
 }

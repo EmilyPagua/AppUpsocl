@@ -1,15 +1,19 @@
 package com.upsocl.upsoclapp;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,6 +62,8 @@ import com.upsocl.upsoclapp.io.WordpressApiAdapter;
 import com.upsocl.upsoclapp.keys.CategoryKeys;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
+import com.upsocl.upsoclapp.notification.QuickstartPreferences;
+import com.upsocl.upsoclapp.notification.RegistrationIntentService;
 
 import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
@@ -99,7 +106,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private SignInButton signInButton;
     private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
-    private int RC_SIGN_IN =  100;
+    private int RC_SIGN_IN =  9001;//100
     //END GOOGLE LOGIN
 
 
@@ -107,6 +114,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private TwitterLoginButton loginButtonTwitter;
 
     //END TWITTER LOGIN
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private boolean isReceiverRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,12 +192,66 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             //TWITTER
             configureTwitterLogin();
 
+            //RegistrationToken Wordpress
+            mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    boolean sentToken = sharedPreferences
+                            .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                /*if (sentToken) {
+                    Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                } else {
+                     Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                }*/
+                }
+            };
+
+            registerReceiver();
+            wordpressRegisterReceiver();
+            //RegistrationToken Wordpress
+
+
         }else{
             createSimpleDialog();
-
         }
     }
 
+    //RegistrationToken Wordpress
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+            isReceiverRegistered = true;
+        }
+    }
+
+    private void wordpressRegisterReceiver() {
+
+        if (checkPlayServices()) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i("Home Activity", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+    //END RegistrationToken Wordpress
     private void uploadData() {
 
         listOptions = (ArrayList<Interests>) new Interests().createList();
@@ -268,6 +333,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         };
     }
 
+    //----------GOOGLE CONFIGURE
     private void configureGoogleLogin() {
         //Initializing google signin option
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -291,6 +357,62 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         signInButton.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == signInButton)
+            signIn();
+    }
+
+
+    private void signIn() {
+        if (isConnect()==true){
+            //Creating an intent
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            //Starting intent for result
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
+        else{
+            createSimpleDialog();
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+
+        //If the login succeed
+        if (result.isSuccess()) {
+            uploadDialog();
+            //Getting google account
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Uri urlImagen;
+            String urlIma =null;
+            //Displaying name and email
+
+            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            urlImagen = acct.getPhotoUrl();
+            if (urlImagen==null)
+                urlIma = person.getImage().getUrl();
+            else
+                urlIma = urlImagen.toString();
+
+            UserLogin userLogin=  new UserLogin(acct.getEmail(),
+                    acct.getGivenName() +" "+acct.getFamilyName(),
+                    "",
+                    person.getBirthday(),
+                    person.getCurrentLocation(),
+                    null,0,urlIma,
+                    getString(R.string.name_google));
+
+
+            new DownloadTask().execute(userLogin);
+
+            //Loading image
+        } else {
+            //If login fails
+            Toast.makeText(this, "Problemas al iniciar sesión, intente con otra cuenta o red social", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //END ----------GOOGLE CONFIGURE
 
     private void configureTwitterLogin() {
 
@@ -362,12 +484,11 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             //Calling a new function to handle signin
-            handleSignInResult(result);
 
+            //Toast.makeText(this, "estado de google: "+result.getStatus(), Toast.LENGTH_LONG).show();
+            handleSignInResult(result);
         }
         loginButtonTwitter.onActivityResult(requestCode, resultCode, data);
-
-
     }
 
 
@@ -572,75 +693,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     }
 
 
-
-    //GOOGLE LOGIN
-
-    @Override
-    public void onClick(View v) {
-
-        if (v == signInButton)
-            signIn();
-
-    }
-
-
-    private void signIn() {
-        if (isConnect()==true){
-            //Creating an intent
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-            //Starting intent for result
-            startActivityForResult(signInIntent, RC_SIGN_IN);
-        }
-        else{
-            createSimpleDialog();
-        }
-    }
-
-
     @Override
     public void onConnectionFailed( ConnectionResult connectionResult) {
         uploadDialog();
     }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-
-        //If the login succeed
-        if (result.isSuccess()) {
-            uploadDialog();
-            //Getting google account
-            GoogleSignInAccount acct = result.getSignInAccount();
-            Uri urlImagen;
-            String urlIma =null;
-            //Displaying name and email
-
-            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            urlImagen = acct.getPhotoUrl();
-            if (urlImagen==null)
-                urlIma = person.getImage().getUrl();
-            else
-                urlIma = urlImagen.toString();
-
-            UserLogin userLogin=  new UserLogin(acct.getEmail(),
-                    acct.getGivenName() +" "+acct.getFamilyName(),
-                    "",
-                    person.getBirthday(),
-                    person.getCurrentLocation(),
-                    null,0,urlIma,
-                    getString(R.string.name_google));
-
-
-            new DownloadTask().execute(userLogin);
-
-            //Loading image
-        } else {
-            //If login fails
-            Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
-
-        }
-    }
-
-    //END GOOGLE LOGIN
-
 
     public void createSimpleDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -662,5 +718,17 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         alertDialog.show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+    }
 
 }

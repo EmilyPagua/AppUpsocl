@@ -20,8 +20,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
-        if (prefs.getString(CustomerKeys.DATA_USER_FIRST_NAME,"").equals("")){*/
+        SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        if (prefs.getString(CustomerKeys.DATA_USER_FIRST_NAME,"").equals("")){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -30,12 +30,11 @@ public class MainActivity extends Activity {
                     MainActivity.this.finish();
                 }
             }, SPLASH_DISPLAY_LENGTH);
-        /*}else{
+        }else{
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
             MainActivity.this.finish();
-        }*/
-
+        }
     }
 
     @Override
