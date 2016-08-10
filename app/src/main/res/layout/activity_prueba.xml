@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.upsocl.appupsocl.PruebaActivity">
+    tools:context="com.upsocl.upsoclapp.PruebaActivity">
 
     <include layout="@layout/toolbar_segundary"
         android:id="@+id/include" />

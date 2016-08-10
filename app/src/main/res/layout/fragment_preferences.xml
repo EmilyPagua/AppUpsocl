@@ -17,12 +17,70 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_below="@+id/toolbar_segundary"
-            android:id="@+id/linearLayout1"
+            android:id="@+id/linearLayout0"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Perfil"
+                android:id="@+id/tv_profile" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line0"
+            android:layout_below="@+id/linearLayout0"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/cardBgColor"/>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/detail"
+            android:layout_below="@+id/line0"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Prueba Prueba"
+                android:id="@+id/nameProfile" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="prueba@prueba.com"
+                android:id="@+id/emailProfile" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Prueba, Prueba"
+                android:id="@+id/locationProfile" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line11"
+            android:layout_below="@+id/detail"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/cardBgColor"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_below="@+id/line11"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,6 +199,8 @@
                 android:id="@+id/logout_twitter" />
 
         </LinearLayout>
+
+
 
     </RelativeLayout>
 </FrameLayout>

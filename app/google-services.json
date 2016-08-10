@@ -1,20 +1,95 @@
 {
   "project_info": {
-    "project_number": "417856637205",
-    "project_id": "upsoclprueba"
+    "project_number": "741962849728",
+    "project_id": "upsocl-app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:417856637205:android:0b13bf6e4b9a8f0f",
+        "mobilesdk_app_id": "1:741962849728:android:0b13bf6e4b9a8f0f",
         "android_client_info": {
           "package_name": "com.upsocl.appupsocl"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "741962849728-5iivbm6p3qct6jqivakr4i7k6dvq00ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAqKVCQIhljTMoJM_ufuPpaUbb7VG7LpTQ"
+          "current_key": "AIzaSyBtVptCEIemojnLOQhkAf74dByMtejKS2c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741962849728:android:7cf0c28263363376",
+        "android_client_info": {
+          "package_name": "com.upsocl.upsoclapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741962849728-5iivbm6p3qct6jqivakr4i7k6dvq00ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtVptCEIemojnLOQhkAf74dByMtejKS2c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741962849728:android:37c40d49da709b67",
+        "android_client_info": {
+          "package_name": "cl.upsocl.upsoclapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741962849728-v77rmc3fl4i3lafebvrv6mdsqm7a55tp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cl.upsocl.upsoclapp",
+            "certificate_hash": "7ADEA145C052D7B3223FA2CE23654F96DE3A0228"
+          }
+        },
+        {
+          "client_id": "741962849728-5iivbm6p3qct6jqivakr4i7k6dvq00ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtVptCEIemojnLOQhkAf74dByMtejKS2c"
         }
       ],
       "services": {

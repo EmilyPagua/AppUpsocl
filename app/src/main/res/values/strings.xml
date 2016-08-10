@@ -18,8 +18,6 @@
     <string name="banner_ad_unit_id_2">ca-app-pub-3940256099942544/6300978111</string>
 
 
-    <string name="gcm_defaultSenderId">451147762930</string>
-
     <string name="gcm_send_message">Token entregado con exito </string>
     <string name="msg_save_wordpress">Registro procesado</string>
     <string name="msg_selected_category_preferences">Seleccione las categorias de su preferencia</string>
@@ -27,7 +25,14 @@
     <string name="msg_dialog_content">Espere, procesando datos..!</string>
     <string name="token_error_message">Error en token</string>
 
+    <!-- Facebook 1232475846804351 -->
+    <string name="facebook_app_id_vieja">278628459160126</string>
     <string name="facebook_app_id">278628459160126</string>
+
+    <!-- Google -->
+    <string name="gcm_defaultSenderId_vieja">451147762930</string>
+    <string name="gcm_defaultSenderId">741962849728</string>
+
     <string name="msg_detail_facebook">WWW.upsocl.com</string>
 
     <!-- Twitter -->
@@ -125,5 +130,56 @@
     <string name="banner_up">ca-mb-app-pub-7682123866908966/2346534963</string>
     <string name="banner_down">ca-mb-app-pub-7682123866908966/7102497723</string>
     <string name="banner_popup">ca-mb-app-pub-7682123866908966/8579205603</string>
+
+    <string name="privacity_1">Upsocl, es una compañía de medios con la misión de volver a conectar a
+        las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser una
+        campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad, la presente
+        política de privacidad fue actualizada el 08 de agosto de 2016; es posible que actualicemos las
+        políticas se seguridad en las próximas versiones de la aplicación, por lo que es recomendable
+        leer la misma con regularidad para mantenerse informado.</string>
+
+    <string name="privacity_2">El objetivo de esta Política de privacidad es informarle sobre los
+        datos que recogemos, los motivos por los que los recogemos y lo que hacemos con ellos. Esta
+        información es importante, por lo que esperamos que dediques el tiempo necesario para leerla
+        detenidamente, esto con la finalidad de brindar la total seguridad de que usted está en una
+        aplicación que protege su información e identidad.</string>
+
+    <string name="privacity_3">Seguridad y protección de datos personales: La seguridad de sus datos
+        personales es una prioridad para esta aplicación móvil, la cual ofrece seguridad total. Sin embargo,
+        no nos responsabilizamos por las actividades de hackers o terceros que realizan acciones para dañar y romper la seguridad.
+        Teniendo en consideración las características técnicas de transmisión de información a
+        través de Internet, ningún sistema es 100% seguro o exento de ataques.</string>
+
+    <string name="privacity_4">Privacidad: esta aplicación respeta la privacidad de cada uno de sus
+        visitantes. Toda información ingresada por el usuario a través de nuestra aplicaciòn movila,
+        será tratada con la mayor seguridad, y sólo será usada de acuerdo con las limitaciones
+        establecidas en este documento</string>
+
+    <string name="privacity_5">Esta aplicación obtiene los datos personales
+        suministrados directa, voluntaria y conscientemente por cada usuario. La información personal
+        que solicitamos corresponde a datos básicos, los cuales serán adquiridos en la información obtenida
+        según la red social con la que se inicie sesión .</string>
+    <string name="privacity_6">Al suministrar datos personales, automáticamente
+        estará autorizandonos para usar sus datos personales de conformidad con nuestra Política de Privacidad,
+        lo cual comprende los siguientes eventos:</string>
+    <string name="privacity_7">1) Para incrementar nuestra oferta al mercado y hacer publicidad de productos
+        que pueden ser de sumo interés para el usuario; incluyendo los llamados para confirmación de su información.</string>
+    <string name="privacity_8">2) Para personalizar y mejorar nuestros productos y servicios.</string>
+    <string name="privacity_9">3) para enviar correos electrónicos con nuestros boletines, responder
+        inquietudes o comentarios, y mantener informado a nuestros usuarios.</string>
+
+    <string name="privacity_10">La aplicación móvil Upsocl, tiene el compromiso permanente de presentar
+         nuevas soluciones que mejoren el valor de sus productos y servicios; con el objeto de ofrecer
+         oportunidades especiales de mercado, como incentivos, promociones y novedades actualizadas.
+         Upsocl.com no comercializa, vende ni alquila su base de datos a otras empresas.</string>
+
+    <string name="privacity_11">En ningún momento se utiliza o revela a terceros, la información individual
+        de los usuarios así como los datos sobre las visitas, o la información que nos proporcionan: nombre,
+        dirección, dirección de correo electrónico, localización, fecha de nacimiento, etc.</string>
+
+    <string name="privacity_12">La Aplicación Móvil Upsocl, se reserva en forma exclusiva el derecho
+        de modificar, rectificar, alterar, agregar o eliminar cualquier punto del presente escrito en
+        cualquier momento y sin previo aviso..</string>
+
 
 </resources>
