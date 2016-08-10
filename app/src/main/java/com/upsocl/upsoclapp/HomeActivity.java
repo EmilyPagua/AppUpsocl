@@ -59,8 +59,6 @@ import com.google.gson.Gson;
 import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
-import com.upsocl.upsoclapp.notification.QuickstartPreferences;
-import com.upsocl.upsoclapp.notification.RegistrationIntentService;
 import com.upsocl.upsoclapp.ui.DownloadImage;
 import com.upsocl.upsoclapp.ui.adapters.PagerAdapter;
 import com.upsocl.upsoclapp.ui.fragments.BookmarksFragment;
@@ -254,7 +252,6 @@ public class HomeActivity extends AppCompatActivity
                         tabs.setVisibility(View.VISIBLE);
                         viewPager.setVisibility(View.VISIBLE);
                         frameLayout.setVisibility(View.INVISIBLE);
-                        uploadPager();
 
                         getSupportActionBar().setTitle(item.getTitle());
                         break;
@@ -284,6 +281,7 @@ public class HomeActivity extends AppCompatActivity
                                 .commit();
 
                         fragmentTransacction = true;
+                        uploadPager();
                         break;
                     case R.id.nav_manage:
                         visibleGoneElement();
@@ -294,7 +292,6 @@ public class HomeActivity extends AppCompatActivity
                         fragmentManager.beginTransaction()
                                 .replace(R.id.content_frame, fragment)
                                 .commit();
-
                         fragmentTransacction = true;
 
                         break;
@@ -582,12 +579,9 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        super.onResume();
-
+        super.onResume();//uploadPager();
         Log.v("HomeActivity", "onResume");
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
-        uploadPager();
-
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.upsocl.upsoclapp.HomeActivity;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.ui.adapters.InterestsAdapter;

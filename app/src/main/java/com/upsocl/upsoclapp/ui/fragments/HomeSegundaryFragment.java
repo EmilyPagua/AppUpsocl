@@ -3,6 +3,7 @@ package com.upsocl.upsoclapp.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,10 +38,34 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
     private String categoryName;
     private Boolean isHome;
 
+    private SwipeRefreshLayout swipeContainer;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home_segundary, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home_segundary, container, false);
+
+        uploadView(root);
+
+        swipeContainer = (SwipeRefreshLayout) root.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                uploadView(root);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.color_accent_home,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        return root;
+    }
+
+    private void uploadView(View root) {
+
         page = 1;
         loadPosts(page);
 
@@ -65,8 +90,6 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
                 }
             }
         });
-
-        return root;
     }
 
 

@@ -3,6 +3,7 @@ package com.upsocl.upsoclapp.ui.fragments;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,13 +35,37 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
     private String categoryName;
     private Boolean isHome;
 
+    private SwipeRefreshLayout swipeContainer;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home_primary, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home_primary, container, false);
+
+
+        uploadView(root);
+
+        swipeContainer = (SwipeRefreshLayout) root.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                uploadView(root);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.color_accent_home,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        return root;
+    }
+
+    private void uploadView(View root) {
         page = 1;
         loadPosts(page);
-
         header_news = (TextView) root.findViewById(R.id.header_food);
         newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -62,8 +87,6 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
                 }
             }
         });
-
-        return root;
     }
 
     @Override
@@ -83,6 +106,10 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     public void loadPosts(Integer paged){
         WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+    }
+
+    public String getCategoryName() {
+        return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
