@@ -73,6 +73,8 @@ import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -239,9 +241,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             registerReceiver();
             wordpressRegisterReceiver();
             //RegistrationToken Wordpress
-
-
-
         }else{
             createSimpleDialog();
         }
@@ -350,6 +349,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                 request.executeAsync();
             }
 
+
             @Override
             public void onCancel() {
                 createCallbackFacebook();
@@ -427,7 +427,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             UserLogin userLogin=  new UserLogin(acct.getEmail(),
                     acct.getGivenName() +" "+acct.getFamilyName(),
                     "",
-                    person.getBirthday(),
+                    null,//person.getBirthday(),
                     person.getCurrentLocation(),
                     null,0,urlIma,
                     getString(R.string.name_google));
@@ -482,7 +482,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                 }
 
                 @Override
-                public void failure(TwitterException exception) {
+                public void failure(TwitterException error) {
                     createSimpleDialog();
                 }
             });
@@ -724,7 +724,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
 
     @Override
-    public void onConnectionFailed( ConnectionResult connectionResult) {
+    public void onConnectionFailed( ConnectionResult error) {
         uploadDialog();
     }
 
@@ -760,5 +760,4 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
-
 }

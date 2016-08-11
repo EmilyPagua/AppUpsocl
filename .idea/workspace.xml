@@ -106,13 +106,7 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/rxjava_1_0_12.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/google-services.json" afterPath="$PROJECT_DIR$/app/google-services.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/io/ApiConstants.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/io/ApiConstants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/DownloadImage.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/DownloadImage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/webapp/WEB-INF/appengine-web.xml" afterPath="$PROJECT_DIR$/backend/src/main/webapp/WEB-INF/appengine-web.xml" />
     </list>
     <list id="7a0291b1-e861-4b26-98a0-e57e50c9eda6" name="Cambios" comment="eliminado algunos archivos que no se usan" />
     <ignored path="AppUpsocl.iws" />
@@ -211,11 +205,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.625">
-              <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.2991239">
+              <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
               <folding>
                 <element signature="e#838#856#0" expanded="true" />
                 <element signature="e#1492#1517#0" expanded="true" />
@@ -234,8 +228,8 @@
       <file leaf-file-name="appengine-web.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/src/main/webapp/WEB-INF/appengine-web.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.0">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state vertical-scroll-proportion="-13.125">
+              <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -244,26 +238,40 @@
       <file leaf-file-name="CreateProfile.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.4444444">
-              <caret line="334" column="0" selection-start-line="334" selection-start-column="0" selection-end-line="334" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="403" column="4" selection-start-line="403" selection-start-column="4" selection-end-line="403" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#7640#8153#0" expanded="true" />
-                <element signature="e#8152#8153#0" expanded="true" />
+                <element signature="e#7713#8226#0" expanded="true" />
+                <element signature="e#8225#8226#0" expanded="true" />
                 <element signature="method#isConnect#0;class#CreateProfile#0" expanded="false" />
-                <element signature="e#12718#14094#0" expanded="true" />
-                <element signature="e#13474#13507#0" expanded="true" />
-                <element signature="e#14093#14094#0" expanded="true" />
-                <element signature="e#14590#14591#0" expanded="true" />
-                <element signature="e#14642#14643#0" expanded="true" />
-                <element signature="e#16983#17014#0" expanded="true" />
-                <element signature="e#18634#18666#0" expanded="true" />
-                <element signature="e#19341#19377#0" expanded="true" />
-                <element signature="e#19399#19437#0" expanded="true" />
-                <element signature="e#22862#22863#0" expanded="true" />
-                <element signature="e#22911#22912#0" expanded="true" />
-                <element signature="e#27465#27506#0" expanded="true" />
+                <element signature="e#12788#14164#0" expanded="true" />
+                <element signature="e#13544#13577#0" expanded="true" />
+                <element signature="e#14163#14164#0" expanded="true" />
+                <element signature="e#14661#14662#0" expanded="true" />
+                <element signature="e#14713#14714#0" expanded="true" />
+                <element signature="e#17061#17092#0" expanded="true" />
+                <element signature="e#18712#18744#0" expanded="true" />
+                <element signature="e#19238#19239#0" expanded="true" />
+                <element signature="e#19298#19299#0" expanded="true" />
+                <element signature="e#19415#19451#0" expanded="true" />
+                <element signature="e#19473#19511#0" expanded="true" />
+                <element signature="e#22936#22937#0" expanded="true" />
+                <element signature="e#22985#22986#0" expanded="true" />
+                <element signature="e#27328#27329#0" expanded="true" />
+                <element signature="e#27358#27359#0" expanded="true" />
+                <element signature="e#27528#27569#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -282,13 +290,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.64312977">
-              <caret line="488" column="26" selection-start-line="488" selection-start-column="26" selection-end-line="488" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="537" column="18" selection-start-line="537" selection-start-column="18" selection-end-line="537" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#20311#20582#0" expanded="true" />
+                <element signature="e#20581#20582#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -310,8 +320,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="resourceFile" />
-        <option value="Class" />
         <option value="layoutResourceFile_vertical" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -2647,7 +2657,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="5878104714000" />
+        <entry key="$PROJECT_DIR$" value="5878128908000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2984,16 +2994,16 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/org/abego/treelayout/org.abego.treelayout.core/1.0.1/org.abego.treelayout.core-1.0.1.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.appengine/appengine-endpoints/1.9.28/bf2e8a74bd28e388b3487fc78a0c7adfa592fd5d/appengine-endpoints-1.9.28.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.appengine/appengine-endpoints-deps/1.9.28/4d370828f843fc24829034453e065b5588a43f59/appengine-endpoints-deps-1.9.28.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/servlet-api/2.5/21599814ad9a605b86f3e6381571beccd861a32/servlet-api-2.5-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/servlet-api/2.5/5959582d97d8b61f4d154ca9e495aafd16726e34/servlet-api-2.5.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.appengine/appengine-api-1.0-sdk/1.9.28/e92c18272b555027d9ec666e7a89162f10638314/appengine-api-1.0-sdk-1.9.28.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.appengine/appengine-endpoints-deps/1.9.28/4d370828f843fc24829034453e065b5588a43f59/appengine-endpoints-deps-1.9.28.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.objectify/objectify/5.1.9/a0a4b19de216c12782ea6810a731c04dfd0863f2/objectify-5.1.9-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.objectify/objectify/5.1.9/d11034d718b0389ecd0252b0435798a355918a35/objectify-5.1.9.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ganyo/gcm-server/1.0.2/e79c184e25d64f03d4663e757b76474c9f50ce58/gcm-server-1.0.2-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ganyo/gcm-server/1.0.2/fde5261df0b029db4abcb504e7fc882300285216/gcm-server-1.0.2.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.20.0/fe526024e0cccfa25da2c9fc93717767aa24b422/google-api-client-1.20.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.20.0/d3e66209ae9e749b2d6833761e7885f60f285564/google-api-client-1.20.0.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.appengine/appengine-api-1.0-sdk/1.9.28/e92c18272b555027d9ec666e7a89162f10638314/appengine-api-1.0-sdk-1.9.28.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/ad97fe8faaf01a3d3faacecd58e8fa6e78a973ca/guava-18.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1/19c6d8dee6803c520d855ff7e8a8c3d97f1271ec/json-simple-1.1-sources.jar" />
@@ -3106,7 +3116,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/content_prueba.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_next_button.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_prueba.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
@@ -3150,20 +3159,21 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/fragments/NewsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/HomeActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/io/ApiConstants.java" />
         <option value="$PROJECT_DIR$/backend/src/main/webapp/WEB-INF/appengine-web.xml" />
         <option value="$PROJECT_DIR$/app/google-services.json" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/DownloadImage.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/WriteError.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="119" />
-    <option name="y" value="29" />
-    <option name="width" value="1798" />
+    <option name="x" value="320" />
+    <option name="y" value="23" />
+    <option name="width" value="1517" />
     <option name="height" value="967" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -3217,48 +3227,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="AppUpsocl" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AppUpsocl" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AppUpsocl" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AppUpsocl" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="upsoclapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -3828,7 +3796,13 @@
       <option name="project" value="LOCAL" />
       <updated>1470865677075</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Acomodado la imagen de facebook al iniciar sesión.">
+      <created>1470945023866</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1470945023866</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3841,7 +3815,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="119" y="29" width="1798" height="967" extended-state="0" />
+    <frame x="320" y="23" width="1517" height="967" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -3851,20 +3825,20 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.402834" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3560517" sideWeight="0.5048481" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5276146" sideWeight="0.5030633" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29377204" sideWeight="0.5030633" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24886467" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31962398" sideWeight="0.8582626" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37015277" sideWeight="0.8585298" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41128084" sideWeight="0.49693668" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37015277" sideWeight="0.14147018" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31139836" sideWeight="0.58879054" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37955347" sideWeight="0.49194068" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297491" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36192715" sideWeight="0.59963214" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42773208" sideWeight="0.59963214" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19786096" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.49194068" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22012578" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15978456" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22008957" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15728813" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18566392" sideWeight="0.57124436" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -3921,8 +3895,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="creadas categorias e intereses." />
-    <MESSAGE value="agregado el author al detalle de los posts" />
     <MESSAGE value="creadas las notificaciones, modificado crear perfil, y home.." />
     <MESSAGE value="modificado el home" />
     <MESSAGE value="creadas las notificaciones, modificado crear perfil, y home." />
@@ -3946,7 +3918,9 @@
     <MESSAGE value="Modificado nombre de paquete del proyecto, modificado nombre de la clase perfil.&#10;" />
     <MESSAGE value="Modificado nombre de paquete del proyecto, modificado nombre de la clase perfil. &#10;Modificado login de google y facebook&#10;" />
     <MESSAGE value="Agregado el actualizar de la lista de post en cada aplicación, el actualizar de la busqueda." />
-    <option name="LAST_COMMIT_MESSAGE" value="Agregado el actualizar de la lista de post en cada aplicación, el actualizar de la busqueda." />
+    <MESSAGE value="Acomodado la imagen de facebook al iniciar sesión." />
+    <MESSAGE value="modificado numero de codigo de android.&#10;modificado el perfil, problemas al obtener la fecha de nacimiento con google." />
+    <option name="LAST_COMMIT_MESSAGE" value="modificado numero de codigo de android.&#10;modificado el perfil, problemas al obtener la fecha de nacimiento con google." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3965,33 +3939,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java</url>
-          <line>354</line>
-          <properties />
-          <option name="timeStamp" value="1747" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java</url>
           <line>581</line>
           <properties />
           <option name="timeStamp" value="1748" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java</url>
-          <line>360</line>
-          <properties />
-          <option name="timeStamp" value="1750" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="1778" />
+      <option name="time" value="1784" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_notifications_active_white_24dp.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-v21/ic_menu_slideshow.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -4338,44 +4295,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.237691">
-          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/io/ApiConstants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.46689305">
           <caret line="36" column="61" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.625">
-          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
-          <folding>
-            <element signature="e#838#856#0" expanded="true" />
-            <element signature="e#1492#1517#0" expanded="true" />
-            <element signature="e#3422#3440#0" expanded="true" />
-            <element signature="e#3693#3711#0" expanded="true" />
-            <element signature="e#4291#4330#0" expanded="true" />
-            <element signature="e#5558#5585#0" expanded="true" />
-            <element signature="e#5942#5981#0" expanded="true" />
-            <element signature="e#6302#6341#0" expanded="true" />
-            <element signature="e#6886#6917#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/src/main/webapp/WEB-INF/appengine-web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.0">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -4400,31 +4323,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.4444444">
-          <caret line="334" column="0" selection-start-line="334" selection-start-column="0" selection-end-line="334" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7640#8153#0" expanded="true" />
-            <element signature="e#8152#8153#0" expanded="true" />
-            <element signature="method#isConnect#0;class#CreateProfile#0" expanded="false" />
-            <element signature="e#12718#14094#0" expanded="true" />
-            <element signature="e#13474#13507#0" expanded="true" />
-            <element signature="e#14093#14094#0" expanded="true" />
-            <element signature="e#14590#14591#0" expanded="true" />
-            <element signature="e#14642#14643#0" expanded="true" />
-            <element signature="e#16983#17014#0" expanded="true" />
-            <element signature="e#18634#18666#0" expanded="true" />
-            <element signature="e#19341#19377#0" expanded="true" />
-            <element signature="e#19399#19437#0" expanded="true" />
-            <element signature="e#22862#22863#0" expanded="true" />
-            <element signature="e#22911#22912#0" expanded="true" />
-            <element signature="e#27465#27506#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.37">
@@ -4443,10 +4341,75 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/HomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64312977">
-          <caret line="488" column="26" selection-start-line="488" selection-start-column="26" selection-end-line="488" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="537" column="18" selection-start-line="537" selection-start-column="18" selection-end-line="537" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#20311#20582#0" expanded="true" />
+            <element signature="e#20581#20582#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/src/main/webapp/WEB-INF/appengine-web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.125">
+          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/CreateProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="403" column="4" selection-start-line="403" selection-start-column="4" selection-end-line="403" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7713#8226#0" expanded="true" />
+            <element signature="e#8225#8226#0" expanded="true" />
+            <element signature="method#isConnect#0;class#CreateProfile#0" expanded="false" />
+            <element signature="e#12788#14164#0" expanded="true" />
+            <element signature="e#13544#13577#0" expanded="true" />
+            <element signature="e#14163#14164#0" expanded="true" />
+            <element signature="e#14661#14662#0" expanded="true" />
+            <element signature="e#14713#14714#0" expanded="true" />
+            <element signature="e#17061#17092#0" expanded="true" />
+            <element signature="e#18712#18744#0" expanded="true" />
+            <element signature="e#19238#19239#0" expanded="true" />
+            <element signature="e#19298#19299#0" expanded="true" />
+            <element signature="e#19415#19451#0" expanded="true" />
+            <element signature="e#19473#19511#0" expanded="true" />
+            <element signature="e#22936#22937#0" expanded="true" />
+            <element signature="e#22985#22986#0" expanded="true" />
+            <element signature="e#27328#27329#0" expanded="true" />
+            <element signature="e#27358#27359#0" expanded="true" />
+            <element signature="e#27528#27569#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2991239">
+          <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+          <folding>
+            <element signature="e#838#856#0" expanded="true" />
+            <element signature="e#1492#1517#0" expanded="true" />
+            <element signature="e#3422#3440#0" expanded="true" />
+            <element signature="e#3693#3711#0" expanded="true" />
+            <element signature="e#4291#4330#0" expanded="true" />
+            <element signature="e#5558#5585#0" expanded="true" />
+            <element signature="e#5942#5981#0" expanded="true" />
+            <element signature="e#6302#6341#0" expanded="true" />
+            <element signature="e#6886#6917#0" expanded="true" />
           </folding>
         </state>
       </provider>
