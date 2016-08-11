@@ -85,10 +85,7 @@
 
         </activity>
 
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
-            android:exported="true" />
+
 
         <!-- Login Facebook -->
         <activity
@@ -184,7 +181,7 @@
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider278628459160126"
+            android:authorities="com.facebook.app.FacebookContentProvider1232475846804351"
             android:exported="true" />
 
     </application>

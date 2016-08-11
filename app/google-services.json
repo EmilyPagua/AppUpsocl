@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "741962849728",
-    "project_id": "upsocl-app"
+    "project_number": "927839621447",
+    "project_id": "firebase-upsocl-app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:741962849728:android:37c40d49da709b67",
+        "mobilesdk_app_id": "1:927839621447:android:37c40d49da709b67",
         "android_client_info": {
           "package_name": "cl.upsocl.upsoclapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "741962849728-v77rmc3fl4i3lafebvrv6mdsqm7a55tp.apps.googleusercontent.com",
+          "client_id": "927839621447-0bbbtt4v34fh39kiace1bti6onblrqvv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "cl.upsocl.upsoclapp",
-            "certificate_hash": "7ADEA145C052D7B3223FA2CE23654F96DE3A0228"
+            "certificate_hash": "F2A502B04692AA42F0F40197A9FEB1962AFA2CD3"
           }
         },
         {
-          "client_id": "741962849728-5iivbm6p3qct6jqivakr4i7k6dvq00ke.apps.googleusercontent.com",
+          "client_id": "927839621447-eup69dc7hkodll3gde7m01rpngl5r7t9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBtVptCEIemojnLOQhkAf74dByMtejKS2c"
+          "current_key": "AIzaSyApm2-0JUe52VgA-8xJvQ0XB-gRsVE4ZsQ"
         }
       ],
       "services": {

@@ -32,18 +32,26 @@ public class ApiConstants {
     public static final String CUSTOMER_REGISTRATION = "registration_id";
     public static final String CUSTOMER_ID = "id";
 
-
-    //http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=privacidad-app/filter[category_name]=verde
-    //http://upsocl.com/wp-json/wp/v2/posts/445196
-
-    //Sender ID: 149087864796
-    //Server API key AIzaSyDqPOHOJq0dwmEewLpTuOqP0Y3U95-QB9g
-    //filter[category_name]=creatividad&filter[category_name]=verde
-    //http://quiz.upsocl.com/dev/wp-json/wp/v2/customers?name=emily&last_name=pagua&email=emily@gmail.com&birthday=1990-02-01&location=caracas&social_network_login=dsf&registration_id=3
-
-//8dVJKctpPKA0+qVM/zhDALxcZJ8=
-//et6hRcBS17MiP6LOI2VPlt46Aig=
-    //qbVxOyyMZIx6QIq4XGpeX0WxgbE=  Upsocl ORIGINAL
-
 }
+
+//http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=privacidad-app/filter[category_name]=verde
+//http://upsocl.com/wp-json/wp/v2/posts/445196
+
+//Sender ID: 149087864796
+//Server API key AIzaSyDqPOHOJq0dwmEewLpTuOqP0Y3U95-QB9g
+//filter[category_name]=creatividad&filter[category_name]=verde
+
+//http://quiz.upsocl.com/dev/wp-json/wp/v2/customers?name=emily&last_name=pagua&email=emily@gmail.com&birthday=1990-02-01&location=caracas&social_network_login=dsf&registration_id=3
+
+//D7LVXU0B0BQ9ltnLkNPykti4Jus=
+//D7LVXUOBOBQ9ltnLkNPykti4Jus=
+
+// qbVxOyyMZIx6QIq4XGpeX0WxgbE=
+//vSOJqhCegRQDwlwuKyFbr5DxdAc=
+
+//1Lm6MgTCT1RdtZ2D6mU3XmRIAIY=  ultima
+
+//SHA1: F2:A5:02:B0:46:92:AA:42:F0:F4:01:97:A9:FE:B1:96:2A:FA:2C:D3
+//      F2:A5:02:B0:46:92:AA:42:F0:F4:01:97:A9:FE:B1:96:2A:FA:2C:D3
+
 

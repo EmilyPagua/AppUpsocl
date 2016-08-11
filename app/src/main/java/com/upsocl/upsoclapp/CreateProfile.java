@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -16,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,7 +73,8 @@ import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -133,6 +138,27 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         savePreferencesNotifications();
 
+
+        //Verificacion de clave facebook
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "cl.upsocl.upsoclapp",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d("NameNotFoundException:" , e.getMessage());
+
+        } catch (NoSuchAlgorithmException e) {
+            Log.d("NoSuchAlgorithmException:" , e.getMessage());
+
+
+        }
+        //end verififcacion clave facebook
+
         countCategorySelected = 0;
 
         btn_culture = (Button) findViewById(R.id.btn_culture);
@@ -165,15 +191,17 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                 protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                     if (countCategorySelected >= 3) {
                         AccessToken.setCurrentAccessToken(currentAccessToken);
-                        loginButton.setVisibility(View.GONE);
-                    } //else
-                    LoginManager.getInstance().logOut();
+                        loginButton.setVisibility(View.INVISIBLE);
+                    }
+                    else
+                        LoginManager.getInstance().logOut();
                 }
             };
 
             profileTracker = new ProfileTracker() {
                 @Override
                 protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+
                 }
             };
 
@@ -211,6 +239,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             registerReceiver();
             wordpressRegisterReceiver();
             //RegistrationToken Wordpress
+
 
 
         }else{
@@ -300,10 +329,11 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                                             "",
                                             null,
                                             object.getJSONObject("location").getString("name"),
-                                            null, 0,"http://graph.facebook.com/"+object.getString("id")+"/picture?type=large",
+                                            null, 0,object.getJSONObject("picture").getJSONObject("data").getString("url"),
                                             getString(R.string.name_facebook));
 
-                                    System.out.println("http://graph.facebook.com/"+object.getString("id")+"/picture?type=large");
+                                    System.out.println("http://graph.facebook.com/"+object.getString("id")+"/picture?type=large"
+                                            +"   "+object.getJSONObject("picture").getJSONObject("data").get("url"));
 
                                     uploadDialog();
 
@@ -315,7 +345,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name, email,gender,birthday, location");
+                parameters.putString("fields", "id,name, email,gender,birthday, location, picture");
                 request.setParameters(parameters);
                 request.executeAsync();
             }

@@ -27,11 +27,10 @@
 
     <!-- Facebook 1232475846804351 -->
     <string name="facebook_app_id_vieja">278628459160126</string>
-    <string name="facebook_app_id">278628459160126</string>
+    <string name="facebook_app_id">1232475846804351</string>
 
-    <!-- Google -->
-    <string name="gcm_defaultSenderId_vieja">451147762930</string>
-    <string name="gcm_defaultSenderId">741962849728</string>
+    <!-- Google numero de proyecto -->
+    <string name="gcm_defaultSenderId">927839621447</string>
 
     <string name="msg_detail_facebook">WWW.upsocl.com</string>
 
