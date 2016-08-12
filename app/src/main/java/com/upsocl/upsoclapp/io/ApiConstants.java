@@ -43,15 +43,21 @@ public class ApiConstants {
 
 //http://quiz.upsocl.com/dev/wp-json/wp/v2/customers?name=emily&last_name=pagua&email=emily@gmail.com&birthday=1990-02-01&location=caracas&social_network_login=dsf&registration_id=3
 
-//D7LVXU0B0BQ9ltnLkNPykti4Jus=
-//D7LVXUOBOBQ9ltnLkNPykti4Jus=
-
-// qbVxOyyMZIx6QIq4XGpeX0WxgbE=
-//vSOJqhCegRQDwlwuKyFbr5DxdAc=
-
-//1Lm6MgTCT1RdtZ2D6mU3XmRIAIY=  ultima
-
 //SHA1: F2:A5:02:B0:46:92:AA:42:F0:F4:01:97:A9:FE:B1:96:2A:FA:2C:D3
 //      F2:A5:02:B0:46:92:AA:42:F0:F4:01:97:A9:FE:B1:96:2A:FA:2C:D3
 
+//keytool -exportcert -alias upsocl -keystore /Users/upsocl/AndroidStudioProjects/debug.keystore | openssl sha1 -binary | openssl base64
 
+
+/*8qUCsEaSqkLw9AGXqf6xlir6LNM=
+
+       //D7LVXU0B0BQ9ltnLkNPykti4Jus=
+       //2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+
+        keytool -exportcert -alias **myaliasname** -keystore **home/comp-1/Desktop/mykeystore.jks** | openssl sha1 -binary | openssl base64
+        keytool -exportcert -alias upsocl -keystore /Users/upsocl/AndroidStudioProjects/upsocl.jks | openssl sha1 -binary | openssl base64
+        */
+
+//xqK5q3iPRu1qt8xbF1LIbEovu7A=
+
+//keytool -exportcert -keystore /Users/upsocl/AndroidStudioProjects/upsocl.jks -list -v

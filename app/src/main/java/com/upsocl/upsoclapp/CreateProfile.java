@@ -1,5 +1,6 @@
 package com.upsocl.upsoclapp;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -79,6 +82,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -126,6 +131,13 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean isReceiverRegistered;
 
+
+    private UserLogin userLogin;
+
+    //format Email
+    private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,14 +155,23 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         //Verificacion de clave facebook
         try {
+
             PackageInfo info = getPackageManager().getPackageInfo(
                     "cl.upsocl.upsoclapp",
                     PackageManager.GET_SIGNATURES);
+
+            String packageName = getApplicationContext().getPackageName();
+            Log.d("packageName:", packageName);
+            String valor=null;
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
+                valor = Base64.encodeToString(md.digest(), Base64.DEFAULT);
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+
             }
+
+            //createSimpleDialog(packageName +" "+valor);
         } catch (PackageManager.NameNotFoundException e) {
             Log.d("NameNotFoundException:" , e.getMessage());
 
@@ -242,7 +263,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             wordpressRegisterReceiver();
             //RegistrationToken Wordpress
         }else{
-            createSimpleDialog();
+            createSimpleDialog(getString(R.string.msg_session_not_found));
         }
     }
 
@@ -323,7 +344,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                             public void onCompleted(final JSONObject object, GraphResponse response) {
 
                                 try{
-                                    UserLogin userLogin=  new UserLogin(object.getString("email"),
+                                    userLogin=  new UserLogin(object.getString("email"),
                                             object.getString("name") ,
                                             "",
                                             null,
@@ -334,9 +355,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                                     System.out.println("http://graph.facebook.com/"+object.getString("id")+"/picture?type=large"
                                             +"   "+object.getJSONObject("picture").getJSONObject("data").get("url"));
 
-                                    uploadDialog();
-
-                                    new DownloadTask().execute(userLogin);
+                                    validateInformation(userLogin);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -358,15 +377,83 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
             @Override
             public void onError(FacebookException error) {
-                createSimpleDialog();
+                createSimpleDialog(getString(R.string.msg_session_not_found));
             }
         };
     }
+
+    private void validateInformation(UserLogin userLogin) {
+        if (userLogin.getEmail()==null)
+            showDialog(0);
+        else{
+            uploadDialog();
+            new DownloadTask().execute(userLogin);
+        }
+
+    }
+
+    /**
+     * Called to create a dialog to be shown.
+     */
+    @Override
+    protected Dialog onCreateDialog(int id) {
+
+        switch (id) {
+            case 0:
+                return createExampleDialog();
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Create and return an example alert dialog with an edit text box.
+     */
+    private Dialog createExampleDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Faltan datos para crear su perfil");
+        builder.setMessage("Ingrese su email:");
+
+        // Use an EditText view to get user input.
+        final EditText input = new EditText(this);
+        input.setId(0);
+        builder.setView(input);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString();
+                if (validateEmail(value)){
+                    userLogin.setEmail(value);
+                    uploadDialog();
+                    new DownloadTask().execute(userLogin);
+                }else
+                    input.setText("");
+                    createSimpleDialog("Debe ingresar un email válido");
+                return;
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                createSimpleDialog(getString(R.string.msg_session_not_found));
+                return;
+            }
+        });
+
+        return builder.create();
+    }
+
 
     //----------GOOGLE CONFIGURE
     private void configureGoogleLogin() {
         //Initializing google signin option
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PROFILE))
                 .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
                 .build();
@@ -402,38 +489,54 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             startActivityForResult(signInIntent, RC_SIGN_IN);
         }
         else{
-            createSimpleDialog();
+            createSimpleDialog(getString(R.string.msg_session_not_found));
         }
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
+    private void handleSignInResult(GoogleSignInResult result, Person person) {
 
         //If the login succeed
         if (result.isSuccess()) {
-            uploadDialog();
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
             Uri urlImagen;
             String urlIma =null;
             //Displaying name and email
 
-            Person person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             urlImagen = acct.getPhotoUrl();
-            if (urlImagen==null)
-                urlIma = person.getImage().getUrl();
-            else
-                urlIma = urlImagen.toString();
 
-            UserLogin userLogin=  new UserLogin(acct.getEmail(),
-                    acct.getGivenName() +" "+acct.getFamilyName(),
-                    "",
-                    null,//person.getBirthday(),
-                    person.getCurrentLocation(),
-                    null,0,urlIma,
-                    getString(R.string.name_google));
+            if (person==null){
+
+                if (urlImagen!=null)
+                    urlIma = urlImagen.toString();
+
+                userLogin=  new UserLogin(acct.getEmail(),
+                        acct.getDisplayName(),
+                        "",
+                        null,
+                        null,
+                        null,0,urlIma,
+                        getString(R.string.name_google));
+
+            }else{
+
+                if (urlImagen==null)
+                    urlIma = person.getImage().getUrl();
+                else
+                    urlIma = urlImagen.toString();
+
+                userLogin =  new UserLogin(acct.getEmail(),
+                        acct.getDisplayName(),
+                        "",
+                        isNull(person.getBirthday()),//,
+                        isNull(person.getCurrentLocation()),//,
+                        null,0,urlIma,
+                        getString(R.string.name_google));
+            }
 
 
-            new DownloadTask().execute(userLogin);
+
+            validateInformation(userLogin);
 
             //Loading image
         } else {
@@ -451,7 +554,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             @Override
             public void success(Result<TwitterSession> result) {
 
-                uploadDialog();
                 TwitterSession session = result.data;
                     // with your app's user model
 
@@ -459,10 +561,9 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                         .verifyCredentials(true, false, new com.twitter.sdk.android.core.Callback<User>() {
                             @Override
                             public void success(Result<User> userResult) {
-
-                                    //If it succeeds creating a User object from userResult.data
+                                //If it succeeds creating a User object from userResult.data
                                 User user = userResult.data;
-                                UserLogin userLogin = new UserLogin(userResult.data.email,
+                                userLogin = new UserLogin(userResult.data.email,
                                         user.name,
                                         "",
                                         null,
@@ -470,7 +571,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                                         null, 0, user.profileImageUrl,
                                         getString(R.string.name_twitter));
 
-                                    new DownloadTask().execute(userLogin);
+                                validateInformation(userLogin);
                                 }
 
                             @Override
@@ -483,7 +584,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
                 @Override
                 public void failure(TwitterException error) {
-                    createSimpleDialog();
+                    createSimpleDialog(getString(R.string.msg_session_not_found));
                 }
             });
     }
@@ -512,33 +613,39 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         }
 
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            Person person = null;
+            if (mGoogleApiClient.hasConnectedApi(Plus.API))
+                person  = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+
             //Calling a new function to handle signin
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
 
             //Toast.makeText(this, "estado de google: "+result.getStatus(), Toast.LENGTH_LONG).show();
-            handleSignInResult(result);
+            handleSignInResult(result, person);
         }
         loginButtonTwitter.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    private void saveUserWP(final UserLogin userLogin) {
+    private void saveUserWP(final UserLogin userLoginFinal) {
 
         WordpressApiAdapter.getApiServiceCustomer(ApiConstants.BASE_URL_CUSTOMER)
-                .saveCustomer(userLogin.getFirstName(),
-                        userLogin.getLastName(),
-                        isNull(userLogin.getEmail()),
+                .saveCustomer(userLoginFinal.getFirstName(),
+                        userLoginFinal.getLastName(),
+                        isNull(userLoginFinal.getEmail()),
                         "",
-                        isNull(userLogin.getLocation()),
-                        userLogin.getSocialNetwork(),
-                        userLogin.getToken(), new Callback<JsonObject>() {
+                        isNull(userLoginFinal.getLocation()),
+                        userLoginFinal.getSocialNetwork(),
+                        userLoginFinal.getToken(), new Callback<JsonObject>() {
                             @Override
                             public void success(JsonObject object, Response response) {
 
                                 if (object.get("success").equals("true")){
                                     int id = object.get("id").getAsInt();
-                                    userLogin.setId(id);
-                                    saveUser(userLogin);
+                                    userLoginFinal.setId(id);
+                                    saveUser(userLoginFinal);
                                 }
                             }
 
@@ -549,25 +656,25 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                         });
     }
 
-    private String isNull(String userLogin) {
-        if (userLogin==null)
+    private String isNull(String objectUser) {
+        if (objectUser==null)
             return "";
         else
-        return userLogin;
+        return objectUser;
     }
 
-    private void saveUser(UserLogin userLogin) {
+    private void saveUser(UserLogin userLoginFinal) {
         SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.putString(CustomerKeys.DATA_USER_TOKEN, userLogin.getToken());
-        editor.putString(CustomerKeys.DATA_USER_FIRST_NAME, userLogin.getFirstName());
-        editor.putString(CustomerKeys.DATA_USER_LAST_NAME, userLogin.getLastName());
-        editor.putString(CustomerKeys.DATA_USER_BIRTHDAY, userLogin.getBirthday());
-        editor.putString(CustomerKeys.DATA_USER_LOCATION, userLogin.getLocation());
-        editor.putString(CustomerKeys.DATA_USER_IMAGEN_URL, userLogin.getImagenURL());
-        editor.putString(CustomerKeys.DATA_USER_EMAIL, userLogin.getEmail());
-        editor.putInt(CustomerKeys.DATA_USER_ID, userLogin.getId());
-        editor.putString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, userLogin.getSocialNetwork());
+        editor.putString(CustomerKeys.DATA_USER_TOKEN, userLoginFinal.getToken());
+        editor.putString(CustomerKeys.DATA_USER_FIRST_NAME, userLoginFinal.getFirstName());
+        editor.putString(CustomerKeys.DATA_USER_LAST_NAME, userLoginFinal.getLastName());
+        editor.putString(CustomerKeys.DATA_USER_BIRTHDAY, userLoginFinal.getBirthday());
+        editor.putString(CustomerKeys.DATA_USER_LOCATION, userLoginFinal.getLocation());
+        editor.putString(CustomerKeys.DATA_USER_IMAGEN_URL, userLoginFinal.getImagenURL());
+        editor.putString(CustomerKeys.DATA_USER_EMAIL, userLoginFinal.getEmail());
+        editor.putInt(CustomerKeys.DATA_USER_ID, userLoginFinal.getId());
+        editor.putString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, userLoginFinal.getSocialNetwork());
         editor.commit();
     }
 
@@ -589,7 +696,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     }
 
     private class DownloadTask extends AsyncTask {
-        UserLogin userLogin ;
+        UserLogin userLoginfinal ;
 
         @Override
         protected Object doInBackground(Object[] objects) {
@@ -597,10 +704,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
             String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
 
-            userLogin = (UserLogin) objects[0];
-            userLogin.setToken(token);
-            saveUser(userLogin);
-            saveUserWP(userLogin);
+            userLoginfinal = (UserLogin) objects[0];
+            userLoginfinal.setToken(token);
+            saveUser(userLoginfinal);
+            saveUserWP(userLoginfinal);
 
             return null;
         }
@@ -728,10 +835,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         uploadDialog();
     }
 
-    public void createSimpleDialog() {
+    public void createSimpleDialog(String message) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Error");
-        dialog.setMessage(getString(R.string.msg_session_not_found))
+        dialog.setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener(){
 
@@ -740,7 +847,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
                         createCallbackFacebook();
                         configureTwitterLogin();
-                        finish();
                     }
                 });
 
@@ -759,5 +865,17 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+    }
+
+    //Validate format email
+    public static boolean validateEmail(String email) {
+
+        // Compiles the given regular expression into a pattern.
+        Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+
+        // Match the given input against this pattern
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+
     }
 }

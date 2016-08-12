@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +53,8 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static io.fabric.sdk.android.services.common.CommonUtils.md5;
 
 public class DetailsActivity extends AppCompatActivity {
     private  Gson gs = new Gson();
@@ -176,8 +179,12 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void requestNewInterstitial() {
+
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String deviceId = md5(android_id).toUpperCase();
+
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("SEE_YOUR_LOGCAT_TO_GET_YOUR_DEVICE_ID")
+                .addTestDevice(deviceId)
                 .build();
 
         mInterstitialAd.loadAd(adRequest);
@@ -190,7 +197,9 @@ public class DetailsActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.color_primary_dark_home));
+
+        if (android.os.Build.VERSION.SDK_INT >= 21)
+            window.setStatusBarColor(this.getResources().getColor(R.color.color_primary_dark_home));
     }
 
 
