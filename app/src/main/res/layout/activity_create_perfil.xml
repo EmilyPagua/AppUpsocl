@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:fitsSystemWindows="true"
     tools:context=".DetailsActivity"
@@ -35,8 +35,6 @@
             android:text="@string/msg_createPerfil"
             android:id="@+id/msg_createPerfil"
             android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:textColor="@color/blanco"
             android:textSize="20sp" />
     </LinearLayout>
@@ -48,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
-        android:layout_below="@+id/linearLayout1"
         android:gravity="center">
 
         <Button
@@ -88,7 +85,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:id="@+id/linearLayout3"
-        android:layout_below="@+id/linearLayout2"
         android:gravity="center">
 
         <Button
@@ -145,7 +141,7 @@
             android:layout_margin="5dp"
             style="@style/buttonStyle"
             android:background="@drawable/boton_normal"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/btn_community"
             android:id="@+id/btn_community"
@@ -169,7 +165,8 @@
             android:layout_width="wrap_content"
             android:text="@string/btn_health"
             android:id="@+id/btn_health"
-            android:onClick="btnHealth"/>
+            android:onClick="btnHealth"
+            android:singleLine="false" />
 
         <Button
             style="@style/buttonStyle"
@@ -278,7 +275,7 @@
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="LOgin"
+            android:contentDescription="Login"
             android:text="login"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"

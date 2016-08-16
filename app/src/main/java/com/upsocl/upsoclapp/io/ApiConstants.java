@@ -51,8 +51,17 @@ public class ApiConstants {
 
 /*8qUCsEaSqkLw9AGXqf6xlir6LNM=
 
-       //D7LVXU0B0BQ9ltnLkNPykti4Jus=
+
        //2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+f5CtnhpBy+NovSO2fz6MvXV3aSk (funciona en ambos)
+
+
+qbVxOyyMZIx6QIq4XGpeX0WxgbE= debug
+
+D7LVXU0B0BQ9ltnLkNPykti4Jus=   release
+
+
+
 
         keytool -exportcert -alias **myaliasname** -keystore **home/comp-1/Desktop/mykeystore.jks** | openssl sha1 -binary | openssl base64
         keytool -exportcert -alias upsocl -keystore /Users/upsocl/AndroidStudioProjects/upsocl.jks | openssl sha1 -binary | openssl base64

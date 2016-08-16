@@ -53,7 +53,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.upsocl.upsoclapp.domain.Interests;
@@ -285,8 +287,12 @@ public class HomeActivity extends AppCompatActivity
                         break;
                     case R.id.nav_manage:
                         visibleGoneElement();
+                        SharedPreferences prefsNoti =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+
                         PreferencesFragment preferenceActivity = new PreferencesFragment();
-                        preferenceActivity.setPrefs(prefsUser);
+                        preferenceActivity.setPrefsUser(prefsUser);
+                        preferenceActivity.setPreferencesNoti(prefsNoti);
+
                         fragment =  preferenceActivity;
                         fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
@@ -498,6 +504,14 @@ public class HomeActivity extends AppCompatActivity
             LoginManager.getInstance().logOut();
             AccessToken.setCurrentAccessToken((AccessToken) null);
             Profile.setCurrentProfile((Profile)null);
+
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // ...
+                        }
+                    });
             goActivityLogin();
         }
     }

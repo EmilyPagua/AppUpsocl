@@ -21,6 +21,10 @@ import com.upsocl.upsoclapp.io.WordpressApiAdapter;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -69,7 +73,6 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
 
         SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
-        int id_wp =prefs.getInt(CustomerKeys.DATA_USER_ID, 0);
         if (token!=null){
             loadPosts(idPost);
         }
@@ -101,16 +104,31 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     public void success(News news, Response response) {
         if (news!=null){
 
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
             Gson gS = new Gson();
             String newsJson = gS.toJson(news);
 
             SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor =  prefs.edit();
-            editor.putString(Preferences.NOTI_ID_POST,idPost).commit();
-            editor.putInt(Preferences.NOTI_ID,idMessage).commit();
-            editor.putString(Preferences.NOTI_DATA,newsJson).commit();
-            editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_active_white_24dp).commit();
-            sendNotification(message, contentTitle, idMessage);
+            Date date = new Date();
+            Date dateLast = null;
+            try {
+                dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,new Date().toString()));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int rest = 0;
+            rest = date.getDay() - dateLast.getDay();
+
+            if (rest ==0 || rest >= prefs.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1)){
+                SharedPreferences.Editor editor =  prefs.edit();
+                editor.putString(Preferences.NOTI_ID_POST,idPost).commit();
+                editor.putInt(Preferences.NOTI_ID,idMessage).commit();
+                editor.putString(Preferences.NOTI_DATA,newsJson).commit();
+                editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_active_white_24dp).commit();
+                sendNotification(message, contentTitle, idMessage);
+            }
         }
     }
 

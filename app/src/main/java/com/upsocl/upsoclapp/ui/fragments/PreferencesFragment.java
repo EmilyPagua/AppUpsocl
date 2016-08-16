@@ -14,12 +14,16 @@ import android.widget.TextView;
 
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
+import com.upsocl.upsoclapp.keys.Preferences;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PreferencesFragment  extends Fragment {
 
-    private Switch aSwitch;
     private RadioGroup radioGroup;
-    private SharedPreferences preferences;
+    private SharedPreferences preferencesUser;
+    private SharedPreferences preferencesNoti;
     private Button logoutFacebook;
     private Button logoutGoogle,logoutTwitter;
 
@@ -30,40 +34,34 @@ public class PreferencesFragment  extends Fragment {
         logoutFacebook = (Button) root.findViewById(R.id.logout_facebook);
         logoutGoogle = (Button) root.findViewById(R.id.logout_google);
         logoutTwitter = (Button) root.findViewById(R.id.logout_twitter);
-        String socialNetwork = preferences.getString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, null);
+        String socialNetwork = preferencesUser.getString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, null);
 
         validateSocialNetwork(socialNetwork);
 
-        aSwitch = (Switch) root.findViewById(R.id.switch_notification);
-        aSwitch.setChecked(true);
-        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    aSwitch.setChecked(true);
-                }else{
-                    radioGroup.clearCheck();
-                    aSwitch.setChecked(false);
-                }
-            }
-        });
 
         radioGroup = (RadioGroup) root.findViewById(R.id.radioGroup);
-        radioGroup.check(R.id.rb_week);
+        radioGroupCheck();
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                SharedPreferences.Editor editorNotifi =  preferencesNoti.edit();
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                int frecuency=0;
+                Date date = new Date();
                 if (checkedId == R.id.rb_day){
-                    aSwitch.setChecked(true);
+                    frecuency =1;
 
                 }else if (checkedId == R.id.rb_week){
-                    aSwitch.setChecked(true);
+                    frecuency=7;
 
                 }else if (checkedId == R.id.rb_month){
-                    aSwitch.setChecked(true);
+                    frecuency=30;
                 }
+                editorNotifi.putInt(Preferences.NOTIFICATIONS_FRECUENCY,frecuency).commit();
+                editorNotifi.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
             }
         });
 
@@ -71,13 +69,32 @@ public class PreferencesFragment  extends Fragment {
         TextView locationProfile = (TextView) root.findViewById(R.id.locationProfile);
         TextView emailProfile = (TextView) root.findViewById(R.id.emailProfile);
 
-        nameProfile.setText("Usuario: "+preferences.getString(CustomerKeys.DATA_USER_FIRST_NAME," "));
-        emailProfile.setText("Email: "+preferences.getString(CustomerKeys.DATA_USER_EMAIL," "));
-        String location = preferences.getString(CustomerKeys.DATA_USER_LOCATION,null);
+        nameProfile.setText("Usuario: "+preferencesUser.getString(CustomerKeys.DATA_USER_FIRST_NAME," "));
+        emailProfile.setText("Email: "+preferencesUser.getString(CustomerKeys.DATA_USER_EMAIL," "));
+        String location = preferencesUser.getString(CustomerKeys.DATA_USER_LOCATION,null);
         if (location!=null)
             locationProfile.setText("Ubicación: "+location);
 
         return root;
+    }
+
+    private void radioGroupCheck() {
+
+        switch (preferencesNoti.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1)){
+            case 0:
+                radioGroup.check(R.id.rb_day);
+                break;
+            case 1:
+                radioGroup.check(R.id.rb_day);
+                break;
+            case 7:
+                radioGroup.check(R.id.rb_week);
+                break;
+            case 30:
+                radioGroup.check(R.id.rb_month);
+                break;
+
+        }
     }
 
     private void validateSocialNetwork(String socialNetwork) {
@@ -95,11 +112,11 @@ public class PreferencesFragment  extends Fragment {
         }
     }
 
-    public SharedPreferences getPrefs() {
-        return preferences;
+    public void setPrefsUser(SharedPreferences preferencesUser) {
+        this.preferencesUser = preferencesUser;
     }
 
-    public void setPrefs(SharedPreferences preferences) {
-        this.preferences = preferences;
+    public void setPreferencesNoti(SharedPreferences preferencesNoti) {
+        this.preferencesNoti = preferencesNoti;
     }
 }

@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +56,7 @@ import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.JsonObject;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -76,8 +76,6 @@ import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
-import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -109,8 +107,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     private Integer countCategorySelected;
 
-    private FacebookCallback<LoginResult> callback;
-
     private ProgressDialog dialog;
     private LinearLayout layoutButton;
 
@@ -121,16 +117,11 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private int RC_SIGN_IN =  9001;//100
     //END GOOGLE LOGIN
 
-
-    //TWITTER LOGIN
-    private TwitterLoginButton loginButtonTwitter;
-
-    //END TWITTER LOGIN
+    private TwitterLoginButton loginButtonTwitter;    //TWITTER LOGIN
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean isReceiverRegistered;
-
 
     private UserLogin userLogin;
 
@@ -138,49 +129,40 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+
+        }
+
+        @Override
+        public void onCancel() {
+            createSimpleDialog("Cancel");
+
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+            createSimpleDialog("Error");
+
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         FacebookSdk.sdkInitialize(getApplicationContext());
+        LoginManager.getInstance().logOut();
+
         setContentView(R.layout.activity_create_perfil);
 
-        LoginManager.getInstance().logOut();
-        AccessToken.setCurrentAccessToken((AccessToken) null);
-        Profile.setCurrentProfile((Profile) null);
-
         savePreferencesNotifications();
-
-
-        //Verificacion de clave facebook
-        try {
-
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "cl.upsocl.upsoclapp",
-                    PackageManager.GET_SIGNATURES);
-
-            String packageName = getApplicationContext().getPackageName();
-            Log.d("packageName:", packageName);
-            String valor=null;
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                valor = Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-
-            }
-
-            //createSimpleDialog(packageName +" "+valor);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d("NameNotFoundException:" , e.getMessage());
-
-        } catch (NoSuchAlgorithmException e) {
-            Log.d("NoSuchAlgorithmException:" , e.getMessage());
-
-
-        }
-        //end verififcacion clave facebook
+        //Package Facebook
+        getFecebookKeyHash();
+        //end Package Facebook
 
         countCategorySelected = 0;
 
@@ -205,16 +187,20 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         uploadData();
 
         if (isConnect()==true){
-            //FACEBOOOK LOGIN
+            //-------------------------FACEBOOOK LOGIN
+
+
             loginButton = (LoginButton) findViewById(R.id.login_button);
+            callbackManager = null;
             callbackManager = CallbackManager.Factory.create();
 
             accessTokenTracker = new AccessTokenTracker() {
                 @Override
                 protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
                     if (countCategorySelected >= 3) {
                         AccessToken.setCurrentAccessToken(currentAccessToken);
-                        loginButton.setVisibility(View.INVISIBLE);
+                        layoutButton.setVisibility(View.INVISIBLE);
                     }
                     else
                         LoginManager.getInstance().logOut();
@@ -233,9 +219,12 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
             createCallbackFacebook();
 
-            //END FACEBOOK LOGIN
+
+
             loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
             loginButton.registerCallback(callbackManager, callback);
+
+            //------------------END FACEBOOK LOGIN
 
             //Google
             configureGoogleLogin();
@@ -265,6 +254,34 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         }else{
             createSimpleDialog(getString(R.string.msg_session_not_found));
         }
+    }
+
+    private void getFecebookKeyHash() {
+        //Verificacion de clave facebook
+        try {
+
+            String packageName = getApplicationContext().getPackageName();
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    packageName,
+                    PackageManager.GET_SIGNATURES);
+
+            Log.d("packageName:", packageName);
+            String valor= packageName +"  ";
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                valor = valor + " " + Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                Log.d("KeyHash:",valor );
+            }
+           // createSimpleDialog(packageName +" "+valor);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d("NameNotFoundException:" , e.getMessage());
+
+        } catch (NoSuchAlgorithmException e) {
+            Log.d("NoSuchAlgorithmException:" , e.getMessage());
+        }
+
+        //end verififcacion clave facebook
     }
 
     //RegistrationToken Wordpress
@@ -337,6 +354,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         callback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -344,18 +362,34 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                             public void onCompleted(final JSONObject object, GraphResponse response) {
 
                                 try{
-                                    userLogin=  new UserLogin(object.getString("email"),
-                                            object.getString("name") ,
+                                    userLogin=  new UserLogin(null,
+                                            isNull(object.getString("name") ),
                                             "",
                                             null,
-                                            object.getJSONObject("location").getString("name"),
+                                            null,
                                             null, 0,object.getJSONObject("picture").getJSONObject("data").getString("url"),
                                             getString(R.string.name_facebook));
+
+                                    if (object.isNull("email") ) userLogin.setEmail(null);
+                                    else
+                                        userLogin.setEmail(object.getString("email"));
+
+
+                                    if (object.isNull("location") ) userLogin.setLocation("");
+                                    else{
+                                        if (object.getJSONObject("location").isNull("name") )
+                                            userLogin.setLocation("");
+                                        else
+                                            userLogin.setLocation(object.getJSONObject("location").getString("name"));
+                                    }
 
                                     System.out.println("http://graph.facebook.com/"+object.getString("id")+"/picture?type=large"
                                             +"   "+object.getJSONObject("picture").getJSONObject("data").get("url"));
 
-                                    validateInformation(userLogin);
+                                    if (userLogin.getEmail()==null)
+                                        showDialog(0);
+                                    else
+                                        validateInformation(userLogin);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -377,12 +411,13 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
             @Override
             public void onError(FacebookException error) {
-                createSimpleDialog(getString(R.string.msg_session_not_found));
+                createSimpleDialog("Problemas al iniciar sesión con Facebook, intente más tarde "+error);
             }
         };
     }
 
     private void validateInformation(UserLogin userLogin) {
+        layoutButton.setVisibility(View.INVISIBLE);
         if (userLogin.getEmail()==null)
             showDialog(0);
         else{
@@ -413,7 +448,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Faltan datos para crear su perfil");
-        builder.setMessage("Ingrese su email:");
+        builder.setMessage("Ingrese su email personal:");
 
         // Use an EditText view to get user input.
         final EditText input = new EditText(this);
@@ -429,9 +464,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                     userLogin.setEmail(value);
                     uploadDialog();
                     new DownloadTask().execute(userLogin);
-                }else
+                }else{
                     input.setText("");
                     createSimpleDialog("Debe ingresar un email válido");
+                }
                 return;
             }
         });
@@ -447,7 +483,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         return builder.create();
     }
-
 
     //----------GOOGLE CONFIGURE
     private void configureGoogleLogin() {
@@ -533,8 +568,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                         null,0,urlIma,
                         getString(R.string.name_google));
             }
-
-
 
             validateInformation(userLogin);
 
@@ -847,6 +880,9 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
                         createCallbackFacebook();
                         configureTwitterLogin();
+                        Intent mainIntent = new Intent(CreateProfile.this, CreateProfile.class);
+                        CreateProfile.this.startActivity(mainIntent);
+                        CreateProfile.this.finish();
                     }
                 });
 
