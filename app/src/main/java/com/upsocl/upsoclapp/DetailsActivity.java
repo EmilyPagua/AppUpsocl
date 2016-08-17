@@ -42,6 +42,8 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.upsoclapp.domain.News;
@@ -81,6 +83,10 @@ public class DetailsActivity extends AppCompatActivity {
     //Element Facebook
     CallbackManager callbackManager;
     ShareDialog shareDialog;
+
+    // [START shared_tracker]
+    private Tracker mTracker;
+
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
         public void onSuccess(Sharer.Result result) {
@@ -103,6 +109,12 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prueba);
+
+        // [START shared_tracker]
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        // [END shared_tracker]
 
         setToolBar();
         setWindowsColor();
@@ -338,6 +350,7 @@ public class DetailsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menu_item_share:
+
                 createShareIntent();
                 return true;
 
@@ -403,6 +416,13 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     private void createShareIntent(){
+        // [START custom_event]
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Compartir")
+                .build());
+        // [END custom_event]
+
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "\n\n");
@@ -413,6 +433,14 @@ public class DetailsActivity extends AppCompatActivity {
     public void facebookShare() {
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
+            // [START custom_event]
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("CompartirBotonFacebook")
+                    .build());
+            // [END custom_event]
+
+
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(newsPosition.getTitle())
                     .setContentDescription(getString(R.string.msg_detail_facebook))

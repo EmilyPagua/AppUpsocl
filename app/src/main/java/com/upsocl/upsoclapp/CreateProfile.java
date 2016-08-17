@@ -78,8 +78,10 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -709,6 +711,15 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         editor.putInt(CustomerKeys.DATA_USER_ID, userLoginFinal.getId());
         editor.putString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, userLoginFinal.getSocialNetwork());
         editor.commit();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+
+        SharedPreferences prefsNoti =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorNoti =  prefsNoti.edit();
+        editorNoti.putInt(Preferences.NOTIFICATIONS_FRECUENCY,1).commit();
+        editorNoti.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
+
     }
 
 

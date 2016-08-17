@@ -22,7 +22,7 @@ android {
         applicationId 'cl.upsocl.upsoclapp'
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 10
+        versionCode 16
         versionName "1.0"
         multiDexEnabled true
     }
@@ -65,5 +65,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.4.0'
     compile 'com.google.android.gms:play-services-appindexing:9.4.0'
     compile 'com.google.android.gms:play-services-plus:9.4.0'
+    compile 'com.google.android.gms:play-services-analytics:9.4.0'
     compile 'com.android.support:multidex:1.0.1'
 }
