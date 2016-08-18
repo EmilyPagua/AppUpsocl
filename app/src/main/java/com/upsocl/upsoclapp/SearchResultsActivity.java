@@ -14,6 +14,8 @@ import android.view.View;
 
 import com.upsocl.upsoclapp.ui.fragments.NewsFragment;
 
+import cl.upsocl.upsoclapp.MenuHomeActivity;
+
 public class SearchResultsActivity extends AppCompatActivity {
 
     private String word;
@@ -75,7 +77,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void onBackPressed(){
         super.onBackPressed();
 
-        Intent intent = new Intent(SearchResultsActivity.this, HomeActivity.class);
+        Intent intent = new Intent(SearchResultsActivity.this, MenuHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         SearchResultsActivity.this.finish();

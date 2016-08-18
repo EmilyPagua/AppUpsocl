@@ -2,9 +2,6 @@
     <string name="app_name">Upsocl</string>
     <string name="app_notifications">Post del día</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
 
     <string name="msg_login">Optimismo que nos une.</string>
     <string name="msg_welcome">Bienvenido a Upsocl</string>
@@ -40,7 +37,6 @@
 
     <string name="menu_add">Agregar</string>
     <string name="menu_search">Buscar</string>
-    <string name="action_settings">PruebaMenu</string>
     <string name="action_search">Buscar</string>
     <string name="search_result">Resultado busqueda</string>
     <string name="search_hint">Buscar</string>
@@ -179,6 +175,12 @@
     <string name="privacity_12">La Aplicación Móvil Upsocl, se reserva en forma exclusiva el derecho
         de modificar, rectificar, alterar, agregar o eliminar cualquier punto del presente escrito en
         cualquier momento y sin previo aviso..</string>
+    <string name="title_activity_menu_home">MenuHomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 
 
 </resources>

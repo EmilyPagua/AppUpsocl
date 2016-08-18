@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
+import android.support.v7.app.AppCompatActivity;
 
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static final long SPLASH_DISPLAY_LENGTH = 3000;
 
@@ -31,7 +33,7 @@ public class MainActivity extends Activity {
                 }
             }, SPLASH_DISPLAY_LENGTH);
         }else{
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            Intent intent = new Intent(MainActivity.this, cl.upsocl.upsoclapp.MenuHomeActivity.class);
             startActivity(intent);
             MainActivity.this.finish();
         }
@@ -40,7 +42,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
 }
