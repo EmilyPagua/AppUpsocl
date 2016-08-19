@@ -74,14 +74,13 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener  {
 
-    private SearchView searchView;
+    private SearchView searchView; //
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private TabLayout tabs;
     private ViewPager viewPager;
     private FrameLayout frameLayout;
     private SharedPreferences prefs, prefsInterests, prefsUser;
-    private Gson gs = new Gson();
 
     private View headerView;
     private TextView tv_username;
@@ -128,7 +127,6 @@ public class HomeActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         uploadPreferences();
-        selectDrawerOption();
         selectTabsOption();
 
         //GOOGLE
@@ -228,110 +226,6 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
-    }
-
-    private void selectDrawerOption() {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-
-                boolean fragmentTransacction = false;
-                Fragment fragment = null;
-                FragmentManager fragmentManager =  null;
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layoutHome);
-
-                if (countPreference()<=3){
-                    Toast.makeText(HomeActivity.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
-                    drawer.closeDrawers();
-                    return false;
-                }
-
-                switch (item.getItemId()){
-                    case R.id.nav_home:
-                        fragmentTransacction = false;
-                        tabs.setVisibility(View.VISIBLE);
-                        viewPager.setVisibility(View.VISIBLE);
-                        frameLayout.setVisibility(View.INVISIBLE);
-
-                        getSupportActionBar().setTitle(item.getTitle());
-                        break;
-
-                    case R.id.nav_bookmarks:
-                        visibleGoneElement();
-                        fragment =  BookmarksFragment.newInstance(prefs);
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment)
-                                .commit();
-
-                        fragmentTransacction = true;
-
-                        break;
-                    case R.id.nav_interests:
-
-                        Toast.makeText(HomeActivity.this, R.string.msg_selected_category_preferences, Toast.LENGTH_SHORT).show();
-                        visibleGoneElement();
-                        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
-                        InterestsFragment interestsFragment = new InterestsFragment();
-                        interestsFragment.setPreferences(prefs);
-                        fragment =  interestsFragment;
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment)
-                                .commit();
-
-                        fragmentTransacction = true;
-                        uploadPager();
-                        break;
-                    case R.id.nav_manage:
-                        visibleGoneElement();
-                        SharedPreferences prefsNoti =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
-
-                        PreferencesFragment preferenceActivity = new PreferencesFragment();
-                        preferenceActivity.setPrefsUser(prefsUser);
-                        preferenceActivity.setPreferencesNoti(prefsNoti);
-
-                        fragment =  preferenceActivity;
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment)
-                                .commit();
-                        fragmentTransacction = true;
-
-                        break;
-                    case R.id.nav_us:
-
-                        visibleGoneElement();
-                        fragment =  new HelpFragment();
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment)
-                                .commit();
-
-                        fragmentTransacction = true;
-                        break;
-
-                    case R.id.nav_profile:
-
-                        visibleGoneElement();
-
-                        fragment =  new PrivacyFragment();
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment)
-                                .commit();
-
-                        fragmentTransacction = true;
-                        break;
-                }
-                if (fragmentTransacction){
-                    getSupportActionBar().setTitle(item.getTitle());
-                }
-
-                drawer.closeDrawers();
-                return true;
             }
         });
     }
@@ -565,45 +459,11 @@ public class HomeActivity extends AppCompatActivity
         alertDialog.show();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-    //End dialogeMessage
-
-
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        //Nuestro código a ejecutar en este momento
-        Log.v("HomeActivity", "onDestroy");
-    }
-
-    @Override
-    public void onRestart(){
-        super.onRestart();
-
-        Log.v("HomeActivity", "onRestart");
-    }
 
     @Override
     protected void onResume() {
         super.onResume();//uploadPager();
         Log.v("HomeActivity", "onResume");
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.v("HomeActivity", "onPause");
     }
 }

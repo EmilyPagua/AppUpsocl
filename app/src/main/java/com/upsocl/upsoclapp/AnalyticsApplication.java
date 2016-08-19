@@ -44,7 +44,6 @@ public class AnalyticsApplication extends Application {
             //ID SEGUIMIENTO = UA-44944096-19
             mTracker = analytics.newTracker("UA-44944096-19");
             mTracker.enableExceptionReporting(true);
-            mTracker.enableAdvertisingIdCollection(true);
             mTracker.enableAutoActivityTracking(true);
         }
         return mTracker;

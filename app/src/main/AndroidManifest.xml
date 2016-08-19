@@ -81,7 +81,7 @@
         <activity
             android:name=".CreateProfile"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.segundary"></activity>
+            android:theme="@style/AppTheme.segundary" />
 
         <!-- Login Facebook -->
         <activity
@@ -168,7 +168,7 @@
             android:name=".PruebaActivity"
             android:label="@string/title_activity_prueba"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -183,6 +183,10 @@
                 android:name="android.app.default_searchable"
                 android:value="com.upsocl.upsoclapp.SearchResultsActivity" />
         </activity>
+        <activity
+            android:name="cl.upsocl.upsoclapp.DetailPostActivity"
+            android:label="@string/title_activity_detail_post"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

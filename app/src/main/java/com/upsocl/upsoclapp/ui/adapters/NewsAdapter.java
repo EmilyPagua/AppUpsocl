@@ -23,6 +23,8 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 
 import java.util.ArrayList;
 
+import cl.upsocl.upsoclapp.DetailPostActivity;
+
 /**
  * Created by leninluque on 09-11-15.
  */
@@ -114,8 +116,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), DetailsActivity.class);
+                    Intent intent = new Intent(view.getContext(), DetailPostActivity.class);
 
+                    //Intent intent = new Intent(view.getContext(), DetailsActivity.class);
                     int lenght = 1;
                     Gson gS = new Gson();
                     String target = gS.toJson(newsObj);

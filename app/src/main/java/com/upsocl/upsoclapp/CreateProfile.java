@@ -72,6 +72,7 @@ import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.notification.QuickstartPreferences;
 import com.upsocl.upsoclapp.notification.RegistrationIntentService;
 
+import cl.upsocl.upsoclapp.MenuHomeActivity;
 import io.fabric.sdk.android.Fabric;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -758,7 +759,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         @Override
         protected void onPostExecute(Object o) {
-            Intent intent = new Intent(CreateProfile.this, HomeActivity.class);
+            Intent intent = new Intent(CreateProfile.this, MenuHomeActivity.class);
             startActivity(intent);
             CreateProfile.this.finish();
             super.onPostExecute(o);
