@@ -19,12 +19,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.upsocl.upsoclapp.DetailsActivity;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.ui.ViewConstants;
 
 import java.util.List;
+
+import cl.upsocl.upsoclapp.DetailPostActivity;
 
 /**
  * Created by upsocl on 18-07-16.
@@ -91,7 +92,7 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(context, DetailsActivity.class);
+                Intent intent = new Intent(context, DetailPostActivity.class);
                 Gson gS = new Gson();
                 String target = gS.toJson(news);
                 intent.putExtra("new", target);

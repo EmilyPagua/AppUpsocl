@@ -1,5 +1,6 @@
 package cl.upsocl.upsoclapp;
 
+import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -103,17 +106,39 @@ public class MenuHomeActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        uploadView();
-
         appBarLayout =(AppBarLayout) findViewById(R.id.app_bar_layout_home);
         progressBar =  (ProgressBar) findViewById(R.id.spinner);
         frameLayout = (FrameLayout) findViewById(R.id.content_frame_menu_home);
 
+        uploadView();
+
         //INIT COD CONTENT
         uploadPreferencesUser();
         tabs = createTabLayout();
-        selectTabsOption();
-        uploadPager();
+
+        if (isConnect()==true){
+
+            selectTabsOption();
+            uploadPager();
+            //GOOGLE
+            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                    .requestEmail()
+                    .build();
+
+            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .addApi(Plus.API)
+                    .addApi(AppIndex.API).build();
+            //GOOGLE
+
+        }else{
+            Toast.makeText(this, "No se mostraran los post, su conexión a red es muy baja", Toast.LENGTH_LONG).show();
+        }
+
         //
 
     }
@@ -170,7 +195,7 @@ public class MenuHomeActivity extends AppCompatActivity
         FragmentManager fragmentManager =  null;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (countPreference()<=3){
+        if (countPreference()<=1){
             Toast.makeText(MenuHomeActivity.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
             drawer.closeDrawers();
             return false;
@@ -201,6 +226,7 @@ public class MenuHomeActivity extends AppCompatActivity
                 SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
                 InterestsFragment interestsFragment = new InterestsFragment();
                 interestsFragment.setPreferences(prefs);
+
                 fragment =  interestsFragment;
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
@@ -208,6 +234,9 @@ public class MenuHomeActivity extends AppCompatActivity
                         .commit();
 
                 uploadPager();
+
+
+
                 break;
             case R.id.nav_manage:
                 visibleGoneElement();
@@ -505,4 +534,16 @@ public class MenuHomeActivity extends AppCompatActivity
     }
     //end twitter
 
+    private boolean isConnect() {
+
+        boolean bConectado = false;
+        ConnectivityManager connec = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] redes = connec.getAllNetworkInfo();
+        for (int i = 0; i < 2; i++) {
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                bConectado = true;
+            }
+        }
+        return bConectado;
+    }
 }

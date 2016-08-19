@@ -127,6 +127,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private boolean isReceiverRegistered;
 
     private UserLogin userLogin;
+    private int error=0;
 
     //format Email
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -491,8 +492,8 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private void configureGoogleLogin() {
         //Initializing google signin option
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(new Scope(Scopes.PROFILE))
-                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                //.requestScopes(new Scope(Scopes.PROFILE))
+                //.requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
                 .build();
 
@@ -577,7 +578,21 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             //Loading image
         } else {
             //If login fails
-            Toast.makeText(this, "Problemas al iniciar sesión, intente con otra cuenta o red social", Toast.LENGTH_LONG).show();
+
+            if (error ==0 ){
+                Toast.makeText(this, "Problemas al iniciar sesión, intente de nuevo", Toast.LENGTH_LONG).show();
+                /*gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+
+                mGoogleApiClient.disconnect();*/
+
+                error=1;
+            }else{
+                if (error==1){
+                    Toast.makeText(this, "Problemas al iniciar sesión, intente de nuevo o intente con otra red social", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 

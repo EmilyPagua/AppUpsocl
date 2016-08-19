@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.upsocl.upsoclapp.DetailsActivity;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.ui.ViewConstants;
@@ -117,8 +116,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), DetailPostActivity.class);
-
-                    //Intent intent = new Intent(view.getContext(), DetailsActivity.class);
                     int lenght = 1;
                     Gson gS = new Gson();
                     String target = gS.toJson(newsObj);

@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.upsocl.upsoclapp.HomeActivity;
 import com.upsocl.upsoclapp.R;
@@ -24,6 +26,7 @@ public class InterestsFragment extends Fragment {
     private SharedPreferences preferences;
     private RecyclerView interestList;
     private InterestsAdapter adapter;
+
 
 
     @Override

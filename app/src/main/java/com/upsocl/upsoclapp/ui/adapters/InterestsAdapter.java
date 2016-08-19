@@ -2,18 +2,25 @@ package com.upsocl.upsoclapp.ui.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.Interests;
+import com.upsocl.upsoclapp.ui.fragments.InterestsFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by upsocl on 19-07-16.
@@ -24,10 +31,13 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
     private Context context;
     private SharedPreferences prefs;
 
-    public InterestsAdapter(Context context){
+
+
+    public InterestsAdapter(Context context) {
         this.context = context;
         this.interests = new ArrayList<>();
     }
+
 
 
     @Override
@@ -105,6 +115,7 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
                         checkBox.setVisibility(View.VISIBLE);
 
                     notifyDataSetChanged();
+
                 }
             });
         }
@@ -112,6 +123,7 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.Inte
         private void savePreferences(int id, Boolean flag) {
             SharedPreferences.Editor editor =  prefs.edit();
             editor.putBoolean(String.valueOf(id), flag).commit();
+
         }
 
 

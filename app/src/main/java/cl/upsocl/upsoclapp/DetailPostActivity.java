@@ -17,6 +17,8 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,6 +41,7 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.analytics.HitBuilders;
@@ -188,6 +191,7 @@ public class DetailPostActivity extends AppCompatActivity {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
+
     }
 
     @Override
@@ -253,8 +257,13 @@ public class DetailPostActivity extends AppCompatActivity {
     }
 
     private void createAdView(int adViewOne) {
-        flag_bookmarks = false;
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mAdView = (AdView) findViewById(adViewOne);
+
+        flag_bookmarks = false;
+
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
@@ -335,13 +344,32 @@ public class DetailPostActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onStop() {
+        clearWebView(R.id.webView);
+        clearWebView(R.id.webViewSegundary);
+        clearWebView(R.id.webViewThree);
+        clearWebView(R.id.webViewFour);
+        clearWebView(R.id.webViewFive);
+
+        vf.clearAnimation();
+        this.finish();
+        super.onStop();
+    }
+
+    private void clearWebView(int webViewDetail) {
+        WebView webView = (WebView) findViewById(webViewDetail);
+        webView.stopLoading();
+        webView.removeAllViews();
+        webView.destroy();
+        webView = null;
+    }
+
     private News getItemPosition(int postion) {
         News newsPosition = new News();
         System.out.println(vf.getDisplayedChild());
         switch (postion){
             case 0:
-
-
                 if (newsList.size()>postion)
                     newsPosition =  newsList.get(postion);
                 else
@@ -350,7 +378,6 @@ public class DetailPostActivity extends AppCompatActivity {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }
-
                 break;
             case 1:
                 if (newsList.size()>postion)
@@ -358,12 +385,15 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
+                beginPlayingGame();
+
                 break;
             case 2:
                 if (newsList.size()>postion)
                     newsPosition =  newsList.get(postion);
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
+
                 break;
             case 3:
                 if (newsList.size()>postion)
@@ -373,6 +403,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 break;
             default:
                 newsPosition =  newsList.get(newsList.size()-1);
+                beginPlayingGame();
                 break;
         }
 
