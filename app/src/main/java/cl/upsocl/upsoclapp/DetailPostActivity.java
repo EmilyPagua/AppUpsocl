@@ -176,7 +176,6 @@ public class DetailPostActivity extends AppCompatActivity {
         newsPosition=newsPrimary;
 
         //UploadPublicty
-
         dialog = ProgressDialog.show(DetailPostActivity.this, getString(R.string.msg_dialog_postDetail),
                 getString(R.string.msg_dialog_content), true);
 
@@ -186,23 +185,8 @@ public class DetailPostActivity extends AppCompatActivity {
             adView1.loadAd(adRequest);
             adView1.setAdListener(new AdListener() {
                 @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                }
-
-                @Override
                 public void onAdFailedToLoad(int i) {
                     super.onAdFailedToLoad(i);
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    super.onAdLeftApplication();
-                }
-
-                @Override
-                public void onAdOpened() {
-                    super.onAdOpened();
                 }
 
                 @Override
@@ -215,33 +199,16 @@ public class DetailPostActivity extends AppCompatActivity {
                         adView2.loadAd(adRequest2);
                         adView2.setAdListener(new AdListener() {
                             @Override
-                            public void onAdClosed() {
-                                super.onAdClosed();
-                            }
-
-                            @Override
                             public void onAdFailedToLoad(int i) {
                                 super.onAdFailedToLoad(i);
                             }
-
-                            @Override
-                            public void onAdLeftApplication() {
-                                super.onAdLeftApplication();
-                            }
-
-                            @Override
-                            public void onAdOpened() {
-                                super.onAdOpened();
-                            }
-
                             @Override
                             public void onAdLoaded() {
                                 super.onAdLoaded();
                                 if (dialog!=null && dialog.isShowing()){
-                                    dialog.dismiss();
                                     uploadNews(newsPrimary, R.id.webViewPrimary);
+                                    dialog.dismiss();
                                 }
-
                             }
                         });
                     }
