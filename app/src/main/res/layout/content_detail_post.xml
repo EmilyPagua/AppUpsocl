@@ -18,6 +18,7 @@
         android:id="@+id/scroll_detail_content">
 
         <LinearLayout
+            android:layout_margin="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detailTextView"
                 android:paddingTop="2dp"
+                android:text="Title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -51,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="primary"
+                android:text="Detail"
                 android:id="@+id/detail" />
 
             <com.google.android.gms.ads.AdView

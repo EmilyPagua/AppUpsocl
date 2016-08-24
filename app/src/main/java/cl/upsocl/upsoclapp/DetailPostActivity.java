@@ -193,6 +193,11 @@ public class DetailPostActivity extends AppCompatActivity {
                 public void onAdLoaded() {
                     super.onAdLoaded();
 
+                    if (dialog!=null && dialog.isShowing()){
+                        uploadNews(newsPrimary, R.id.webViewPrimary);
+                        dialog.dismiss();
+                    }
+
                     final AdView adView2 = (AdView) findViewById(R.id.adView_primary_two);
                     AdRequest adRequest2 = new AdRequest.Builder().build();
                     if (adView2!=null && adRequest2!=null) {
@@ -205,10 +210,6 @@ public class DetailPostActivity extends AppCompatActivity {
                             @Override
                             public void onAdLoaded() {
                                 super.onAdLoaded();
-                                if (dialog!=null && dialog.isShowing()){
-                                    uploadNews(newsPrimary, R.id.webViewPrimary);
-                                    dialog.dismiss();
-                                }
                             }
                         });
                     }
@@ -334,8 +335,6 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private void enableWebView(String content, int webViewCreate){
 
-        clearAllWebView();
-
         WebView webViewNew = (WebView) findViewById(webViewCreate);
 
         webViewNew.getSettings().setJavaScriptEnabled(true);
@@ -444,8 +443,8 @@ public class DetailPostActivity extends AppCompatActivity {
     }
 
     private News getItemPosition(int postion) {
+        clearAllWebView();
         News newsPosition = new News();
-        System.out.println("Cambiar a " + vf.getDisplayedChild());
         switch (postion){
             case 0:
                 if (newsList.size()>postion)
