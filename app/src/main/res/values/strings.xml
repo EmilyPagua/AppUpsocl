@@ -19,6 +19,7 @@
     <string name="msg_save_wordpress">Registro procesado</string>
     <string name="msg_selected_category_preferences">Seleccione las categorias de su preferencia</string>
     <string name="msg_dialog_title">Validando datos</string>
+    <string name="msg_dialog_postDetail">Cargando contenido</string>
     <string name="msg_dialog_content">Espere, procesando datos..!</string>
     <string name="token_error_message">Error en token</string>
 
@@ -124,6 +125,8 @@
 
     <string name="banner_up">ca-mb-app-pub-7682123866908966/2346534963</string>
     <string name="banner_down">ca-mb-app-pub-7682123866908966/7102497723</string>
+
+
     <string name="banner_popup">ca-mb-app-pub-7682123866908966/8579205603</string>
 
     <string name="privacity_1">Upsocl, es una compañía de medios con la misión de volver a conectar a

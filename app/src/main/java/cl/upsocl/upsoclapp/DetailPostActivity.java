@@ -1,14 +1,13 @@
 package cl.upsocl.upsoclapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -18,7 +17,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -28,6 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -75,7 +74,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     //PUBLICITY
     private AdView mAdView;
-    private InterstitialAd mInterstitialAd;
+    // FIXME private InterstitialAd mInterstitialAd;
 
     //END PUBLICITY
 
@@ -88,7 +87,11 @@ public class DetailPostActivity extends AppCompatActivity {
     //Element Facebook
     private CallbackManager callbackManager;
     private ShareDialog shareDialog;
+    private TextView textViewTitle, textViewDetail;
+    private WebView webView1,webView2,webView3,webView4,webView5;
 
+
+    private ProgressDialog dialog;
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
         public void onSuccess(Sharer.Result result) {
@@ -112,8 +115,10 @@ public class DetailPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_post);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabNext);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -146,12 +151,106 @@ public class DetailPostActivity extends AppCompatActivity {
         newsFive = gs.fromJson(getIntent().getStringExtra("newsFive"), News.class);
         leght =  getIntent().getIntExtra("leght",0);
 
+        textViewTitle = (TextView) findViewById(R.id.detailTextView);
+        textViewDetail = (TextView) findViewById(R.id.detail);
+
+        webView1 = (WebView) findViewById(R.id.webViewPrimary);
+        webView2 = (WebView) findViewById(R.id.webViewSegundary);
+        webView3 = (WebView) findViewById(R.id.webViewThree);
+        webView4 = (WebView) findViewById(R.id.webViewFour);
+        webView5 = (WebView) findViewById(R.id.webViewFive);
+
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
 
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.realtiveContent);
 
-        uploadNews(newsPrimary, R.id.imageViewDetail, R.id.detailTextView, R.id.detail,R.id.webView, R.id.adView_primary_one,R.id.adView_primary_two);
+        if (android.os.Build.VERSION.SDK_INT <= 21){
+            layout.setPadding(5,5,5,0);
+        }
+
+        textViewTitle.setText(newsPrimary.getTitle());
+        uploadImagensNews(newsPrimary, R.id.imageViewDetail);
+        setTextViewDetail(newsPrimary.getAuthor(), newsPrimary.getDate(), newsPrimary.getCategories());
+
         newsList.add(newsPrimary);
         newsPosition=newsPrimary;
+
+        //UploadPublicty
+
+        dialog = ProgressDialog.show(DetailPostActivity.this, getString(R.string.msg_dialog_postDetail),
+                getString(R.string.msg_dialog_content), true);
+
+       final AdView adView1 = (AdView) findViewById(R.id.adView_primary_one);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (adView1!=null && adRequest!=null) {
+            adView1.loadAd(adRequest);
+            adView1.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    super.onAdClosed();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    super.onAdLeftApplication();
+                }
+
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+
+                    final AdView adView2 = (AdView) findViewById(R.id.adView_primary_two);
+                    AdRequest adRequest2 = new AdRequest.Builder().build();
+                    if (adView2!=null && adRequest2!=null) {
+                        adView2.loadAd(adRequest2);
+                        adView2.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdClosed() {
+                                super.onAdClosed();
+                            }
+
+                            @Override
+                            public void onAdFailedToLoad(int i) {
+                                super.onAdFailedToLoad(i);
+                            }
+
+                            @Override
+                            public void onAdLeftApplication() {
+                                super.onAdLeftApplication();
+                            }
+
+                            @Override
+                            public void onAdOpened() {
+                                super.onAdOpened();
+                            }
+
+                            @Override
+                            public void onAdLoaded() {
+                                super.onAdLoaded();
+                                if (dialog!=null && dialog.isShowing()){
+                                    dialog.dismiss();
+                                    uploadNews(newsPrimary, R.id.webViewPrimary);
+                                }
+
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+
+        //End UploadPublicty
 
         createListNews();
 
@@ -161,7 +260,7 @@ public class DetailPostActivity extends AppCompatActivity {
         //End upload News
 
         //PUBLICITY
-        mInterstitialAd = new InterstitialAd(this);
+       /* FIXME mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-mb-app-pub-7682123866908966/8579205603");
 
         mInterstitialAd.setAdListener(new AdListener() {
@@ -171,28 +270,40 @@ public class DetailPostActivity extends AppCompatActivity {
                 beginPlayingGame();
             }
         });
-        requestNewInterstitial();
+        requestNewInterstitial(); */
 
         // [START shared_tracker]
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
 
         mTracker = application.getDefaultTracker();
-        // [END shared_tracker]
 
+        // [START custom_event]
+        mTracker.setScreenName(newsPrimary.getLink());
+        mTracker.setReferrer(newsPrimary.getLink());
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("ClickPost")
+                .setAction(newsPrimary.getLink())
+                .build());
+        // [END custom_event]t]
         //END PUBLICITY
+
 
         //Content Faceboook
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
         shareDialog.registerCallback(callbackManager, resultFacebookCallback);
-        //Fin content facebook
+        //End content facebook
 
-        if (mInterstitialAd.isLoaded()) {
+      /* FIXME   if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
-        }
+        }*/
+
+        ImageView imageview = (ImageView) findViewById(R.id.imageViewDetail);
+        imageview.setOnTouchListener(new ListenerTouchViewFlipper());
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -247,36 +358,38 @@ public class DetailPostActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int adViewOne, int adViewTwo) {
-        createAdView(adViewOne);
-        setImage(objNews.getImage(), imagen);
-        setTextViewTitle(objNews.getTitle(),title);
-        setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
-        enableWebView(objNews.getContent(), webView);
-        createAdView(adViewTwo);
+    private void uploadNews(News objNews, int webViewContext) {
+
+        textViewTitle.setText(objNews.getTitle());
+        setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories());
+        enableWebView(objNews.getContent(),webViewContext);
     }
 
-    private void createAdView(int adViewOne) {
+    private void enableWebView(String content, int webViewCreate){
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mAdView = (AdView) findViewById(adViewOne);
+        clearAllWebView();
 
-        flag_bookmarks = false;
+        WebView webViewNew = (WebView) findViewById(webViewCreate);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-    }
+        webViewNew.getSettings().setJavaScriptEnabled(true);
+        webViewNew.getSettings().setLoadWithOverviewMode(true);
+        webViewNew.getSettings().setUseWideViewPort(true);
+        webViewNew.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        webViewNew.getSettings().setSaveFormData(false);
 
-    private void enableWebView(String content, int webViewDetail){
-        WebView webView = (WebView) findViewById(webViewDetail);
         String html = ViewConstants.HTML_HEAD + content;
         html =  html.replace("\\\"","\"").replace("\\n","\n");
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        webView.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", "");
+
+        webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
+        webViewNew.setVisibility(View.VISIBLE);
+    }
+
+    private void clearAllWebView() {
+        webView1.setVisibility(View.GONE);
+        webView2.setVisibility(View.GONE);
+        webView3.setVisibility(View.GONE);
+        webView4.setVisibility(View.GONE);
+        webView5.setVisibility(View.GONE);
     }
 
     private void setImage(String objImage, int image){
@@ -287,14 +400,8 @@ public class DetailPostActivity extends AppCompatActivity {
                 .into(imageview);
     }
 
-    private void setTextViewTitle(String title, int textTitle){
-        TextView textView = (TextView) findViewById(textTitle);
-        textView.setText(title);
-    }
 
-    private void setTextViewDetail(String authorCreate, String dateCreate, String category, int textDetail) {
-
-        TextView detail = (TextView) findViewById(textDetail);
+    private void setTextViewDetail(String authorCreate, String dateCreate, String category) {
 
         String author = "Por: "+ authorCreate;
         String  date = "El: "+ dateCreate;
@@ -307,7 +414,7 @@ public class DetailPostActivity extends AppCompatActivity {
         Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail, ". ",sBcategory);
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
 
-        detail.setText(result, TextView.BufferType.SPANNABLE);
+        textViewDetail.setText(result, TextView.BufferType.SPANNABLE);
     }
 
     private SpannableStringBuilder setStyleText(String text, int i, int length) {
@@ -346,7 +453,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     @Override
     public void onStop() {
-        clearWebView(R.id.webView);
+        clearWebView(R.id.webViewPrimary);
         clearWebView(R.id.webViewSegundary);
         clearWebView(R.id.webViewThree);
         clearWebView(R.id.webViewFour);
@@ -357,17 +464,21 @@ public class DetailPostActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private void clearWebView(int webViewDetail) {
-        WebView webView = (WebView) findViewById(webViewDetail);
-        webView.stopLoading();
-        webView.removeAllViews();
-        webView.destroy();
-        webView = null;
+    private void clearWebView(int webViewCreate) {
+
+        WebView webView = (WebView) findViewById(webViewCreate);
+
+        if (webView!=null){
+            webView.stopLoading();
+            webView.removeAllViews();
+            webView.destroy();
+            webView = null;
+        }
     }
 
     private News getItemPosition(int postion) {
         News newsPosition = new News();
-        System.out.println(vf.getDisplayedChild());
+        System.out.println("Cambiar a " + vf.getDisplayedChild());
         switch (postion){
             case 0:
                 if (newsList.size()>postion)
@@ -375,9 +486,10 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
-                if (mInterstitialAd.isLoaded()) {
+                uploadNews(newsPosition, R.id.webViewPrimary);
+                /* FIXME if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
-                }
+                }*/
                 break;
             case 1:
                 if (newsList.size()>postion)
@@ -385,7 +497,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
-                beginPlayingGame();
+                uploadNews(newsPosition, R.id.webViewSegundary);
 
                 break;
             case 2:
@@ -394,15 +506,20 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
+                uploadNews(newsPosition, R.id.webViewThree);
                 break;
             case 3:
                 if (newsList.size()>postion)
                     newsPosition =  newsList.get(postion);
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
+
+                uploadNews(newsPosition, R.id.webViewFour);
                 break;
             default:
                 newsPosition =  newsList.get(newsList.size()-1);
+
+                uploadNews(newsPosition, R.id.webViewFive);
                 beginPlayingGame();
                 break;
         }
@@ -427,7 +544,6 @@ public class DetailPostActivity extends AppCompatActivity {
                         vf.setInAnimation(inFromRightAnimation());
                         vf.setOutAnimation(outToLeftAnimation());
                         newsPosition = getItemPosition(vf.getDisplayedChild()-1);
-                        uploadPreferences(newsPosition.getId());
                         vf.showPrevious();
                     }
 
@@ -437,9 +553,11 @@ public class DetailPostActivity extends AppCompatActivity {
                         vf.setOutAnimation(outToRightAnimation());
 
                         newsPosition = getItemPosition(vf.getDisplayedChild()+1);
-                        uploadPreferences(newsPosition.getId());
+
                         vf.showNext();
                     }
+
+                    uploadPreferences(newsPosition.getId());
 
                 default:
                     break;
@@ -506,7 +624,7 @@ public class DetailPostActivity extends AppCompatActivity {
         // [END custom_event]
     }
 
-    private void requestNewInterstitial() {
+   /* FIXME  private void requestNewInterstitial() {
 
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceId = md5(android_id).toUpperCase();
@@ -516,7 +634,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 .build();
 
         mInterstitialAd.loadAd(adRequest);
-    }
+    }*/
     //END PUBLICITY
 
 
@@ -524,23 +642,28 @@ public class DetailPostActivity extends AppCompatActivity {
         for (int i=0; i<leght; i++){
             switch (i){
                 case 1:
-                    uploadNews(newsSegundary, R.id.imageViewDetailSegundary, R.id.detailTextViewSegundary,
-                            R.id.detailSegundary,R.id.webViewSegundary, R.id.adView_segundary_one,R.id.adView_segundary_two );
+                    uploadImagensNews(newsSegundary, R.id.imageViewDetailSegundary);
+
+                   /* uploadNews(newsSegundary, R.id.imageViewDetailSegundary, 0,
+                            0,0, 0,0, R.id.viewSegundary );*/
                     newsList.add(newsSegundary);
                     break;
                 case 2:
-                    uploadNews(newsThree, R.id.imageViewDetailThree, R.id.detailTextViewThree,
-                            R.id.detailThree,R.id.webViewThree,R.id.adView_three_one, R.id.adView_three_two);
+                    uploadImagensNews(newsThree, R.id.imageViewDetailThree);
+                    /*uploadNews(newsThree, R.id.imageViewDetailThree, 0,
+                            0,0,0, 0, R.id.viewThree);*/
                     newsList.add(newsThree);
                     break;
                 case 3:
-                    uploadNews(newsFour, R.id.imageViewDetailFour, R.id.detailTextViewFour,
-                            R.id.detailFour,R.id.webViewFour, R.id.adView_four_one, R.id.adView_four_two);
+                    uploadImagensNews(newsFour, R.id.imageViewDetailFour);
+                   /* uploadNews(newsFour, R.id.imageViewDetailFour,0,
+                            0,0, 0, 0, R.id.viewFour);*/
                     newsList.add(newsFour);
                     break;
                 case 4:
-                    uploadNews(newsFive, R.id.imageViewDetailFive, R.id.detailTextViewFive,
-                            R.id.detailFive,R.id.webViewFive, R.id.adView_five_one, R.id.adView_five_two);
+                    uploadImagensNews(newsFive, R.id.imageViewDetailFive);
+                    /*uploadNews(newsFive, R.id.imageViewDetailFive,0,
+                            0,0, 0, 0, R.id.viewFive);*/
                     newsList.add(newsFive);
                     break;
             }
@@ -613,4 +736,15 @@ public class DetailPostActivity extends AppCompatActivity {
             shareDialog.show(linkContent);
         }
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    private void uploadImagensNews(News objNews, int imageViewDetail) {
+        setImage(objNews.getImage(), imageViewDetail);
+    }
+
 }

@@ -49,21 +49,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Prueba Prueba"
+                android:text="Usuario"
                 android:id="@+id/nameProfile" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="prueba@prueba.com"
+                android:text="Email"
                 android:id="@+id/emailProfile" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Prueba, Prueba"
+                android:text="Localización"
                 android:id="@+id/locationProfile" />
 
         </LinearLayout>

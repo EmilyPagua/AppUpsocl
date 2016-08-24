@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by upsocl on 12-07-16.
@@ -35,7 +34,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             mIcon11 = BitmapFactory.decodeStream(in);
 
         } catch (IOException e) {
-            Log.e("ERROR", e.getMessage());
+            Log.e("ERROR DownloadImage", e.getMessage());
             e.printStackTrace();
         }
 

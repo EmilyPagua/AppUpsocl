@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +63,7 @@ import com.upsocl.upsoclapp.ui.DownloadImage;
 import com.upsocl.upsoclapp.ui.adapters.PagerAdapter;
 import com.upsocl.upsoclapp.ui.fragments.BookmarksFragment;
 import com.upsocl.upsoclapp.ui.fragments.HelpFragment;
-import com.upsocl.upsoclapp.ui.fragments.InterestsFragment;
+import com.upsocl.upsoclapp.ui.fragments.InterestsListViewFragment;
 import com.upsocl.upsoclapp.ui.fragments.PreferencesFragment;
 import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
@@ -74,7 +75,6 @@ public class MenuHomeActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
 
     boolean exit = false;
-
 
     //VAR MENU
     private SearchView searchView;
@@ -99,6 +99,8 @@ public class MenuHomeActivity extends AppCompatActivity
 
     private NavigationView navigationView;
 
+    private int lastSelected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +111,11 @@ public class MenuHomeActivity extends AppCompatActivity
         appBarLayout =(AppBarLayout) findViewById(R.id.app_bar_layout_home);
         progressBar =  (ProgressBar) findViewById(R.id.spinner);
         frameLayout = (FrameLayout) findViewById(R.id.content_frame_menu_home);
+
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.relativeHome);
+        if (android.os.Build.VERSION.SDK_INT <= 21){
+            layout.setPadding(5,5,5,0);
+        }
 
         uploadView();
 
@@ -141,6 +148,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
         //
 
+        lastSelected = R.id.nav_home;
     }
 
     @Override
@@ -195,7 +203,7 @@ public class MenuHomeActivity extends AppCompatActivity
         FragmentManager fragmentManager =  null;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (countPreference()<=1){
+        if (countPreference()<=3){
             Toast.makeText(MenuHomeActivity.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
             drawer.closeDrawers();
             return false;
@@ -203,14 +211,20 @@ public class MenuHomeActivity extends AppCompatActivity
 
         switch (item.getItemId()){
             case R.id.nav_home:
+
+                if (lastSelected == R.id.nav_interests)
+                    uploadPager();
+
                 tabs.setVisibility(View.VISIBLE);
                 viewPager.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.INVISIBLE);
 
                 getSupportActionBar().setTitle(item.getTitle());
+                lastSelected =R.id.nav_home;
                 break;
 
             case R.id.nav_bookmarks:
+                lastSelected =R.id.nav_bookmarks;
                 visibleGoneElement();
                 fragment =  BookmarksFragment.newInstance(prefs);
                 fragmentManager = getSupportFragmentManager();
@@ -220,14 +234,15 @@ public class MenuHomeActivity extends AppCompatActivity
 
                 break;
             case R.id.nav_interests:
+                lastSelected =R.id.nav_interests;
 
                 Toast.makeText(MenuHomeActivity.this, R.string.msg_selected_category_preferences, Toast.LENGTH_SHORT).show();
                 visibleGoneElement();
-                SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
-                InterestsFragment interestsFragment = new InterestsFragment();
-                interestsFragment.setPreferences(prefs);
 
-                fragment =  interestsFragment;
+                SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+                InterestsListViewFragment viewFragment = new InterestsListViewFragment();
+                viewFragment.setPreferences(prefs);
+                fragment =  viewFragment;
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame_menu_home, fragment)
@@ -235,10 +250,9 @@ public class MenuHomeActivity extends AppCompatActivity
 
                 uploadPager();
 
-
-
                 break;
             case R.id.nav_manage:
+                lastSelected =R.id.nav_manage;
                 visibleGoneElement();
                 SharedPreferences prefsNoti =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
 
@@ -253,7 +267,7 @@ public class MenuHomeActivity extends AppCompatActivity
                         .commit();
                 break;
             case R.id.nav_us:
-
+                lastSelected =R.id.nav_us;
                 visibleGoneElement();
                 fragment =  new HelpFragment();
                 fragmentManager = getSupportFragmentManager();
@@ -263,7 +277,7 @@ public class MenuHomeActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_profile:
-
+                lastSelected =R.id.nav_profile;
                visibleGoneElement();
                 fragment =  new PrivacyFragment();
                 fragmentManager = getSupportFragmentManager();
@@ -302,6 +316,7 @@ public class MenuHomeActivity extends AppCompatActivity
         frameLayout.setVisibility(View.VISIBLE);
         tabs.setVisibility(View.INVISIBLE);
         tabs.setVisibility(View.GONE);
+        progressBar.setVisibility(View.INVISIBLE);
         viewPager.setVisibility(View.INVISIBLE);
         viewPager.setVisibility(View.GONE);
         setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
@@ -442,7 +457,7 @@ public class MenuHomeActivity extends AppCompatActivity
             TextView tv_username = (TextView) view.findViewById(R.id.tv_username_header);
 
             tv_username.setText(userName + " " + userLastName);
-            if (imagenURL != null)
+            if (isConnect() && imagenURL != null)
                 new DownloadImage((ImageView) view.findViewById(R.id.img_profile_header), getResources()).execute(imagenURL);
 
             navigationView.setVisibility(View.VISIBLE);

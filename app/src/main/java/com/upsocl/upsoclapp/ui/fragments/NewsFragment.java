@@ -104,6 +104,7 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
 
     @Override
     public void failure(RetrofitError error) {
+        System.out.println("NewsFragment "+error );
         adapter.addAll(new ArrayList<News>());
     }
 

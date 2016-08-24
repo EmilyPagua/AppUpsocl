@@ -101,6 +101,7 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     @Override
     public void failure(RetrofitError error) {
+        System.out.println("HomePrimaryFragment "+error );
         adapter.addAll(new ArrayList<News>());
     }
 

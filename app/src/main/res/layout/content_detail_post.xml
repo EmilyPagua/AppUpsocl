@@ -4,19 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/realtiveContent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="cl.upsocl.upsoclapp.DetailPostActivity"
     tools:showIn="@layout/activity_detail_post">
 
-    <ViewFlipper
-        android:id="@+id/viewFlipper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <include layout="@layout/fragment_detail_primary" />
-        <include layout="@layout/fragment_detail_segundary"/>
-        <include layout="@layout/fragment_detail_three"/>
-        <include layout="@layout/fragment_detail_four"/>
-        <include layout="@layout/fragment_detail_five"/>
-    </ViewFlipper>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_detail_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/cardtextColor"
+            android:weightSum="1"
+            android:id="@+id/viewDetailLinearContent"
+            tools:ignore="WebViewLayout">
+
+            <ViewFlipper
+                android:id="@+id/viewFlipper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/fragment_detail_primary" />
+                <include layout="@layout/fragment_detail_segundary"/>
+                <include layout="@layout/fragment_detail_three"/>
+                <include layout="@layout/fragment_detail_four"/>
+                <include layout="@layout/fragment_detail_five"/>
+            </ViewFlipper>
+
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailTextView"
+                android:paddingTop="2dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="primary"
+                android:id="@+id/detail" />
+
+            <com.google.android.gms.ads.AdView
+                android:layout_marginTop="10dp"
+                android:id="@+id/adView_primary_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:adSize="MEDIUM_RECTANGLE"
+                app:adUnitId="ca-mb-app-pub-7682123866908966/2346534963"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+            </com.google.android.gms.ads.AdView>
+
+            <WebView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/webViewPrimary" />
+
+            <WebView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/webViewSegundary" />
+
+            <WebView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/webViewThree" />
+
+            <WebView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/webViewFour" />
+
+            <WebView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/webViewFive" />
+
+            <com.google.android.gms.ads.AdView
+
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView_primary_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                ads:adSize="MEDIUM_RECTANGLE"
+                ads:adUnitId="ca-mb-app-pub-7682123866908966/7102497723"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+            </com.google.android.gms.ads.AdView>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

@@ -57,17 +57,11 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
-import com.google.gson.Gson;
 import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.ui.DownloadImage;
 import com.upsocl.upsoclapp.ui.adapters.PagerAdapter;
-import com.upsocl.upsoclapp.ui.fragments.BookmarksFragment;
-import com.upsocl.upsoclapp.ui.fragments.HelpFragment;
-import com.upsocl.upsoclapp.ui.fragments.InterestsFragment;
-import com.upsocl.upsoclapp.ui.fragments.PreferencesFragment;
-import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
 import java.util.Map;
 

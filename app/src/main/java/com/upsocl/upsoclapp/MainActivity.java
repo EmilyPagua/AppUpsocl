@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Intent mainIntent = new Intent(MainActivity.this, CreateProfile.class);
+                    mainIntent.putExtra("error",0);
                     MainActivity.this.startActivity(mainIntent);
                     MainActivity.this.finish();
                 }

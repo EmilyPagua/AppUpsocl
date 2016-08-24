@@ -114,6 +114,8 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             Date dateLast = null;
             try {
                 dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,new Date().toString()));
+                if (dateLast==null)
+                    dateLast = date;
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -135,7 +137,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println(error);
+        System.out.println("Error MyGcmListenerService: "+ error);
     }
 
     public void loadPosts(String idPost){

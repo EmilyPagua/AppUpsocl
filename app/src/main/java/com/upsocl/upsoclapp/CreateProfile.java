@@ -63,6 +63,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 import com.upsocl.upsoclapp.domain.Interests;
+import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.domain.UserLogin;
 import com.upsocl.upsoclapp.io.ApiConstants;
 import com.upsocl.upsoclapp.io.WordpressApiAdapter;
@@ -129,6 +130,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private UserLogin userLogin;
     private int error=0;
 
+
     //format Email
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -162,6 +164,8 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         LoginManager.getInstance().logOut();
 
         setContentView(R.layout.activity_create_perfil);
+
+        error =getIntent().getIntExtra("error",0);
 
         savePreferencesNotifications();
         //Package Facebook
@@ -476,6 +480,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             }
         });
 
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             @Override
@@ -490,12 +495,24 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     //----------GOOGLE CONFIGURE
     private void configureGoogleLogin() {
-        //Initializing google signin option
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestScopes(new Scope(Scopes.PROFILE))
-                //.requestScopes(new Scope(Scopes.PLUS_LOGIN))
-                .requestEmail()
-                .build();
+
+        if (error==0){
+            //Initializing google signin option
+            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestScopes(new Scope(Scopes.PROFILE))
+                    .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                    .requestEmail()
+                    .build();
+
+        }else{
+            //Initializing google signin option
+            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    //.requestScopes(new Scope(Scopes.PROFILE))
+                    //.requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                    .requestEmail()
+                    .build();
+        }
+
 
         //Initializing signinbutton
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
@@ -581,13 +598,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
             if (error ==0 ){
                 Toast.makeText(this, "Problemas al iniciar sesión, intente de nuevo", Toast.LENGTH_LONG).show();
-                /*gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-
-                mGoogleApiClient.disconnect();*/
-
-                error=1;
+                Intent mainIntent = new Intent(CreateProfile.this, CreateProfile.class);
+                mainIntent.putExtra("error",1);
+                startActivity(mainIntent);
+                finish();
             }else{
                 if (error==1){
                     Toast.makeText(this, "Problemas al iniciar sesión, intente de nuevo o intente con otra red social", Toast.LENGTH_LONG).show();
@@ -702,7 +716,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
                             @Override
                             public void failure(RetrofitError error) {
-                                Log.d("Error" , error.getMessage());
+                                Log.d("Error WordpressApiAdapter" , error.getMessage());
                             }
                         });
     }
@@ -746,7 +760,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println(":  " + error);
+        System.out.println(" Error" + error);
     }
 
     private void savePreferencesNotifications(){

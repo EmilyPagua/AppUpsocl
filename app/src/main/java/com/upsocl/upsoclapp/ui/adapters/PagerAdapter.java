@@ -100,7 +100,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 filter = filter.concat(obj.getNameCategory()+",");
             }
         }
-        return filter.substring(0, filter.length()-1);
+        if (filter.equals(""))
+            return CategoryKeys.OPT_COMMUNITY;
+        else
+            return filter.substring(0, filter.length()-1);
     }
 
     public void setHome(Boolean home) {
