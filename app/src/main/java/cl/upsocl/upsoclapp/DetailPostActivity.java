@@ -713,6 +713,7 @@ public class DetailPostActivity extends AppCompatActivity {
         mTracker.setScreenName(link);
         mTracker.setReferrer(link);
         mTracker.send(new HitBuilders.EventBuilder()
+                .setLabel(link)
                 .setCategory(link)
                 .setAction(category)
                 .build());

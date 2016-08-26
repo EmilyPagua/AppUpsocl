@@ -39,7 +39,9 @@ public class AnalyticsApplication extends Application {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-            analytics.setLocalDispatchPeriod(1800);
+
+            // Set the dispatch period in seconds.
+            analytics.setLocalDispatchPeriod(1);
 
             //ID SEGUIMIENTO = UA-44944096-19
             mTracker = analytics.newTracker("UA-44944096-19");

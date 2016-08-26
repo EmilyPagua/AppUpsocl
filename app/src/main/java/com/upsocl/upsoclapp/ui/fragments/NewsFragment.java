@@ -95,8 +95,11 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
 
     @Override
     public void success(ArrayList<News> newses, Response response) {
-        if (newses.size()==0)
+        if (newses.size()==0) {
             header_news.setText("No se encontraron resultados para la busqueda: " + word);
+            header_news.setVisibility(View.VISIBLE);
+        }
+        else header_news.setVisibility(View.GONE);
 
         adapter.addAll(newses);
         spinner.setVisibility(View.GONE);

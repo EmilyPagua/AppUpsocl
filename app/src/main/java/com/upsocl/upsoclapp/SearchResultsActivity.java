@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.upsocl.upsoclapp.ui.fragments.NewsFragment;
 
@@ -24,6 +25,14 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.news_content);
+        if (android.os.Build.VERSION.SDK_INT <= 21){
+            layout.setPadding(5,5,5,0);
+        }else{
+            layout.setPadding(16,0,16,16);
+        }
+
         setToolBar();
         handleIntent(getIntent());
         NewsFragment newsFragment = new NewsFragment();

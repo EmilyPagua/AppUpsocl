@@ -15,6 +15,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -22,8 +23,18 @@
             android:id="@+id/privacyDetailTitle" />
 
 
-        <ScrollView
+        <View
             android:layout_below="@+id/privacyDetailTitle"
+            android:id="@+id/line1"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+
+            android:background="@color/verde"/>
+
+        <ScrollView
+            android:layout_below="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/scrollView2"
