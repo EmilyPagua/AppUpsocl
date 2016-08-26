@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
@@ -95,8 +96,12 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
 
     @Override
     public void success(ArrayList<News> newses, Response response) {
-        if (newses.size()==0)
+        header_news.setVisibility(View.GONE);
+        if (newses.size()==0){
             header_news.setText("No se encontraron resultados");
+            header_news.setVisibility(View.VISIBLE);
+        }
+
 
         adapter.addAll(newses);
         spinner.setVisibility(View.GONE);
@@ -105,7 +110,8 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
     @Override
     public void failure(RetrofitError error) {
         System.out.println("HomeSegundaryFragment "+error );
-        adapter.addAll(new ArrayList<News>());
+        Toast.makeText(getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
+        //adapter.addAll(new ArrayList<News>());
     }
 
     public void loadPosts(Integer paged){

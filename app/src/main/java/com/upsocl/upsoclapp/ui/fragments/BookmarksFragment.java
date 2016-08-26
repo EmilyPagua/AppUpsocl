@@ -81,6 +81,7 @@ public class BookmarksFragment extends Fragment  {
             news.setImage(getElement(root.get(JsonKeys.NEWS_IMAGES)));
             news.setDate(getElement(root.get(JsonKeys.NEWS_DATE)));
             news.setLink(getElement(root.get(JsonKeys.NEWS_LINK)));
+            news.setCategories(getElement(root.get(JsonKeys.NEWS_CATEGORIES)));
             newses.add(news);
         }
     }

@@ -161,7 +161,8 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         FacebookSdk.sdkInitialize(getApplicationContext());
-        LoginManager.getInstance().logOut();
+
+        //LoginManager.getInstance().logOut();
 
         setContentView(R.layout.activity_create_perfil);
 

@@ -100,6 +100,7 @@ public class MenuHomeActivity extends AppCompatActivity
     private NavigationView navigationView;
 
     private int lastSelected;
+    private int tabPositionPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,8 @@ public class MenuHomeActivity extends AppCompatActivity
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.relativeHome);
         if (android.os.Build.VERSION.SDK_INT <= 21){
             layout.setPadding(5,5,5,0);
+        }else{
+            layout.setPadding(16,0,16,16);
         }
 
         uploadView();
@@ -123,7 +126,7 @@ public class MenuHomeActivity extends AppCompatActivity
         uploadPreferencesUser();
         tabs = createTabLayout();
 
-        if (isConnect()==true){
+
 
             selectTabsOption();
             uploadPager();
@@ -141,11 +144,6 @@ public class MenuHomeActivity extends AppCompatActivity
                     .addApi(Plus.API)
                     .addApi(AppIndex.API).build();
             //GOOGLE
-
-        }else{
-            Toast.makeText(this, "No se mostraran los post, su conexión a red es muy baja", Toast.LENGTH_LONG).show();
-        }
-
         //
 
         lastSelected = R.id.nav_home;
@@ -214,12 +212,16 @@ public class MenuHomeActivity extends AppCompatActivity
 
                 if (lastSelected == R.id.nav_interests)
                     uploadPager();
+                else
+                    setColorBarWindows(tabPositionPager);
 
                 tabs.setVisibility(View.VISIBLE);
                 viewPager.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.INVISIBLE);
 
                 getSupportActionBar().setTitle(item.getTitle());
+
+
                 lastSelected =R.id.nav_home;
                 break;
 
@@ -314,12 +316,10 @@ public class MenuHomeActivity extends AppCompatActivity
 
     private void visibleGoneElement() {
         frameLayout.setVisibility(View.VISIBLE);
-        tabs.setVisibility(View.INVISIBLE);
         tabs.setVisibility(View.GONE);
-        progressBar.setVisibility(View.INVISIBLE);
-        viewPager.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
-        setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
+        setColorBarLayout(R.color.primary_dark_foryou,R.color.primary_foryou);
     }
 
     private void uploadPreferencesUser() {
@@ -346,8 +346,8 @@ public class MenuHomeActivity extends AppCompatActivity
 
     private TabLayout createTabLayout() {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText(R.string.forYou));
         tabs.addTab(tabs.newTab().setText(R.string.lastNews));
+        tabs.addTab(tabs.newTab().setText(R.string.forYou));
         tabs.addTab(tabs.newTab().setText(R.string.green));
         tabs.addTab(tabs.newTab().setText(R.string.creativity));
         tabs.addTab(tabs.newTab().setText(R.string.women));
@@ -373,32 +373,8 @@ public class MenuHomeActivity extends AppCompatActivity
             public void onTabSelected(TabLayout.Tab tab) {
 
                 tabPosition = tab.getPosition();
-                switch (tabPosition){
-                    case 0:
-                        setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
-                        break;
-                    case 1:
-                        setColorBarLayout(R.color.primary_dark_foryou,R.color.primary_foryou);
-                        break;
-                    case 2:
-                        setColorBarLayout(R.color.primary_dark_green,R.color.primary_green);
-                        break;
-                    case 3:
-                        setColorBarLayout(R.color.primary_dark_community,R.color.primary_community);
-                        break;
-                    case 4:
-                        setColorBarLayout(R.color.primary_dark_women,R.color.primary_women);
-                        break;
-                    case 5:
-                        setColorBarLayout(R.color.primary_dark_food,R.color.primary_food);
-                        break;
-                    case 6:
-                        setColorBarLayout(R.color.primary_dark_populary,R.color.primary_populary);
-                        break;
-                    case 7:
-                        setColorBarLayout(R.color.primary_dark_quiz,R.color.primary_quiz);
-                        break;
-                }
+                tabPositionPager = tabPosition;
+                setColorBarWindows(tabPosition);
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -412,6 +388,35 @@ public class MenuHomeActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    private void setColorBarWindows(int tabPosition) {
+        switch (tabPosition){
+            case 0:
+                setColorBarLayout(R.color.primary_dark_foryou,R.color.primary_foryou);
+                break;
+            case 1:
+                setColorBarLayout(R.color.color_primary_dark_home,R.color.color_primary_home);
+                break;
+            case 2:
+                setColorBarLayout(R.color.primary_dark_green,R.color.primary_green);
+                break;
+            case 3:
+                setColorBarLayout(R.color.primary_dark_community,R.color.primary_community);
+                break;
+            case 4:
+                setColorBarLayout(R.color.primary_dark_women,R.color.primary_women);
+                break;
+            case 5:
+                setColorBarLayout(R.color.primary_dark_food,R.color.primary_food);
+                break;
+            case 6:
+                setColorBarLayout(R.color.primary_dark_populary,R.color.primary_populary);
+                break;
+            case 7:
+                setColorBarLayout(R.color.primary_dark_quiz,R.color.primary_quiz);
+                break;
+        }
     }
 
     private void setColorBarLayout(int statusBarColor, int barLayoutColor) {

@@ -31,12 +31,23 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 HomePrimaryFragment homeLastNews = new HomePrimaryFragment();
+                homeLastNews.setHome(isHome);
+                return homeLastNews;
+            /*
+
+            HomePrimaryFragment homeLastNews = new HomePrimaryFragment();
                 String filter= loadInterests();
                 homeLastNews.setCategoryName(filter);
                 homeLastNews.setHome(isHome);
-                return homeLastNews;
+
+                HomeSegundaryFragment homeNews = new HomeSegundaryFragment();
+                homeNews.setHome(isHome);
+                return homeNews;
+                */
             case 1:
                 HomeSegundaryFragment homeNews = new HomeSegundaryFragment();
+                String filter= loadInterests();
+                homeNews.setCategoryName(filter);
                 homeNews.setHome(isHome);
                 return homeNews;
             case 2:

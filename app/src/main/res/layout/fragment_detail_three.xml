@@ -6,7 +6,10 @@
     android:layout_width="match_parent"
     android:id="@+id/viewThree">
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_detail_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,11 +21,69 @@
             tools:ignore="WebViewLayout">
 
             <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="180dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/placeholder"
-                android:id="@+id/imageViewDetailThree" />
+                android:id="@+id/image3" />
+
+            <TextView
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/title3"
+                android:text="Title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Detail"
+                android:id="@+id/detail3" />
+            <View
+                android:id="@+id/line1"
+                android:layout_marginTop="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@color/verde"/>
+            <ProgressBar
+                android:id="@+id/progress3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleInverse"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal" />
+
+            <WebView
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/webView3" />
+
+            <com.google.android.gms.ads.AdView
+
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                ads:adSize="MEDIUM_RECTANGLE"
+                android:visibility="gone"
+                android:layout_marginBottom="70dp"
+                ads:adUnitId="ca-mb-app-pub-7682123866908966/7102497723"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+            </com.google.android.gms.ads.AdView>
 
         </LinearLayout>
-</RelativeLayout>
+</ScrollView>
+    </RelativeLayout>

@@ -114,14 +114,17 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             Date dateLast = null;
             try {
                 dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,new Date().toString()));
-                if (dateLast==null)
+                if (dateLast==null){
+                    SharedPreferences.Editor editor =  prefs.edit();
+                    editor.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
                     dateLast = date;
+                }
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             int rest = 0;
-            rest = date.getDay() - dateLast.getDay();
+            rest = getLastDayNotification(dateLast,date );
 
             if (rest ==0 || rest >= prefs.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1)){
                 SharedPreferences.Editor editor =  prefs.edit();
@@ -143,9 +146,13 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     public void loadPosts(String idPost){
         if (idPost.equals("0")==false)
             WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPost(idPost, this);
-
     }
 
+    public static int getLastDayNotification(Date fechaMayor, Date fechaMenor) {
+        long diferenciaEn_ms = fechaMayor.getTime() - fechaMenor.getTime();
+        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
+        return (int) dias;
+    }
 }
 
 

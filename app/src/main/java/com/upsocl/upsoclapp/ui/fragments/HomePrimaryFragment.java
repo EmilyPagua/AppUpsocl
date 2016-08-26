@@ -1,5 +1,8 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
@@ -91,9 +95,11 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     @Override
     public void success(ArrayList<News> newses, Response response) {
-
-        if (newses.size()==0)
+        header_news.setVisibility(View.GONE);
+        if (newses.size()==0){
             header_news.setText("No se encontraron resultados");
+            header_news.setVisibility(View.VISIBLE);
+        }
 
         adapter.addAll(newses);
         spinner.setVisibility(View.GONE);
@@ -101,12 +107,16 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("HomePrimaryFragment "+error );
-        adapter.addAll(new ArrayList<News>());
+        System.out.println("HomePrimaryFragment "+error.getMessage() );
+        Toast.makeText(getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
+        //adapter.addAll(new ArrayList<News>());
     }
 
     public void loadPosts(Integer paged){
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+        if (isConnect())
+            WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+        else
+            Toast.makeText(getContext(), "Verifique su conexión a red", Toast.LENGTH_SHORT).show();
     }
 
     public String getCategoryName() {
@@ -119,6 +129,19 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     public void setHome(Boolean home) {
         isHome = home;
+    }
+
+    private boolean isConnect() {
+
+        boolean bConectado = false;
+        ConnectivityManager connec = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] redes = connec.getAllNetworkInfo();
+        for (int i = 0; i < 2; i++) {
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                bConectado = true;
+            }
+        }
+        return bConectado;
     }
 }
 

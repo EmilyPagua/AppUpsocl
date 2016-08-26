@@ -26,6 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +41,7 @@ import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
@@ -87,11 +86,8 @@ public class DetailPostActivity extends AppCompatActivity {
     //Element Facebook
     private CallbackManager callbackManager;
     private ShareDialog shareDialog;
-    private TextView textViewTitle, textViewDetail;
-    private WebView webView1,webView2,webView3,webView4,webView5;
 
-
-    private ProgressDialog dialog;
+    private FloatingActionButton fab;
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
         public void onSuccess(Sharer.Result result) {
@@ -119,8 +115,14 @@ public class DetailPostActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        newsPrimary = gs.fromJson(getIntent().getStringExtra("new"), News.class);
+        uploadNews(newsPrimary, R.id.image1, R.id.title1, R.id.detail1,R.id.webView1, R.id.progress1);
+        createAdView(R.id.adView1, R.id.webView1,R.id.progress1);
+        newsList.add(newsPrimary);
+        newsPosition=newsPrimary;
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabNext);
+
+        fab = (FloatingActionButton) findViewById(R.id.fabNext);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +133,23 @@ public class DetailPostActivity extends AppCompatActivity {
         });
 
 
+        RelativeLayout layout1 = (RelativeLayout) findViewById(R.id.viewPrimary);
+        RelativeLayout layout2 = (RelativeLayout) findViewById(R.id.viewSegundary);
+        RelativeLayout layout3 = (RelativeLayout) findViewById(R.id.viewThree);
+        RelativeLayout layout4 = (RelativeLayout) findViewById(R.id.viewFour);
+        RelativeLayout layout5 = (RelativeLayout) findViewById(R.id.viewFive);
+
+        //deslizar a los lados
+        vf  =(ViewFlipper) findViewById(R.id.viewFlipper);
+
+        //end deslizar a los lados
+
+        layout1.setPadding(0,0,0,10);
+        layout2.setPadding(0,0,0,10);
+        layout3.setPadding(0,0,0,10);
+        layout4.setPadding(0,0,0,10);
+        layout5.setPadding(0,0,0,10);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,87 +157,15 @@ public class DetailPostActivity extends AppCompatActivity {
             }
         });
 
-        //deslizar a los lados
-        vf  =(ViewFlipper) findViewById(R.id.viewFlipper);
-        vf.setOnTouchListener(new ListenerTouchViewFlipper());
-        //end deslizar a los lados
-
         //upload News
-        newsPrimary = gs.fromJson(getIntent().getStringExtra("new"), News.class);
+
         newsSegundary = gs.fromJson(getIntent().getStringExtra("newsSegundary"), News.class);
         newsThree = gs.fromJson(getIntent().getStringExtra("newsThree"), News.class);
         newsFour = gs.fromJson(getIntent().getStringExtra("newsFour"), News.class);
         newsFive = gs.fromJson(getIntent().getStringExtra("newsFive"), News.class);
         leght =  getIntent().getIntExtra("leght",0);
 
-        textViewTitle = (TextView) findViewById(R.id.detailTextView);
-        textViewDetail = (TextView) findViewById(R.id.detail);
-
-        webView1 = (WebView) findViewById(R.id.webViewPrimary);
-        webView2 = (WebView) findViewById(R.id.webViewSegundary);
-        webView3 = (WebView) findViewById(R.id.webViewThree);
-        webView4 = (WebView) findViewById(R.id.webViewFour);
-        webView5 = (WebView) findViewById(R.id.webViewFive);
-
         isBookmarks =  getIntent().getBooleanExtra("isBookmarks",false);
-
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.realtiveContent);
-
-        if (android.os.Build.VERSION.SDK_INT <= 21){
-            layout.setPadding(5,5,5,0);
-        }
-
-        textViewTitle.setText(newsPrimary.getTitle());
-        uploadImagensNews(newsPrimary, R.id.imageViewDetail);
-        setTextViewDetail(newsPrimary.getAuthor(), newsPrimary.getDate(), newsPrimary.getCategories());
-
-        newsList.add(newsPrimary);
-        newsPosition=newsPrimary;
-
-        //UploadPublicty
-        dialog = ProgressDialog.show(DetailPostActivity.this, getString(R.string.msg_dialog_postDetail),
-                getString(R.string.msg_dialog_content), true);
-
-       final AdView adView1 = (AdView) findViewById(R.id.adView_primary_one);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        if (adView1!=null && adRequest!=null) {
-            adView1.loadAd(adRequest);
-            adView1.setAdListener(new AdListener() {
-                @Override
-                public void onAdFailedToLoad(int i) {
-                    super.onAdFailedToLoad(i);
-                }
-
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-
-                    if (dialog!=null && dialog.isShowing()){
-                        uploadNews(newsPrimary, R.id.webViewPrimary);
-                        dialog.dismiss();
-                    }
-
-                    final AdView adView2 = (AdView) findViewById(R.id.adView_primary_two);
-                    AdRequest adRequest2 = new AdRequest.Builder().build();
-                    if (adView2!=null && adRequest2!=null) {
-                        adView2.loadAd(adRequest2);
-                        adView2.setAdListener(new AdListener() {
-                            @Override
-                            public void onAdFailedToLoad(int i) {
-                                super.onAdFailedToLoad(i);
-                            }
-                            @Override
-                            public void onAdLoaded() {
-                                super.onAdLoaded();
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-
-        //End UploadPublicty
 
         createListNews();
 
@@ -267,9 +214,6 @@ public class DetailPostActivity extends AppCompatActivity {
             mInterstitialAd.show();
         }*/
 
-        ImageView imageview = (ImageView) findViewById(R.id.imageViewDetail);
-        imageview.setOnTouchListener(new ListenerTouchViewFlipper());
-
     }
 
 
@@ -279,6 +223,7 @@ public class DetailPostActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.menu_item_share);
         item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
         if (isBookmarks){
+            fab.setVisibility(View.GONE);
             item_bookmark.setVisible(false);
         }
 
@@ -326,16 +271,68 @@ public class DetailPostActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadNews(News objNews, int webViewContext) {
+    private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int progressBar) {
+        setImage(objNews.getImage(), imagen);
+        setTextViewTitle(objNews.getTitle(),title);
+        setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
+        enableWebView(objNews.getContent(), webView);
+        enableProgessBar(progressBar);
+    }
 
-        textViewTitle.setText(objNews.getTitle());
-        setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories());
-        enableWebView(objNews.getContent(),webViewContext);
+    private void enableProgessBar(int progressBar) {
+        ProgressBar bar = (ProgressBar) findViewById(progressBar);
+        bar.setVisibility(View.VISIBLE);
+    }
+
+    private void setTextViewTitle(String title, int textTitle){
+        TextView textView = (TextView) findViewById(textTitle);
+        textView.setText(title);
+    }
+
+    private void createAdView(final int adViewOne , final int webViewContent, final int progressBar) {
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        final AdView adView1 = (AdView)  findViewById(adViewOne);
+        final WebView webViewCreate = (WebView) findViewById(webViewContent) ;
+        final ProgressBar progresNew = (ProgressBar) findViewById(progressBar);
+
+        flag_bookmarks = false;
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (adView1!=null && adRequest!=null) {
+            adView1.loadAd(adRequest);
+            adView1.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                    System.out.println("onAdFailedToLoad "+ adViewOne );
+                    createAdView(adViewOne, webViewContent, progressBar);
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    adView1.setVisibility(View.VISIBLE);
+                    webViewCreate.setVisibility(View.VISIBLE);
+                    progresNew.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    super.onAdLeftApplication();
+                }
+            });
+        }
     }
 
     private void enableWebView(String content, int webViewCreate){
 
         WebView webViewNew = (WebView) findViewById(webViewCreate);
+
+        webViewNew.clearHistory();
+        webViewNew.clearCache(true);
+        webViewNew.clearFormData();
 
         webViewNew.getSettings().setJavaScriptEnabled(true);
         webViewNew.getSettings().setLoadWithOverviewMode(true);
@@ -347,15 +344,7 @@ public class DetailPostActivity extends AppCompatActivity {
         html =  html.replace("\\\"","\"").replace("\\n","\n");
 
         webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
-        webViewNew.setVisibility(View.VISIBLE);
-    }
-
-    private void clearAllWebView() {
-        webView1.setVisibility(View.GONE);
-        webView2.setVisibility(View.GONE);
-        webView3.setVisibility(View.GONE);
-        webView4.setVisibility(View.GONE);
-        webView5.setVisibility(View.GONE);
+        webViewNew.setVisibility(View.GONE);
     }
 
     private void setImage(String objImage, int image){
@@ -367,11 +356,17 @@ public class DetailPostActivity extends AppCompatActivity {
     }
 
 
-    private void setTextViewDetail(String authorCreate, String dateCreate, String category) {
+    private void setTextViewDetail(String authorCreate, String dateCreate, String category, int textDetail) {
+
+        TextView detail = (TextView) findViewById(textDetail);
 
         String author = "Por: "+ authorCreate;
         String  date = "El: "+ dateCreate;
-        String categories = "Categorias: " + category;
+        String categories;
+        if (category.equals(null))
+            categories = "Categorias: " + category;
+        else
+            categories = "Categorias: " + "Popular";
 
         SpannableStringBuilder sBauthor = setStyleText(author, 4,author.length());
         SpannableStringBuilder sBdetail = setStyleText(date, 3,date.length());
@@ -380,8 +375,9 @@ public class DetailPostActivity extends AppCompatActivity {
         Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail, ". ",sBcategory);
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
 
-        textViewDetail.setText(result, TextView.BufferType.SPANNABLE);
+        detail.setText(result, TextView.BufferType.SPANNABLE);
     }
+
 
     private SpannableStringBuilder setStyleText(String text, int i, int length) {
         SpannableStringBuilder result = new SpannableStringBuilder(text);
@@ -419,11 +415,11 @@ public class DetailPostActivity extends AppCompatActivity {
 
     @Override
     public void onStop() {
-        clearWebView(R.id.webViewPrimary);
-        clearWebView(R.id.webViewSegundary);
-        clearWebView(R.id.webViewThree);
-        clearWebView(R.id.webViewFour);
-        clearWebView(R.id.webViewFive);
+        clearWebView(R.id.webView1);
+        clearWebView(R.id.webView2);
+        clearWebView(R.id.webView3);
+        clearWebView(R.id.webView4);
+        clearWebView(R.id.webView5);
 
         vf.clearAnimation();
         this.finish();
@@ -443,19 +439,18 @@ public class DetailPostActivity extends AppCompatActivity {
     }
 
     private News getItemPosition(int postion) {
-        clearAllWebView();
         News newsPosition = new News();
+        System.out.println(vf.getDisplayedChild());
         switch (postion){
             case 0:
                 if (newsList.size()>postion)
                     newsPosition =  newsList.get(postion);
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
-
-                uploadNews(newsPosition, R.id.webViewPrimary);
-                /* FIXME if (mInterstitialAd.isLoaded()) {
+                /*if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }*/
+                createAdView(R.id.adView1, R.id.webView1, R.id.progress1);
                 break;
             case 1:
                 if (newsList.size()>postion)
@@ -463,7 +458,11 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
-                uploadNews(newsPosition, R.id.webViewSegundary);
+                clearAdView(R.id.adView1, R.id.webView1, R.id.progress1);
+                createAdView(R.id.adView2, R.id.webView2, R.id.progress2);
+                clearAdView(R.id.adView3, R.id.webView3, R.id.progress3);
+
+                beginPlayingGame();
 
                 break;
             case 2:
@@ -472,7 +471,9 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
-                uploadNews(newsPosition, R.id.webViewThree);
+                clearAdView(R.id.adView2, R.id.webView2, R.id.progress2);
+                createAdView(R.id.adView3, R.id.webView3, R.id.progress3);
+                clearAdView(R.id.adView4, R.id.webView4, R.id.progress4);
                 break;
             case 3:
                 if (newsList.size()>postion)
@@ -480,17 +481,44 @@ public class DetailPostActivity extends AppCompatActivity {
                 else
                     newsPosition =  newsList.get(newsList.size()-1);
 
-                uploadNews(newsPosition, R.id.webViewFour);
+                clearAdView(R.id.adView3, R.id.webView3, R.id.progress3);
+                createAdView(R.id.adView4, R.id.webView4, R.id.progress4);
+                clearAdView(R.id.adView5, R.id.webView5, R.id.progress5);
+                break;
+            case 4:
+                if (newsList.size()>postion)
+                    newsPosition =  newsList.get(postion);
+                else
+                    newsPosition =  newsList.get(newsList.size()-1);
+
+                createAdView(R.id.adView4, R.id.webView4, R.id.progress4);
+                createAdView(R.id.adView5, R.id.webView5, R.id.progress5);
+                clearAdView(R.id.adView1, R.id.webView1, R.id.progress1);
                 break;
             default:
                 newsPosition =  newsList.get(newsList.size()-1);
 
-                uploadNews(newsPosition, R.id.webViewFive);
+                clearAdView(R.id.adView2, R.id.webView2, R.id.progress2);
+                clearAdView(R.id.adView5, R.id.webView5, R.id.progress5);
+
                 beginPlayingGame();
+                createAdView(R.id.adView1, R.id.webView1, R.id.progress1);
+
                 break;
         }
 
         return newsPosition;
+    }
+
+    private void clearAdView(int adViewClear, int webView, int progressBar) {
+        AdView adView = (AdView)  findViewById(adViewClear);
+        adView.setVisibility(View.GONE);
+
+        WebView view = (WebView) findViewById(webView);
+        view.setVisibility(View.GONE);
+
+        ProgressBar bar = (ProgressBar) findViewById(progressBar);
+        bar.setVisibility(View.VISIBLE);
     }
 
     private class ListenerTouchViewFlipper implements View.OnTouchListener{
@@ -524,6 +552,7 @@ public class DetailPostActivity extends AppCompatActivity {
                     }
 
                     uploadPreferences(newsPosition.getId());
+
 
                 default:
                     break;
@@ -582,11 +611,11 @@ public class DetailPostActivity extends AppCompatActivity {
     //PUBLICITY
     private void beginPlayingGame() {
         // [START custom_event]
-        mTracker.setScreenName("Publicidad");
+       /* mTracker.setScreenName("Publicidad");
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Cerrar Publicidad")
                 .setAction("Publicidad")
-                .build());
+                .build());*/
         // [END custom_event]
     }
 
@@ -603,33 +632,25 @@ public class DetailPostActivity extends AppCompatActivity {
     }*/
     //END PUBLICITY
 
-
     public void createListNews() {
+        newsList.clear();
+        newsList.add(newsPrimary);
         for (int i=0; i<leght; i++){
             switch (i){
                 case 1:
-                    uploadImagensNews(newsSegundary, R.id.imageViewDetailSegundary);
-
-                   /* uploadNews(newsSegundary, R.id.imageViewDetailSegundary, 0,
-                            0,0, 0,0, R.id.viewSegundary );*/
+                    uploadNews(newsSegundary, R.id.image2, R.id.title2, R.id.detail2,R.id.webView2, R.id.progress2);
                     newsList.add(newsSegundary);
                     break;
                 case 2:
-                    uploadImagensNews(newsThree, R.id.imageViewDetailThree);
-                    /*uploadNews(newsThree, R.id.imageViewDetailThree, 0,
-                            0,0,0, 0, R.id.viewThree);*/
+                    uploadNews(newsThree, R.id.image3, R.id.title3, R.id.detail3,R.id.webView3,R.id.progress3 );
                     newsList.add(newsThree);
                     break;
                 case 3:
-                    uploadImagensNews(newsFour, R.id.imageViewDetailFour);
-                   /* uploadNews(newsFour, R.id.imageViewDetailFour,0,
-                            0,0, 0, 0, R.id.viewFour);*/
+                    uploadNews(newsFour, R.id.image4, R.id.title4, R.id.detail4,R.id.webView4 ,R.id.progress4);
                     newsList.add(newsFour);
                     break;
                 case 4:
-                    uploadImagensNews(newsFive, R.id.imageViewDetailFive);
-                    /*uploadNews(newsFive, R.id.imageViewDetailFive,0,
-                            0,0, 0, 0, R.id.viewFive);*/
+                    uploadNews(newsFive, R.id.image5, R.id.title5, R.id.detail5,R.id.webView5, R.id.progress5);
                     newsList.add(newsFive);
                     break;
             }
@@ -709,8 +730,6 @@ public class DetailPostActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void uploadImagensNews(News objNews, int imageViewDetail) {
-        setImage(objNews.getImage(), imageViewDetail);
-    }
+
 
 }

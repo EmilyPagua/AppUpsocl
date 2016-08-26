@@ -22,6 +22,8 @@ import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.ui.ViewConstants;
 
+import cl.upsocl.upsoclapp.MenuHomeActivity;
+
 
 public class NotificationActivity extends AppCompatActivity  {
 
@@ -105,7 +107,7 @@ public class NotificationActivity extends AppCompatActivity  {
     }
 
     private void nextActivity() {
-        Intent intent = new Intent(NotificationActivity.this, HomeActivity.class);
+        Intent intent = new Intent(NotificationActivity.this, MenuHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         NotificationActivity.this.finish();
@@ -115,7 +117,7 @@ public class NotificationActivity extends AppCompatActivity  {
     public void onBackPressed(){
         super.onBackPressed();
 
-        Intent intent = new Intent(NotificationActivity.this, HomeActivity.class);
+        Intent intent = new Intent(NotificationActivity.this, MenuHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
         NotificationActivity.this.finish();

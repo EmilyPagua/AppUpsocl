@@ -33,12 +33,12 @@
                     android:src="@drawable/logo"/>
 
                 <TextView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/about_us_1"
                     android:id="@+id/about_us_detail"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_gravity="center_vertical|right"
                     android:layout_centerVertical="true"
                     />
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/about_us_1"
                     android:id="@+id/about_us_detail_2" />
 
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_gravity="center_vertical|right"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/mean_detail"
                     android:id="@+id/mean_detail" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_gravity="center_vertical|right"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/mean_detail"
                     android:id="@+id/location_detail" />
 

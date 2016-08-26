@@ -22,7 +22,7 @@ public class News {
     private String date;
     @SerializedName("link")
     private String link;
-    @SerializedName("categoriesName")
+    @SerializedName("categories_name")
     private String categories;
 
     public String getLink() {

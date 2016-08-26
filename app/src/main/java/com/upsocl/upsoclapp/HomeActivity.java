@@ -338,7 +338,7 @@ public class HomeActivity extends AppCompatActivity
         SharedPreferences.Editor editorUser =  prefsUser.edit();
         editorUser.clear().commit();
 
-        Intent login = new Intent(HomeActivity.this, MainActivity.class);
+        Intent login = new Intent(this, MainActivity.class);
         startActivity(login);
 
         this.finish();
@@ -358,7 +358,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         }
         else
-            Toast.makeText(HomeActivity.this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();
     }
 
     private String getNotificationId() {

@@ -4,8 +4,8 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardElevation="4dp"
-    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="2dp"
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -25,11 +25,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_post"
             android:maxLines="3"
-            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:textColor="#222"
             android:text="Titulo"
-            android:layout_marginLeft="@dimen/margin_webview"
-            android:layout_marginRight="@dimen/margin_webview"
             android:textStyle="bold"
             android:textSize="16dp" />
 
@@ -38,12 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_post"
             android:maxLines="3"
-            android:padding="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:text="Descripcion"
             android:textColor="#666"
             android:id="@+id/data_post"
-            android:layout_marginLeft="@dimen/margin_webview"
-            android:layout_marginRight="@dimen/margin_webview"
             android:textSize="12dp" />
 
         <TextView
@@ -51,12 +50,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/data_post"
             android:maxLines="3"
-            android:padding="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:text="Category"
             android:textColor="#666"
             android:id="@+id/categories"
-            android:layout_marginLeft="@dimen/margin_webview"
-            android:layout_marginRight="@dimen/margin_webview"
             android:textSize="12dp" />
 
 
