@@ -57,6 +57,7 @@ import com.upsocl.upsoclapp.MainActivity;
 import com.upsocl.upsoclapp.NotificationActivity;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.Interests;
+import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.ui.DownloadImage;
@@ -297,9 +298,22 @@ public class MenuHomeActivity extends AppCompatActivity
     private void goNotifications() {
 
         if (getNotificationId()!= null){
-            visibleGoneElement();
-            Intent intent = new Intent(this, NotificationActivity.class);
+            Gson gs = new Gson();
+
+            SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+            News news = gs.fromJson(prefs.getString(Preferences.NOTI_DATA,null), News.class);
+
+            Intent intent = new Intent(this, DetailPostActivity.class);
+            Gson gS = new Gson();
+            String target = gS.toJson(news);
+            intent.putExtra("new", target);
+            intent.putExtra("position","0");
+            intent.putExtra("isBookmarks",false);
+            intent.putExtra("leght",1);
             startActivity(intent);
+
+            //Intent intent = new Intent(this, NotificationActivity.class);
+            //startActivity(intent);
         }
         else
             Toast.makeText(MenuHomeActivity.this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();

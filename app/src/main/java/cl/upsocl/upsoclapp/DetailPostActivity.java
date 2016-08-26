@@ -214,6 +214,8 @@ public class DetailPostActivity extends AppCompatActivity {
             mInterstitialAd.show();
         }*/
 
+        if (leght==1)
+            fab.setVisibility(View.GONE);
     }
 
 
@@ -223,7 +225,6 @@ public class DetailPostActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.menu_item_share);
         item_bookmark = menu.findItem(R.id.menu_item_bookmarks);
         if (isBookmarks){
-            fab.setVisibility(View.GONE);
             item_bookmark.setVisible(false);
         }
 
@@ -512,13 +513,16 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private void clearAdView(int adViewClear, int webView, int progressBar) {
         AdView adView = (AdView)  findViewById(adViewClear);
-        adView.setVisibility(View.GONE);
+        if (adView!=null)
+            adView.setVisibility(View.GONE);
 
         WebView view = (WebView) findViewById(webView);
-        view.setVisibility(View.GONE);
+        if (view!=null)
+            view.setVisibility(View.GONE);
 
         ProgressBar bar = (ProgressBar) findViewById(progressBar);
-        bar.setVisibility(View.VISIBLE);
+        if (bar!=null)
+            bar.setVisibility(View.VISIBLE);
     }
 
     private class ListenerTouchViewFlipper implements View.OnTouchListener{

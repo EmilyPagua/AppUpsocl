@@ -9,21 +9,16 @@
 
     <include layout="@layout/toolbar_segundary"/>
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:transitionGroup="false"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:id="@+id/viewDetailrelative"
         android:touchscreenBlocksFocus="false">
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_marginTop="60dp"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_segundary"
             android:id="@+id/scroll_detail">
@@ -33,8 +28,6 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:background="@color/cardtextColor"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
                 tools:context="com.upsocl.upsocl.DetailActivity"
                 android:weightSum="1"
                 android:id="@+id/viewDetailLinear"
@@ -51,8 +44,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/detailTextView"
-                    android:paddingTop="@dimen/margin_webview"
-                    android:textSize="26dp"
+                    android:text="Title"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textStyle="bold" />
 
                 <TextView
@@ -61,14 +56,33 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Small Text"
                     android:layout_below="@+id/detailTextView"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:id="@+id/detail" />
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@color/verde"/>
+
+                <ProgressBar
+                    android:id="@+id/progress1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/progressBarStyleInverse"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center_horizontal" />
 
                 <WebView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/webView"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
                     android:layout_below="@+id/detail"
-                    android:layout_margin="@dimen/margin_webview"
                     android:layout_weight="1" />
 
             </LinearLayout>
