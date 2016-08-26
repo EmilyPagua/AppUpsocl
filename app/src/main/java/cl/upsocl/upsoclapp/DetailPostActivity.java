@@ -44,6 +44,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.server.response.FieldMappingDictionary;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.upsoclapp.AnalyticsApplication;
@@ -91,17 +92,17 @@ public class DetailPostActivity extends AppCompatActivity {
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
         public void onSuccess(Sharer.Result result) {
-            System.out.println("onSuccess");
+            //System.out.println("onSuccess");
         }
 
         @Override
         public void onCancel() {
-            System.out.println("onCancel");
+            //System.out.println("onCancel");
         }
 
         @Override
         public void onError(FacebookException error) {
-            System.out.println("onError");
+            //System.out.println("onError");
         }
     };
 
@@ -189,17 +190,9 @@ public class DetailPostActivity extends AppCompatActivity {
 
         // [START shared_tracker]
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
-
         mTracker = application.getDefaultTracker();
 
-        // [START custom_event]
-        mTracker.setScreenName(newsPrimary.getLink());
-        mTracker.setReferrer(newsPrimary.getLink());
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("ClickPost")
-                .setAction(newsPrimary.getLink())
-                .build());
-        // [END custom_event]t]
+        sendReportGoogleAnalytics(newsPosition.getLink(), "ClickPost");
         //END PUBLICITY
 
 
@@ -292,8 +285,6 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private void createAdView(final int adViewOne , final int webViewContent, final int progressBar) {
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
         final AdView adView1 = (AdView)  findViewById(adViewOne);
         final WebView webViewCreate = (WebView) findViewById(webViewContent) ;
         final ProgressBar progresNew = (ProgressBar) findViewById(progressBar);
@@ -307,7 +298,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 @Override
                 public void onAdFailedToLoad(int i) {
                     super.onAdFailedToLoad(i);
-                    System.out.println("onAdFailedToLoad "+ adViewOne );
+                    //System.out.println("onAdFailedToLoad "+ adViewOne );
                     createAdView(adViewOne, webViewContent, progressBar);
                 }
 
@@ -364,7 +355,7 @@ public class DetailPostActivity extends AppCompatActivity {
         String author = "Por: "+ authorCreate;
         String  date = "El: "+ dateCreate;
         String categories;
-        if (category.equals(null))
+        if (category!=null && category!="")
             categories = "Categorias: " + category;
         else
             categories = "Categorias: " + "Popular";
@@ -441,7 +432,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private News getItemPosition(int postion) {
         News newsPosition = new News();
-        System.out.println(vf.getDisplayedChild());
+        //System.out.println(vf.getDisplayedChild());
         switch (postion){
             case 0:
                 if (newsList.size()>postion)
@@ -663,14 +654,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private void createShareIntent(){
 
-        // [START custom_event]
-        mTracker.setScreenName(newsPosition.getLink());
-        mTracker.setReferrer(newsPosition.getLink());
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setCategory("CompartirOtrosMedios")
-                .setAction(newsPosition.getLink())
-                .build());
-        // [END custom_event]
+       sendReportGoogleAnalytics(newsPosition.getLink(),"CompartirOtrosMedios" );
 
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -710,12 +694,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             // [START custom_event]
-            mTracker.setScreenName(newsPosition.getLink());
-            mTracker.setReferrer(newsPosition.getLink());
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("CompartirBotonFacebook")
-                    .setAction(newsPosition.getLink())
-                    .build());
+            sendReportGoogleAnalytics(newsPosition.getLink(), "CompartirBotonFacebook");
             // [END custom_event]
 
 
@@ -726,6 +705,28 @@ public class DetailPostActivity extends AppCompatActivity {
                     .build();
             shareDialog.show(linkContent);
         }
+    }
+
+    private void sendReportGoogleAnalytics(String link, String category) {
+
+        // [START custom_event]
+        mTracker.setScreenName(link);
+        mTracker.setReferrer(link);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory(link)
+                .setAction(category)
+                .build());
+        // [END custom_event]
+
+        /*
+        *  // [START custom_event]
+        mTracker.setScreenName(newsPosition.getLink());
+        mTracker.setReferrer(newsPosition.getLink());
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("CompartirOtrosMedios")
+                .setAction(newsPosition.getLink())
+                .build());
+        // [END custom_event]*/
     }
 
 

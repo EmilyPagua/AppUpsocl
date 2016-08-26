@@ -1,5 +1,8 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -109,13 +112,15 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("HomeSegundaryFragment "+error );
         Toast.makeText(getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
         //adapter.addAll(new ArrayList<News>());
     }
 
     public void loadPosts(Integer paged){
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+        if (isConnect())
+            WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+        else
+            Toast.makeText(getContext(), "Verifique su conexión a red", Toast.LENGTH_SHORT).show();
     }
 
     public void setCategoryName(String categoryName) {
@@ -124,5 +129,18 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
 
     public void setHome(Boolean home) {
         isHome = home;
+    }
+
+    private boolean isConnect() {
+
+        boolean bConectado = false;
+        ConnectivityManager connec = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] redes = connec.getAllNetworkInfo();
+        for (int i = 0; i < 2; i++) {
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                bConectado = true;
+            }
+        }
+        return bConectado;
     }
 }

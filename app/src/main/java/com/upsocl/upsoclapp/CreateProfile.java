@@ -392,10 +392,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                                             userLogin.setLocation(object.getJSONObject("location").getString("name"));
                                     }
 
-                                    System.out.println("http://graph.facebook.com/"+object.getString("id")+"/picture?type=large"
-                                            +"   "+object.getJSONObject("picture").getJSONObject("data").get("url"));
-
-                                    if (userLogin.getEmail()==null)
+                                     if (userLogin.getEmail()==null)
                                         showDialog(0);
                                     else
                                         validateInformation(userLogin);
@@ -756,12 +753,12 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     @Override
     public void success(JsonObject integers, Response response) {
-        System.out.println(":  " + integers);
+        //System.out.println(":  " + integers);
     }
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println(" Error" + error);
+        //System.out.println(" Error" + error);
     }
 
     private void savePreferencesNotifications(){

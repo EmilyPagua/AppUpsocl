@@ -107,7 +107,7 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("HomePrimaryFragment "+error.getMessage() );
+        //System.out.println("HomePrimaryFragment "+error.getMessage() );
         Toast.makeText(getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
         //adapter.addAll(new ArrayList<News>());
     }

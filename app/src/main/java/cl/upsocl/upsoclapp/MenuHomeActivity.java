@@ -524,7 +524,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.out.println("aun no finaliza");
+                        //System.out.println("aun no finaliza");
                     }
                 });
 

@@ -14,8 +14,12 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.upsoclapp.domain.News;
@@ -35,6 +39,41 @@ public class NotificationActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_notification);
         setToolBar();
         getNotification();
+        createAdView(R.id.adViewNotification, R.id.webView,R.id.progressNotification);
+    }
+
+    private void createAdView(final int adViewOne, final int webViewContent,final  int progressBar) {
+
+        final AdView adView1 = (AdView)  findViewById(adViewOne);
+        final WebView webViewCreate = (WebView) findViewById(webViewContent) ;
+        final ProgressBar progresNew = (ProgressBar) findViewById(progressBar);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (adView1!=null && adRequest!=null) {
+            adView1.loadAd(adRequest);
+            adView1.setAdListener(new AdListener() {
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                    //System.out.println("onAdFailedToLoad "+ adViewOne );
+                    createAdView(adViewOne, webViewContent, progressBar);
+                }
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    adView1.setVisibility(View.VISIBLE);
+                    webViewCreate.setVisibility(View.VISIBLE);
+                    progresNew.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    super.onAdLeftApplication();
+                }
+            });
+        }
+
     }
 
     private void getNotification() {
