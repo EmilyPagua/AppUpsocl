@@ -42,6 +42,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.server.response.FieldMappingDictionary;
@@ -112,7 +113,6 @@ public class DetailPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_post);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -121,6 +121,13 @@ public class DetailPostActivity extends AppCompatActivity {
         createAdView(R.id.adView1, R.id.webView1,R.id.progress1);
         newsList.add(newsPrimary);
         newsPosition=newsPrimary;
+
+        // [START shared_tracker]
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
+        sendReportGoogleAnalytics(newsPosition.getLink(), "ClickPost");
+        //END PUBLICITY
 
 
         fab = (FloatingActionButton) findViewById(R.id.fabNext);
@@ -187,13 +194,6 @@ public class DetailPostActivity extends AppCompatActivity {
             }
         });
         requestNewInterstitial(); */
-
-        // [START shared_tracker]
-        AnalyticsApplication application = (AnalyticsApplication) getApplication();
-        mTracker = application.getDefaultTracker();
-
-        sendReportGoogleAnalytics(newsPosition.getLink(), "ClickPost");
-        //END PUBLICITY
 
 
         //Content Faceboook
@@ -717,6 +717,8 @@ public class DetailPostActivity extends AppCompatActivity {
                 .setCategory(link)
                 .setAction(category)
                 .build());
+
+        GoogleAnalytics.getInstance(this).dispatchLocalHits();
         // [END custom_event]
 
         /*

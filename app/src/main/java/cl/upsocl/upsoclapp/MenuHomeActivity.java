@@ -3,14 +3,17 @@ package cl.upsocl.upsoclapp;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,9 +21,11 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -46,6 +51,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -60,6 +66,8 @@ import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
+import com.upsocl.upsoclapp.notification.QuickstartPreferences;
+import com.upsocl.upsoclapp.notification.RegistrationIntentService;
 import com.upsocl.upsoclapp.ui.DownloadImage;
 import com.upsocl.upsoclapp.ui.adapters.PagerAdapter;
 import com.upsocl.upsoclapp.ui.fragments.BookmarksFragment;
@@ -68,6 +76,9 @@ import com.upsocl.upsoclapp.ui.fragments.InterestsListViewFragment;
 import com.upsocl.upsoclapp.ui.fragments.PreferencesFragment;
 import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class MenuHomeActivity extends AppCompatActivity
@@ -103,6 +114,11 @@ public class MenuHomeActivity extends AppCompatActivity
     private int lastSelected;
     private int tabPositionPager;
 
+    //private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private boolean isReceiverRegistered;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +137,19 @@ public class MenuHomeActivity extends AppCompatActivity
             layout.setPadding(16,0,16,16);
         }
 
+        //Get tokentID
+        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,new Date().toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
+        String token = prefsUser.getString(CustomerKeys.DATA_USER_TOKEN,null);
+        System.out.println(token);
+        //
         uploadView();
 
         //INIT COD CONTENT
@@ -148,6 +177,26 @@ public class MenuHomeActivity extends AppCompatActivity
         //
 
         lastSelected = R.id.nav_home;
+
+        //RegistrationToken Wordpress
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                /*if (sentToken) {
+                    Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                } else {
+                     Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                }*/
+            }
+        };
+
+        registerReceiver();
+        wordpressRegisterReceiver();
+        //RegistrationToken Wordpress
     }
 
     @Override
@@ -580,4 +629,52 @@ public class MenuHomeActivity extends AppCompatActivity
         }
         return bConectado;
     }
+
+    //RegistrationToken Wordpress
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+            isReceiverRegistered = true;
+        }
+    }
+
+    private void wordpressRegisterReceiver() {
+
+        if (checkPlayServices()) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i("Home Activity", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+    }
+    //END RegistrationToken Wordpress
 }

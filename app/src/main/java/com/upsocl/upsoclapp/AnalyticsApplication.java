@@ -47,6 +47,7 @@ public class AnalyticsApplication extends Application {
             mTracker = analytics.newTracker("UA-44944096-19");
             mTracker.enableExceptionReporting(true);
             mTracker.enableAutoActivityTracking(true);
+            mTracker.setSessionTimeout(1800);
         }
         return mTracker;
     }
