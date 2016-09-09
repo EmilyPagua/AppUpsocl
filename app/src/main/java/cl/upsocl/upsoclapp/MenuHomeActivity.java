@@ -148,7 +148,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefsUser.getString(CustomerKeys.DATA_USER_TOKEN,null);
-        System.out.println(token);
+//        System.out.println(token);
         //
         uploadView();
 
@@ -179,6 +179,7 @@ public class MenuHomeActivity extends AppCompatActivity
         lastSelected = R.id.nav_home;
 
         //RegistrationToken Wordpress
+        if (token == null || token.isEmpty()){
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -186,16 +187,19 @@ public class MenuHomeActivity extends AppCompatActivity
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                /*if (sentToken) {
-                    Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
+                if (sentToken) {
+                    Log.i("HomeActivity", String.valueOf(R.string.gcm_send_message));
+                    //Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
                 } else {
-                     Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                }*/
+                    Log.i("HomeActivity", String.valueOf(R.string.token_error_message));
+                     //Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                }
             }
         };
 
         registerReceiver();
         wordpressRegisterReceiver();
+        }else Log.i("HomeActivity", token);
         //RegistrationToken Wordpress
     }
 
@@ -641,6 +645,7 @@ public class MenuHomeActivity extends AppCompatActivity
     }
 
     private void wordpressRegisterReceiver() {
+
 
         if (checkPlayServices()) {
             Intent intent = new Intent(this, RegistrationIntentService.class);

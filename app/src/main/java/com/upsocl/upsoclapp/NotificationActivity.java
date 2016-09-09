@@ -47,6 +47,7 @@ public class NotificationActivity extends AppCompatActivity  {
         final AdView adView1 = (AdView)  findViewById(adViewOne);
         final WebView webViewCreate = (WebView) findViewById(webViewContent) ;
         final ProgressBar progresNew = (ProgressBar) findViewById(progressBar);
+        webViewCreate.setVisibility(View.GONE);
 
         AdRequest adRequest = new AdRequest.Builder().build();
         if (adView1!=null && adRequest!=null) {
