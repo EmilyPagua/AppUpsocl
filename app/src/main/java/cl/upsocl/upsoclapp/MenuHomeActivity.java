@@ -114,6 +114,8 @@ public class MenuHomeActivity extends AppCompatActivity
     private int lastSelected;
     private int tabPositionPager;
 
+    private Menu menuhome;
+
     //private BroadcastReceiver mRegistrationBroadcastReceiver;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean isReceiverRegistered;
@@ -216,8 +218,8 @@ public class MenuHomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        menuhome =  menu;
         getMenuInflater().inflate(R.menu.home, menu);
-
 
         // Associate searchable configuration with the SearchView
         MenuItem menuItem =  menu.findItem(R.id.menu_item_search);
@@ -225,8 +227,17 @@ public class MenuHomeActivity extends AppCompatActivity
         searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
+        changeIconNotification(menu);
 
         return true;
+    }
+
+    private void changeIconNotification(Menu menu) {
+        //about icon notification
+        MenuItem menuItemNotification =  menu.findItem(R.id.menu_item_notification);
+        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+        int icon = prefs.getInt(Preferences.NOTI_ICON, R.drawable.ic_notifications_white_24dp);
+        menuItemNotification.setIcon(icon);
     }
 
     @Override
@@ -371,6 +382,7 @@ public class MenuHomeActivity extends AppCompatActivity
         else
             Toast.makeText(MenuHomeActivity.this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();
     }
+
     private String getNotificationId() {
 
         SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
@@ -673,6 +685,8 @@ public class MenuHomeActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         registerReceiver();
+        if (menuhome!= null)
+            changeIconNotification(menuhome);
 
     }
 
@@ -680,6 +694,8 @@ public class MenuHomeActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        if (menuhome!= null)
+            changeIconNotification(menuhome);
     }
     //END RegistrationToken Wordpress
 }

@@ -13,7 +13,6 @@ public class ApiConstants {
 
     public static final String FILTER_POST = "/posts/{id}";
 
-
     public static final String BASE_URL_CUSTOMER = "http://quiz.upsocl.com/dev/wp-json/wp/v2";
     public static final String CUSTOMER = "/customers";
     public static final String CUSTOMER_NAME = "name";
@@ -29,7 +28,7 @@ public class ApiConstants {
 
 
 //http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=privacidad-app/filter[category_name]=verde
-//http://upsocl.com/wp-json/wp/v2/posts/470546
+//http://upsocl.com/wp-json/wp/v2/posts/442250
 
 //Sender ID: 149087864796
 //Server API key AIzaSyDqPOHOJq0dwmEewLpTuOqP0Y3U95-QB9g
