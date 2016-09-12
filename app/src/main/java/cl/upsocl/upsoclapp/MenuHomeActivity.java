@@ -188,11 +188,11 @@ public class MenuHomeActivity extends AppCompatActivity
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
-                    Log.i("HomeActivity", String.valueOf(R.string.gcm_send_message));
+                  //  Log.i("HomeActivity", String.valueOf(R.string.gcm_send_message));
                     //Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.i("HomeActivity", String.valueOf(R.string.token_error_message));
-                     //Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
+                   // Log.i("HomeActivity", String.valueOf(R.string.token_error_message));
+                    //Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
                 }
             }
         };

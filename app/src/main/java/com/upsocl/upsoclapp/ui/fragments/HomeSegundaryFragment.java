@@ -87,7 +87,7 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
                 super.onScrolled(recyclerView, dx, dy);
                 llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int size = llm.getItemCount();
-                if (size == llm.findLastCompletelyVisibleItemPosition() + 1) {
+                if (size == llm.findLastCompletelyVisibleItemPosition() + 4) {
                     page = page + 1;
                     spinner.setVisibility(View.VISIBLE);
                     loadPosts(page);

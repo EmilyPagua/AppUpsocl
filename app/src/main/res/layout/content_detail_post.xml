@@ -11,7 +11,8 @@
 
     <ViewFlipper
         android:id="@+id/viewFlipper"
-        android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <include layout="@layout/fragment_detail_primary" />
         <include layout="@layout/fragment_detail_segundary"/>

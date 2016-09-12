@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:id="@+id/viewThree">
 
@@ -16,14 +16,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/cardtextColor"
-            android:weightSum="1"
             android:id="@+id/viewDetailLinear"
             tools:ignore="WebViewLayout">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_width="fill_parent"
+                android:layout_height="210dp"
                 android:scaleType="centerCrop"
+                android:layout_alignParentTop="true"
                 android:src="@drawable/placeholder"
                 android:id="@+id/image3" />
 

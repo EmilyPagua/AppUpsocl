@@ -31,7 +31,7 @@
             android:text="Titulo"
             android:textStyle="bold"
             android:textSize="14dp" />
-
+<!--
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,12 +40,11 @@
             android:text="Descripcion"
             android:textColor="#666"
             android:id="@+id/data_post_bookmark"
-
-            android:textSize="12dp" />
+            android:textSize="12dp" /> -->
 
         <View
             android:id="@+id/line1"
-            android:layout_below="@+id/data_post_bookmark"
+            android:layout_below="@+id/title_post_bookmark"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:background="@color/cardBgColor"/>

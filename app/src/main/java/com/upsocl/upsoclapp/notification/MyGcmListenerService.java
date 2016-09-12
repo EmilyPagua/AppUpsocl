@@ -125,8 +125,9 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             }
             int rest = 0;
             rest = getLastDayNotification(dateLast,date );
+            int frecuency = prefs.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1);
 
-            if (rest ==0 || rest >= prefs.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1)){
+            if (rest == 0 || rest >= frecuency){
                 SharedPreferences.Editor editor =  prefs.edit();
                 editor.putString(Preferences.NOTI_ID_POST,idPost).commit();
                 editor.putInt(Preferences.NOTI_ID,idMessage).commit();
@@ -150,7 +151,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
 
     public static int getLastDayNotification(Date fechaMayor, Date fechaMenor) {
         long diferenciaEn_ms = fechaMayor.getTime() - fechaMenor.getTime();
-        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
+        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24) *  (-1);
         return (int) dias;
     }
 }

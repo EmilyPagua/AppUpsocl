@@ -57,12 +57,12 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
 
         image = (ImageView) convertView.findViewById(R.id.img_post_bookmark);
         name = (TextView) convertView.findViewById(R.id.title_post_bookmark);
-        dataPost = (TextView) convertView.findViewById(R.id.data_post_bookmark);
+        //dataPost = (TextView) convertView.findViewById(R.id.data_post_bookmark);
         ima_bookmarks = (ImageButton)convertView.findViewById(R.id.ima_bookmarks);
         ima_share = (ImageButton) convertView.findViewById(R.id.ima_share);
 
 
-        String author = "Por: "+news.getAuthor();
+        /*String author = "Por: "+news.getAuthor();
         String  date = "El: "+news.getDate();
 
         SpannableStringBuilder sBauthor = new SpannableStringBuilder(author);
@@ -74,6 +74,10 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
         Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
 
+        dataPost.setText(result, TextView.BufferType.SPANNABLE);*/
+
+        name.setText(news.getTitle());
+
         if (!(news.getImage() == ""))
             Picasso.with(context)
                     .load(news.getImage())
@@ -84,9 +88,6 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
                     .load(ViewConstants.PLACEHOLDER_IMAGE)
                     .placeholder(R.drawable.placeholder)
                     .into(image);
-
-        name.setText(news.getTitle());
-        dataPost.setText(result, TextView.BufferType.SPANNABLE);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

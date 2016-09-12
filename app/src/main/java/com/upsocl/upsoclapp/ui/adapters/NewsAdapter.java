@@ -48,22 +48,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     @Override
     public void onBindViewHolder(NewsHolder holder, int position) {
-        holder.name.setText(news.get(position).getTitle());
-        String author = "Por: "+news.get(position).getAuthor();
-        String  date = "El: "+news.get(position).getDate();
-        String categories = "Categoria: "+news.get(position).getCategories();
 
-        SpannableStringBuilder sBauthor = setStyleText(author, 4,  author.length());
-        SpannableStringBuilder sBdetail = setStyleText(date, 3,  date.length());
-        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
-        SpannableStringBuilder result = new SpannableStringBuilder(spanned);
-
-        holder.dataPost.setText(result, TextView.BufferType.SPANNABLE);
         holder.setNewsObj(news.get(position));
         holder.setPosition(position);
 
-        SpannableStringBuilder sCategories = setStyleText(categories, 10,  categories.length());
-        holder.categories.setText(sCategories);
+        holder.name.setText(news.get(position).getTitle());
+        //String author = "Por: "+news.get(position).getAuthor();
+        //String  date = "El: "+news.get(position).getDate();
+        //String categories = "Categoria: "+news.get(position).getCategories();
+
+        //SpannableStringBuilder sBauthor = setStyleText(author, 4,  author.length());
+        //SpannableStringBuilder sBdetail = setStyleText(date, 3,  date.length());
+        //Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
+        //SpannableStringBuilder result = new SpannableStringBuilder(spanned);
+
+        //holder.dataPost.setText(result, TextView.BufferType.SPANNABLE);
+
+
+        //SpannableStringBuilder sCategories = setStyleText(categories, 10,  categories.length());
+        //holder.categories.setText(sCategories);
 
         if (!(news.get(position).getImage() == "")){
             holder.setImage(news.get(position).getImage());}
@@ -107,8 +110,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.img_post);
             name = (TextView) itemView.findViewById(R.id.title_post);
-            dataPost = (TextView) itemView.findViewById(R.id.data_post);
-            categories =  (TextView)itemView.findViewById(R.id.categories);
+
+            //dataPost = (TextView) itemView.findViewById(R.id.data_post);
+            //categories =  (TextView)itemView.findViewById(R.id.categories);
             newsArrayList =  news;
 
 

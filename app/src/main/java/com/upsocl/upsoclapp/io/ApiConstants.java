@@ -29,7 +29,7 @@ public class ApiConstants {
 
 
 //http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=privacidad-app/filter[category_name]=verde
-//http://upsocl.com/wp-json/wp/v2/posts/345833
+//http://upsocl.com/wp-json/wp/v2/posts/470546
 
 //Sender ID: 149087864796
 //Server API key AIzaSyDqPOHOJq0dwmEewLpTuOqP0Y3U95-QB9g

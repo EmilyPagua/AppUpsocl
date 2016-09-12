@@ -33,17 +33,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 HomePrimaryFragment homeLastNews = new HomePrimaryFragment();
                 homeLastNews.setHome(isHome);
                 return homeLastNews;
-            /*
 
-            HomePrimaryFragment homeLastNews = new HomePrimaryFragment();
-                String filter= loadInterests();
-                homeLastNews.setCategoryName(filter);
-                homeLastNews.setHome(isHome);
-
-                HomeSegundaryFragment homeNews = new HomeSegundaryFragment();
-                homeNews.setHome(isHome);
-                return homeNews;
-                */
             case 1:
                 HomeSegundaryFragment homeNews = new HomeSegundaryFragment();
                 String filter= loadInterests();
