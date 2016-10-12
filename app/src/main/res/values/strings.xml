@@ -17,7 +17,7 @@
 
     <string name="gcm_send_message">Token entregado con exito </string>
     <string name="msg_save_wordpress">Registro procesado</string>
-    <string name="msg_selected_category_preferences">Seleccione las categorias de su preferencia</string>
+    <string name="msg_selected_category_preferences">Seleccione las categorías de su preferencia</string>
     <string name="msg_dialog_title">Validando datos</string>
     <string name="msg_dialog_postDetail">Cargando contenido</string>
     <string name="msg_dialog_content">Espere, procesando datos..!</string>
@@ -46,7 +46,7 @@
     <string name="title_activity_create_perfil">CreatePerfil</string>
 
     <!-- CREATE PERFIL BUTTON -->
-    <string name="msg_createPerfil">Selecciona al menos tres categorias para personalizar tu feed.</string>
+    <string name="msg_createPerfil">Selecciona al menos tres categorías para personalizar tu feed.</string>
     <string name="msg_select_category">Debe seleccionar al menos 3 categorias.</string>
     <string name="msg_session_not_found">Verifique su conexión a internet e intente de nuevo</string>
     <string name="btn_beauty">Belleza</string>
@@ -105,6 +105,10 @@
     <string name="about_us_2">Somos una compañía de medios con la misión de volver a conectar a
         las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser
         un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
+
+     <string name="about_us_3">Nos preguntan con frecuencia de donde es Upsocl. Si bien, por el
+         momento trabajamos desde Chile, Colombia y Panamá, para ser justos Upsocl le pertenece
+         toda la comunidad hispano parlante.</string>
 
     <string name="mean_detail"> Teníamos una idea y misión muy clara de lo que queríamos hacer, faltaba el nombre…
         Upsocl es la unión de dos palabras: “up”, arriba en inglés y nuestra propia versión de la abreviación de “social”.  Pero tú le puedes decir como quieras.</string>
@@ -185,6 +189,5 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail_post">Post</string>
-
 
 </resources>

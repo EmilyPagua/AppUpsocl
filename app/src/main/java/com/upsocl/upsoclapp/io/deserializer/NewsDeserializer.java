@@ -27,22 +27,33 @@ public class NewsDeserializer implements JsonDeserializer<News> {
         return extractNewsFromJsonArray(news);
     }
 
-    private News extractNewsFromJsonArray(JsonObject item){
+    private News extractNewsFromJsonArray(JsonObject item) {
 
         News currentNews = new News();
         currentNews.setId(item.get(JsonKeys.NEWS_ID).getAsString());
+
+        if (item.get(JsonKeys.NEWS_ID).getAsString().equals("445196") ) {
+            currentNews.setContent(getJsonValue(item.get(JsonKeys.NEWS_CONTENT)));
+            return currentNews;
+        }
+
+        if (item.get(JsonKeys.NEWS_ID).getAsString().equals("1039") ) {
+            currentNews.setContent(getJsonValue(item.get(JsonKeys.NEWS_CONTENT)));
+            return currentNews;
+        }
+
         currentNews.setTitle(getJsonValue(item.get(JsonKeys.NEWS_TITLE))
-                .replace("&#8220;","'").replace("&#8221;","'")
-                .replace("&#8216;","'").replace("&#8217;","'").replace("&#8230;","'"));
+                .replace("&#8220;", "'").replace("&#8221;", "'")
+                .replace("&#8216;", "'").replace("&#8217;", "'").replace("&#8230;", "'"));
         currentNews.setContent(getJsonValue(item.get(JsonKeys.NEWS_CONTENT)));
 
-        String urlImage= item.get(JsonKeys.NEWS_IMAGES_URL).toString();
-        currentNews.setImage(urlImage.substring(1, urlImage.length()-1));
+        String urlImage = item.get(JsonKeys.NEWS_IMAGES_URL).toString();
+        currentNews.setImage(urlImage.substring(1, urlImage.length() - 1));
         currentNews.setDate(cenvertToDate(item.get(JsonKeys.NEWS_DATE).toString()));
-        currentNews.setAuthor((item.get(JsonKeys.NEWS_AUTHOR_FIRST_NAME) +" "+item.get(JsonKeys.NEWS_AUTHOR_LAST_NAME)).replace("\"",""));
+        currentNews.setAuthor((item.get(JsonKeys.NEWS_AUTHOR_FIRST_NAME) + " " + item.get(JsonKeys.NEWS_AUTHOR_LAST_NAME)).replace("\"", ""));
         currentNews.setLink(item.get(JsonKeys.NEWS_LINK).getAsString());
         String categorias = item.get(JsonKeys.NEWS_CATEGORIES).getAsString();
-        currentNews.setCategories(categorias.substring(0, categorias.length()-1).replace(",IA","").replace("IA,",""));
+        currentNews.setCategories(categorias.substring(0, categorias.length() - 1).replace(",IA", "").replace("IA,", ""));
 
         return currentNews;
     }

@@ -1,20 +1,38 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.upsocl.upsoclapp.R;
+import com.upsocl.upsoclapp.domain.News;
+import com.upsocl.upsoclapp.io.ApiConstants;
+import com.upsocl.upsoclapp.io.WordpressApiAdapter;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
+import com.upsocl.upsoclapp.ui.ViewConstants;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by upsocl on 09-08-16.
  */
 public class PrivacyFragment extends Fragment {
+
+    //http://upsocl.com/wp-json/wp/v2/pages/1039
+
+    News news = new News();
+    WebView webViewNew;
+    ProgressBar bar;
 
     public PrivacyFragment() {
     }
@@ -22,33 +40,45 @@ public class PrivacyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){
         View root = inflater.inflate(R.layout.fragment_privacy, container, false);
+        webViewNew = (WebView) root.findViewById(R.id.webViewContent);
 
-        TextView privacyDetail1 = (TextView) root.findViewById(R.id.privacyDetail1);
-        TextView privacyDetail2 = (TextView) root.findViewById(R.id.privacyDetail2);
+        bar = (ProgressBar) root.findViewById(R.id.progress_bar_help);
+        bar.setVisibility(View.VISIBLE);
 
-        privacyDetail1.setText(getString(R.string.privacity_1)+ " "+getString(R.string.privacity_2) );
-        privacyDetail2.setText(getString(R.string.privacity_3) +" "+getString(R.string.privacity_4));
-
-        TextView getInfoDetail = (TextView) root.findViewById(R.id.getInfoDetail);
-        TextView accessInfoDetail = (TextView) root.findViewById(R.id.accessInfoDetail);
-        TextView useInfoDetail1 = (TextView) root.findViewById(R.id.useInfoDetail1);
-        TextView useInfoDetail2 = (TextView) root.findViewById(R.id.useInfoDetail2);
-        TextView useInfoDetail3 = (TextView) root.findViewById(R.id.useInfoDetail3);
-        TextView useInfoDetail4 = (TextView) root.findViewById(R.id.useInfoDetail4);
-        TextView publicInfoDetail = (TextView) root.findViewById(R.id.publicInfoDetail);
-        TextView modifyInfoDetail = (TextView) root.findViewById(R.id.modifyInfoDetail);
-
-        getInfoDetail.setText(getString(R.string.privacity_5) );
-        useInfoDetail1.setText(getString(R.string.privacity_6));
-        useInfoDetail2.setText(getString(R.string.privacity_7));
-        useInfoDetail3.setText(getString(R.string.privacity_8));
-        useInfoDetail4.setText(getString(R.string.privacity_9));
-        accessInfoDetail.setText(getString(R.string.privacity_10));
-        publicInfoDetail.setText(getString(R.string.privacity_11));
-        modifyInfoDetail.setText(getString(R.string.privacity_12));
-
-
+        load("445196");
         return root;
+    }
+
+    public void load(String page) {
+
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPrivacity(page, new Callback<News>() {
+
+            @Override
+            public void success(News newsContent, Response response) {
+                System.out.println("Response");
+                news = newsContent;
+
+                webViewNew.getSettings().setJavaScriptEnabled(true);
+
+                webViewNew.getSettings().setLoadWithOverviewMode(true);
+                webViewNew.getSettings().setUseWideViewPort(true);
+                webViewNew.getSettings().setAllowUniversalAccessFromFileURLs(true);
+                webViewNew.getSettings().setSaveFormData(false);
+
+                String html = ViewConstants.HTML_HEAD  + news.getContent();
+                html = html.replace("\\\"", "\"").replace("\\n", "\n");
+
+                webViewNew.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+
+                bar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                System.out.println(error);
+            }
+        });
+
     }
 
 }

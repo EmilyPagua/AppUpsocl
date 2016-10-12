@@ -12,6 +12,7 @@ public class ApiConstants {
     public static final String FILTER_CATEGORY_NAME = "filter[category_name]";
 
     public static final String FILTER_POST = "/posts/{id}";
+    public static final String FILTER_PAGES = "/pages/{id}";
 
     public static final String BASE_URL_CUSTOMER = "http://quiz.upsocl.com/dev/wp-json/wp/v2";
     public static final String CUSTOMER = "/customers";
@@ -26,7 +27,7 @@ public class ApiConstants {
 
 }
 
-
+//http://www.upsocl.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.upsocl.com%2Fprivacidad-app%2F&#038;format=xml
 //http://upsocl.com/wp-json/wp/v2/posts?filter[category_name]=privacidad-app/filter[category_name]=verde
 //http://upsocl.com/wp-json/wp/v2/posts/442250
 

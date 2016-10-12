@@ -112,10 +112,7 @@ public class NewsFragment extends Fragment implements Callback<ArrayList<News>> 
     }
 
     public void loadPosts(Integer page){
-
         WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListWord(word,page, this);
-
     }
-
 
 }

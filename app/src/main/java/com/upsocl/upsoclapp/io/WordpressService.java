@@ -1,9 +1,11 @@
 package com.upsocl.upsoclapp.io;
 
 
+import com.google.api.client.json.Json;
 import com.google.gson.JsonObject;
 import com.upsocl.upsoclapp.domain.Customer;
 import com.upsocl.upsoclapp.domain.News;
+import com.upsocl.upsoclapp.ui.fragments.HelpFragment;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,9 @@ public interface WordpressService {
     @GET(ApiConstants.FILTER_POST)
     void getPost(@Path("id") String page, Callback<News> response);
 
+    @GET(ApiConstants.FILTER_PAGES)
+    void getPrivacity(@Path("id")String page, Callback<News> response);
+
     @GET(ApiConstants.LIST_POSTS)
     void getListByCategoryName(@Query(ApiConstants.FILTER_CATEGORY_NAME) String categoryName, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
 
@@ -39,5 +44,9 @@ public interface WordpressService {
 
     @GET(ApiConstants.CUSTOMER)
     void getCustomerById(@Query(ApiConstants.CUSTOMER_ID) Integer idUser, Callback<Customer> response );
+
+    //http://upsocl.com/wp-json/wp/v2/pages/445196
+
+
 
 }

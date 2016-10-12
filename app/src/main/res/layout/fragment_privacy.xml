@@ -2,166 +2,31 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginTop="10dp"
     tools:context=".ui.fragments.PrivacyFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_marginTop="16dp"
+        <ProgressBar
+            android:id="@+id/progress_bar_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Politicas de privacidad"
-            android:id="@+id/privacyDetailTitle" />
+            style="?android:attr/progressBarStyleInverse"
+            android:layout_gravity="center" />
 
-
-        <View
-            android:layout_below="@+id/privacyDetailTitle"
-            android:id="@+id/line1"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-
-            android:background="@color/verde"/>
-
-        <ScrollView
-            android:layout_below="@+id/line1"
+        <WebView
+            android:id="@+id/webViewContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollView2"
-            >
+            android:layout_margin="1dp"
+            />
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/privacyDetail1"
-                    android:text="text1 "/>
-                <TextView
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/privacyDetail2"
-                    android:text="text1 "/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Obtención de la información"
-                    android:id="@+id/getInfo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="detalleinfo1"
-                    android:id="@+id/getInfoDetail" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Uso de la información"
-                    android:textStyle="bold"
-                    android:id="@+id/useInfo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="use info"
-                    android:id="@+id/useInfoDetail1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="use info"
-                    android:id="@+id/useInfoDetail2" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="use info"
-                    android:id="@+id/useInfoDetail3" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="use info"
-                    android:id="@+id/useInfoDetail4" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Acceso a la información"
-                    android:id="@+id/accessInfo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="access info"
-                    android:layout_gravity="right"
-                    android:id="@+id/accessInfoDetail" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Revelación de la información"
-                    android:id="@+id/publicInfo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="public info"
-                    android:layout_gravity="right"
-                    android:id="@+id/publicInfoDetail" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Modificación a nuestras Politicas de Privacidad"
-                    android:id="@+id/modifyInfo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="public info"
-                    android:layout_gravity="right"
-                    android:id="@+id/modifyInfoDetail" />
-            </LinearLayout>
-        </ScrollView>
-
-    </RelativeLayout>
+    </LinearLayout>
 </FrameLayout>
 
 

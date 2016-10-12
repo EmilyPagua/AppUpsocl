@@ -35,7 +35,7 @@ android {
     compileOptions {
     }
     dexOptions {
-        incremental true
+        //incremental true
         javaMaxHeapSize "2048M"
     }
     productFlavors {

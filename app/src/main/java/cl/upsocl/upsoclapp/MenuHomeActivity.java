@@ -150,7 +150,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefsUser.getString(CustomerKeys.DATA_USER_TOKEN,null);
-//        System.out.println(token);
+        System.out.println("Tocken: " + token);
         //
         uploadView();
 

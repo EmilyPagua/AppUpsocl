@@ -2,93 +2,33 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="10dp"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.HelpFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
-        <ScrollView
+        <ProgressBar
+            android:id="@+id/progress_bar_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleInverse"
+            android:layout_gravity="center" />
+
+        <WebView
+            android:id="@+id/webViewContent"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/scrollView" >
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:layout_marginTop="10dp"/>
 
-            <LinearLayout
-                android:layout_below="@+id/toolbar_segundary"
-                android:id="@+id/linearLayout1"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView"
-                    android:src="@drawable/logo"/>
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about_us_1"
-                    android:id="@+id/about_us_detail"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_centerVertical="true"
-                    />
-
-                <TextView
-                    android:layout_marginTop="2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/about_us_1"
-                    android:id="@+id/about_us_detail_2" />
-
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="¿Qué significa Upsocl?"
-                    android:id="@+id/tv_mean" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_gravity="center_vertical|right"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/mean_detail"
-                    android:id="@+id/mean_detail" />
-
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="¿De donde somos?"
-                    android:id="@+id/tv_location" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_gravity="center_vertical|right"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/mean_detail"
-                    android:id="@+id/location_detail" />
-
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
 </FrameLayout>
 
 
