@@ -5,10 +5,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:fitsSystemWindows="true"
-    tools:context=".CreateProfile"
-    android:background="@drawable/fondo">
-
-
+    tools:context=".CreateProfile">
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -23,7 +20,6 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -41,7 +37,6 @@
                 android:text="@string/msg_createPerfil"
                 android:id="@+id/msg_createPerfil"
                 android:gravity="center_horizontal"
-                android:textColor="@color/blanco"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -193,8 +188,6 @@
                 android:text="@string/btn_relations"
                 android:id="@+id/btn_relations"
                 android:onClick="btnRelations"/>
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -280,41 +273,34 @@
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
                 android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:contentDescription="LOgin"
-                android:text="login"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_height="70px"
+                android:contentDescription="@string/profile_login"
+                android:text="@string/profile_login"
+                />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="Login"
-                android:text="login"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerHorizontal="true" />
+                android:contentDescription="@string/profile_login"
+                android:text="@string/profile_login"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                />
 
             <com.twitter.sdk.android.core.identity.TwitterLoginButton
                 android:id="@+id/twitter_login_button"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:contentDescription="LOgin"
-                android:text="login"
-                android:layout_marginTop="5dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_height="60px"
+                android:contentDescription="@string/profile_login"
+                android:text="@string/profile_login"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
 
         </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

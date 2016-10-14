@@ -10,6 +10,7 @@
     tools:context=".ui.fragments.HelpFragment">
 
     <RelativeLayout
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -24,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Perfil"
+                android:text="@string/title_perfil"
                 android:id="@+id/tv_profile" />
         </LinearLayout>
 
@@ -47,21 +48,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Usuario"
+                android:text="@string/title_usuario"
                 android:id="@+id/nameProfile" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Email"
+                android:text="@string/title_email"
                 android:id="@+id/emailProfile" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Localización"
+                android:text="@string/title_localizacion"
                 android:id="@+id/locationProfile" />
 
         </LinearLayout>
@@ -86,14 +87,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Notificaciones"
+                android:text="@string/title_notificaciones"
                 android:id="@+id/tv_frecuency" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Con que frecuencia desea recibir notificaciones"
+                android:text="@string/detail_message"
                 android:id="@+id/textView2" />
 
 
@@ -106,19 +107,19 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 día"
+                    android:text="@string/detail_notificaction_day"
                     android:id="@+id/rb_day" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 semana"
+                    android:text="@string/detail_notificaction_week"
                     android:id="@+id/rb_week" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 mes"
+                    android:text="@string/detail_notificaction_month"
                     android:id="@+id/rb_month" />
 
             </RadioGroup>
@@ -147,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="logout"
                 android:visibility="gone"
-                android:text="Cerrar sesión Facebook"
+                android:text="@string/close_session_facebook"
                 android:id="@+id/logout_facebook" />
 
 
@@ -156,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="logoutGoogle"
                 android:visibility="gone"
-                android:text="Cerrar sesión Google"
+                android:text="@string/close_session_google"
                 android:id="@+id/logout_google" />
 
             <Button
@@ -164,15 +165,11 @@
                 android:layout_height="wrap_content"
                 android:onClick="logoutTwitter"
                 android:visibility="gone"
-                android:text="Cerrar sesión Twitter"
+                android:text="@string/close_session_twitter"
                 android:id="@+id/logout_twitter" />
-
         </LinearLayout>
 
-
-
     </RelativeLayout>
-
 </FrameLayout>
 
 

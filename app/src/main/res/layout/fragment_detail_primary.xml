@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/webView1" />
 
-            <com.google.android.gms.ads.AdView
+           <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView1"
                 android:layout_width="wrap_content"
@@ -85,7 +85,6 @@
                 android:layout_marginBottom="70dp"
                 android:layout_centerHorizontal="true">
             </com.google.android.gms.ads.AdView>
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -53,8 +53,11 @@ public class NewsDeserializer implements JsonDeserializer<News> {
         currentNews.setAuthor((item.get(JsonKeys.NEWS_AUTHOR_FIRST_NAME) + " " + item.get(JsonKeys.NEWS_AUTHOR_LAST_NAME)).replace("\"", ""));
         currentNews.setLink(item.get(JsonKeys.NEWS_LINK).getAsString());
         String categorias = item.get(JsonKeys.NEWS_CATEGORIES).getAsString();
-        currentNews.setCategories(categorias.substring(0, categorias.length() - 1).replace(",IA", "").replace("IA,", ""));
-
+        categorias  = categorias.substring(0, categorias.length() ).replace(",IA", "").replace("IA,", "");
+        if (categorias.equals("IA")){
+            categorias = "Portada";
+        }
+        currentNews.setCategories(categorias);
         return currentNews;
     }
 

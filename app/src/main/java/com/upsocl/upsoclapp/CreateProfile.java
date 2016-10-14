@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -863,10 +864,13 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     private void changeStatusButton(String optCultura, Button button) {
 
-        if (changeListOpt(optCultura))
+        if (changeListOpt(optCultura)){
             button.setBackground(getResources().getDrawable(R.drawable.boton_desahabilitado));
-        else
+            button.setTextColor(Color.WHITE);
+        } else{
             button.setBackground(getResources().getDrawable(R.drawable.boton_normal));
+            button.setTextColor(Color.BLACK);
+        }
     }
 
     private Boolean changeListOpt(String option) {

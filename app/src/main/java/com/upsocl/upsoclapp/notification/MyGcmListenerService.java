@@ -113,7 +113,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             Date date = new Date();
             Date dateLast = null;
             try {
-                dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,new Date().toString()));
+                dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)));
                 if (dateLast==null){
                     SharedPreferences.Editor editor =  prefs.edit();
                     editor.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
@@ -124,7 +124,10 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
                 e.printStackTrace();
             }
             int rest = 0;
-            rest = getLastDayNotification(dateLast,date );
+            if (dateLast != null){
+                rest = getLastDayNotification(dateLast, date );
+            }
+
             int frecuency = prefs.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1);
 
             if (rest == 0 || rest >= frecuency){
@@ -145,7 +148,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     }
 
     public void loadPosts(String idPost){
-        if (idPost.equals("0")==false)
+        if (idPost!= null && idPost.equals("0")==false)
             WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPost(idPost, this);
     }
 

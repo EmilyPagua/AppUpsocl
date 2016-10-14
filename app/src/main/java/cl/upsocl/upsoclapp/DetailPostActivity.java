@@ -185,7 +185,6 @@ public class DetailPostActivity extends AppCompatActivity {
         //PUBLICITY
        /* FIXME mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-mb-app-pub-7682123866908966/8579205603");
-
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
@@ -269,7 +268,7 @@ public class DetailPostActivity extends AppCompatActivity {
         setImage(objNews.getImage(), imagen);
         setTextViewTitle(objNews.getTitle(),title);
         setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
-        enableWebView(objNews.getContent(), webView);
+        enableWebView(objNews.getContent(), webView, progressBar);
         enableProgessBar(progressBar);
     }
 
@@ -318,9 +317,10 @@ public class DetailPostActivity extends AppCompatActivity {
         }
     }
 
-    private void enableWebView(String content, int webViewCreate){
+    private void enableWebView(String content, int webViewCreate, int progressBar){
 
         WebView webViewNew = (WebView) findViewById(webViewCreate);
+        ProgressBar progresNew = (ProgressBar) findViewById(progressBar);
 
         webViewNew.clearHistory();
         webViewNew.clearCache(true);
@@ -337,6 +337,9 @@ public class DetailPostActivity extends AppCompatActivity {
 
         webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
         webViewNew.setVisibility(View.GONE);
+//        progresNew.setVisibility(View.GONE);
+
+
     }
 
     private void setImage(String objImage, int image){
@@ -442,6 +445,7 @@ public class DetailPostActivity extends AppCompatActivity {
                 /*if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }*/
+
                 createAdView(R.id.adView1, R.id.webView1, R.id.progress1);
                 break;
             case 1:
@@ -615,14 +619,11 @@ public class DetailPostActivity extends AppCompatActivity {
     }
 
    /* FIXME  private void requestNewInterstitial() {
-
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceId = md5(android_id).toUpperCase();
-
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(deviceId)
                 .build();
-
         mInterstitialAd.loadAd(adRequest);
     }*/
     //END PUBLICITY
@@ -654,7 +655,7 @@ public class DetailPostActivity extends AppCompatActivity {
 
     private void createShareIntent(){
 
-       sendReportGoogleAnalytics(newsPosition.getLink(),"CompartirOtrosMedios" );
+        sendReportGoogleAnalytics(newsPosition.getLink(),"CompartirOtrosMedios" );
 
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
