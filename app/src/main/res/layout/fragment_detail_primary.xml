@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/title1"
                 android:text="Title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold" />
+                android:textAppearance="@style/?android:attr/textAppearanceLarge"
+                android:fontFamily="sans-serif" />
 
             <TextView
                 android:layout_marginTop="8dp"
