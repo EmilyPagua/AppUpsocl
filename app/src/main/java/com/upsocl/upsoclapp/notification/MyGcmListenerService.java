@@ -13,7 +13,6 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.google.gson.Gson;
-import com.upsocl.upsoclapp.NotificationActivity;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.io.ApiConstants;
@@ -25,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cl.upsocl.upsoclapp.NotificationActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -116,7 +116,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
                 dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)));
                 if (dateLast==null){
                     SharedPreferences.Editor editor =  prefs.edit();
-                    editor.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
+                    editor.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).apply();
                     dateLast = date;
                 }
 
@@ -132,10 +132,10 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
 
             if (rest == 0 || rest >= frecuency){
                 SharedPreferences.Editor editor =  prefs.edit();
-                editor.putString(Preferences.NOTI_ID_POST,idPost).commit();
-                editor.putInt(Preferences.NOTI_ID,idMessage).commit();
-                editor.putString(Preferences.NOTI_DATA,newsJson).commit();
-                editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_active_white_24dp).commit();
+                editor.putString(Preferences.NOTI_ID_POST,idPost).apply();
+                editor.putInt(Preferences.NOTI_ID,idMessage).apply();
+                editor.putString(Preferences.NOTI_DATA,newsJson).apply();
+                editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_active_white_24dp).apply();
                 sendNotification(message, contentTitle, idMessage);
             }
         }

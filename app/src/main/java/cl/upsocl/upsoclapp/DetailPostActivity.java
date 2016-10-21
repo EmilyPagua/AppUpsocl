@@ -1,11 +1,11 @@
 package cl.upsocl.upsoclapp;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
@@ -16,7 +16,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -45,7 +46,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.common.server.response.FieldMappingDictionary;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.upsoclapp.AnalyticsApplication;
@@ -89,6 +89,7 @@ public class DetailPostActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private ShareDialog shareDialog;
 
+    private WebView webViewOriginal;
     private FloatingActionButton fab;
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
@@ -128,7 +129,6 @@ public class DetailPostActivity extends AppCompatActivity {
 
         sendReportGoogleAnalytics(newsPosition.getLink(), "ClickPost");
         //END PUBLICITY
-
 
         fab = (FloatingActionButton) findViewById(R.id.fabNext);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -264,12 +264,28 @@ public class DetailPostActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadNews(News objNews, int imagen, int title, int detail, int webView, int progressBar) {
+    private void uploadNews(final News objNews, int imagen, int title, int detail, final int webView, final int progressBar) {
+
         setImage(objNews.getImage(), imagen);
         setTextViewTitle(objNews.getTitle(),title);
         setTextViewDetail(objNews.getAuthor(), objNews.getDate(), objNews.getCategories(), detail);
-        enableWebView(objNews.getContent(), webView, progressBar);
-        enableProgessBar(progressBar);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                new loadAdMob().execute();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        enableWebView(objNews.getContent(), webView, progressBar);
+                        enableProgessBar(progressBar);
+
+                    }
+                });
+            }
+        }).start();
     }
 
     private void enableProgessBar(int progressBar) {
@@ -320,7 +336,7 @@ public class DetailPostActivity extends AppCompatActivity {
     private void enableWebView(String content, int webViewCreate, int progressBar){
 
         WebView webViewNew = (WebView) findViewById(webViewCreate);
-        ProgressBar progresNew = (ProgressBar) findViewById(progressBar);
+        webViewOriginal = webViewNew;
 
         webViewNew.clearHistory();
         webViewNew.clearCache(true);
@@ -337,8 +353,6 @@ public class DetailPostActivity extends AppCompatActivity {
 
         webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
         webViewNew.setVisibility(View.GONE);
-//        progresNew.setVisibility(View.GONE);
-
 
     }
 
@@ -739,6 +753,53 @@ public class DetailPostActivity extends AppCompatActivity {
         super.onStart();
     }
 
+
+    private class loadAdMob  extends AsyncTask<Void, Integer, Boolean> {
+        AdView adView1;
+        ProgressBar progresNew;
+        AdRequest adRequest;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            adView1 = (AdView)  findViewById(R.id.adViewNotification);
+            progresNew = (ProgressBar) findViewById(R.id.progressNotification);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            adRequest = new AdRequest.Builder().build();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            if (adView1!=null && adRequest!=null) {
+                adView1.loadAd(adRequest);
+                adView1.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        super.onAdFailedToLoad(i);
+                        Log.e("Error", String.valueOf(i));
+                    }
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        adView1.setVisibility(View.VISIBLE);
+                        progresNew.setVisibility(View.GONE);
+                        webViewOriginal.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdLeftApplication() {
+                        super.onAdLeftApplication();
+                    }
+                });
+            }
+        }
+    }
 
 
 }

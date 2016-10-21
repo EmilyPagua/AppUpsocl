@@ -1,6 +1,5 @@
 package cl.upsocl.upsoclapp;
 
-import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
@@ -16,8 +15,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -60,7 +57,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.upsocl.upsoclapp.MainActivity;
-import com.upsocl.upsoclapp.NotificationActivity;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.domain.News;
@@ -367,7 +363,7 @@ public class MenuHomeActivity extends AppCompatActivity
             SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
             News news = gs.fromJson(prefs.getString(Preferences.NOTI_DATA,null), News.class);
 
-            Intent intent = new Intent(this, DetailPostActivity.class);
+            Intent intent = new Intent(this, NotificationActivity.class);
             Gson gS = new Gson();
             String target = gS.toJson(news);
             intent.putExtra("new", target);
@@ -376,7 +372,7 @@ public class MenuHomeActivity extends AppCompatActivity
             intent.putExtra("leght",1);
             startActivity(intent);
 
-            //Intent intent = new Intent(this, NotificationActivity.class);
+            //Intent intent = new Intent(this, NotificationActivity2.class);
             //startActivity(intent);
         }
         else

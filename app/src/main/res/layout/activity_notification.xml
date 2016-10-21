@@ -1,106 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".NotificationActivity">
+    tools:context="cl.upsocl.upsoclapp.NotificationActivity">
 
-    <include layout="@layout/toolbar_segundary"/>
-
-    <RelativeLayout
-        android:layout_height="match_parent"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:transitionGroup="false"
-        android:id="@+id/viewDetailrelative"
-        android:touchscreenBlocksFocus="false">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_marginTop="60dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar_segundary"
-            android:id="@+id/scroll_detail">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_notification"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:background="@color/cardtextColor"
-                tools:context="com.upsocl.upsocl.DetailActivity"
-                android:weightSum="1"
-                android:id="@+id/viewDetailLinear"
-                tools:ignore="WebViewLayout">
+    </android.support.design.widget.AppBarLayout>
 
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="@dimen/heigny_image_detail"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder"
-                    android:id="@+id/imageViewDetail" />
+    <include layout="@layout/content_notification" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detailTextView"
-                    android:text="Title"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Small Text"
-                    android:layout_below="@+id/detailTextView"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:id="@+id/detail" />
-
-                <View
-                    android:id="@+id/line1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:background="@color/verde"/>
-
-                <ProgressBar
-                    android:id="@+id/progressNotification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?android:attr/progressBarStyleInverse"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="center_horizontal" />
-
-                <WebView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/webView"
-                    android:layout_margin="@dimen/activity_horizontal_margin"
-                    android:layout_below="@+id/detail"
-                    android:layout_weight="1" />
-
-                <com.google.android.gms.ads.AdView
-                    xmlns:ads="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/adViewNotification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    ads:adSize="MEDIUM_RECTANGLE"
-                    android:visibility="gone"
-                    ads:adUnitId="ca-mb-app-pub-7682123866908966/7102497723"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="70dp"
-                    android:layout_centerHorizontal="true">
-                </com.google.android.gms.ads.AdView>
-
-            </LinearLayout>
-        </ScrollView>
-
-    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

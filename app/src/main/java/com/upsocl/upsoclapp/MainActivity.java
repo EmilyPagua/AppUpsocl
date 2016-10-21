@@ -1,12 +1,10 @@
 package com.upsocl.upsoclapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 
 import com.upsocl.upsoclapp.keys.CustomerKeys;
