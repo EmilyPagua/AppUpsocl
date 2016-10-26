@@ -10,4 +10,6 @@ public class ViewConstants {
     public static final String FONTS = "<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>" +
                                         "<link href='http://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>";
     public static final String HTML_HEAD = META_TAG + STYLES + FONTS;
+
+
 }

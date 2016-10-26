@@ -22,6 +22,7 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 
 import java.util.ArrayList;
 
+import cl.upsocl.upsoclapp.DetailPagerAdapter;
 import cl.upsocl.upsoclapp.DetailPostActivity;
 
 /**
@@ -119,7 +120,33 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), DetailPostActivity.class);
+
+                    Intent intent = new Intent(view.getContext(), DetailPagerAdapter.class);
+                    Gson gS = new Gson();
+                    int lenght = 1;
+                    String target = gS.toJson(newsObj);
+                    intent.putExtra("new", target);
+                    intent.putExtra("position",position);
+                    intent.putExtra("isBookmarks",false);
+
+                    if (newsArrayList.size()>position+1 && newsArrayList.get(position+1)!=null){
+                        intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position+1)));
+                        lenght++;}
+
+                    if (newsArrayList.size()>position+2 && newsArrayList.get(position+2)!=null){
+                        intent.putExtra("newsThree", gS.toJson(newsArrayList.get(position+2)));lenght++;}
+
+                    if (newsArrayList.size()>position+3 && newsArrayList.get(position+3)!=null){
+                        intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position+3)));lenght++;}
+
+                    if (newsArrayList.size()>position+4 && newsArrayList.get(position+4)!=null){
+                        intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position+4)));lenght++;}
+
+                    intent.putExtra("leght",lenght);
+                    view.getContext().startActivity(intent);
+
+
+                    /*Intent intent = new Intent(view.getContext(), DetailPostActivity.class);
                     int lenght = 1;
                     Gson gS = new Gson();
                     String target = gS.toJson(newsObj);
@@ -141,7 +168,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                         intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position+4)));lenght++;}
 
                     intent.putExtra("leght",lenght);
-                    view.getContext().startActivity(intent);
+                    view.getContext().startActivity(intent);*/
                 }
             });
         }

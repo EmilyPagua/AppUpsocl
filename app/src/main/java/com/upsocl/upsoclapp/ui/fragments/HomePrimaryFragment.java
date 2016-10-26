@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +109,11 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
     @Override
     public void failure(RetrofitError error) {
         //System.out.println("HomePrimaryFragment "+error.getMessage() );
-        Toast.makeText(getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
+        try{
+            Toast.makeText(HomePrimaryFragment.this.getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Log.e("HomePrimaryFragment", "Error en failure");
+        }
         //adapter.addAll(new ArrayList<News>());
     }
 

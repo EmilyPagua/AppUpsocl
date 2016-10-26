@@ -32,7 +32,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <meta-data
@@ -200,6 +199,10 @@
 
         <activity
             android:name="cl.upsocl.upsoclapp.NotificationActivity"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="cl.upsocl.upsoclapp.DetailPagerAdapter"
             android:label="@string/title_activity_notification"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

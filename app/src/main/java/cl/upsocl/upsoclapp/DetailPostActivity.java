@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -57,7 +56,6 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.fabric.sdk.android.services.common.CommonUtils.md5;
 
 public class DetailPostActivity extends AppCompatActivity {
 

@@ -333,16 +333,16 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         listOptions = (ArrayList<Interests>) new Interests().createList();
         SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.clear().commit();
+        editor.clear().apply();
         int sizeList =  listOptions.size();
         for (int i =0; i<sizeList; i++){
-            editor.putBoolean(String.valueOf(listOptions.get(i).getId()), false).commit();
+            editor.putBoolean(String.valueOf(listOptions.get(i).getId()), false).apply();
         }
-        editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).commit();
+        editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).apply();
 
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorUser =  prefsUser.edit();
-        editorUser.clear().commit();
+        editorUser.clear().apply();
     }
 
 

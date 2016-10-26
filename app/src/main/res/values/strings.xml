@@ -214,5 +214,14 @@
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
     <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="title_activity_admob">AdmobActivity</string>
+    <string name="title_activity_ad_mob">AdMobActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="post_comeBack">Regresar</string>
+    <string name="detalle_post">Detalle post</string>
+    <string name="share_facebook">Compartir Facebook</string>
+    <string name="post_compartir">Compartir</string>
+    <string name="post_bookmark">Bookmark</string>
 
 </resources>
