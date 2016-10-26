@@ -298,7 +298,7 @@ public class DetailPageFragment extends Fragment {
             adView = new AdView(DetailPageFragment.this.getContext());
             adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
             adView.setAdUnitId("ca-mb-app-pub-7682123866908966/7102497723");
-            adView.setPadding(0,0,0,15);
+            adView.setPadding(0,0,0,8);
 
         }
 
@@ -325,7 +325,6 @@ public class DetailPageFragment extends Fragment {
                                 adView.setVisibility(View.VISIBLE);
                                 progresNew.setVisibility(View.GONE);
                                 layout.addView(adView);
-                                layout.addView(view);
 
                             }
 
