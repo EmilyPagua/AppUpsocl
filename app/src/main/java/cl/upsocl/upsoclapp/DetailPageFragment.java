@@ -10,8 +10,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -120,7 +120,6 @@ public class DetailPageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int viewNum =  0;
         final ViewGroup rootView;
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container,false);
         final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.viewDetailLinear);
@@ -137,7 +136,6 @@ public class DetailPageFragment extends Fragment {
         mTracker = application.getDefaultTracker();
 
         flag_bookmarks = false;
-
         manager =  new PreferencesManager(getContext().getApplicationContext());
 
         //END PUBLICITY
@@ -151,24 +149,31 @@ public class DetailPageFragment extends Fragment {
                 } else {
                     savePreferences();
                 }
-
             }
         });
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new loadAdMob().execute(layout);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadWebView(layout);
-                        }
-                    });
-                }
-        }).start();
 
-        ImageButton  comeBack = (ImageButton) rootView.findViewById(R.id.comeBackButton);
+                new loadAdMob().execute(layout);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadWebView(layout);
+                    }
+                });
+            }
+        }).start();
+        loadButton(rootView);
+
+        return  rootView;
+    }
+
+    public void loadButton(ViewGroup rootView) {
+
+        ImageButton comeBack = (ImageButton) rootView.findViewById(R.id.comeBackButton);
         comeBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,8 +199,6 @@ public class DetailPageFragment extends Fragment {
                 Log.e("share", "share");
             }
         });
-
-        return  rootView;
     }
 
     public void loadWebView(final LinearLayout layout) {
@@ -229,59 +232,44 @@ public class DetailPageFragment extends Fragment {
         if (news!=null) {
             sendReportGoogleAnalytics(news.getLink(), "ClickPost");
 
-            String topHTML = "<html><header> " +
-                    "<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>" +
-                    "<link href='http://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>" +
-                    "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>" +
-                    "<link rel='stylesheet' type='text/css' media='all' href='http://www.upsocl.com/wp-content/themes/upso3/style.css'>" +
-                    "</header><body>";
-            String imageMainHTML = "<center><img align='middle' alt='Portada' class='wp-image-480065 size-full' " +
-                    "height='605' itemprop='contentURL' sizes='(max-width: 728px) 100vw, 728px' src=" + news.getImage() + " width='728' > </center>";
-
-            String titleHTML = "<h2 style='text-align: justify;'><strong> " + news.getTitle() + "</strong></h2>";
-            String authorHTML = "<div class='entry-meta socialtop socialextra'>  " +
-                    "Autor: <font color='#009688'>" + news.getAuthor() + "</font>.  " +
-                    "El: <font color='#009688'> " + news.getDate() + " </font> ";
-            String categoryHTML = "<br/> Categorias: <font color='#009688'>" + news.getCategories() + "</font> </div> ";
-            String lineHTML = "<hr  color='#009688' />";
-            String contentHTML = news.getContent();
-            String bottomHTML = "</body> </html>";
-
-            String html = new StringBuilder()
-                    .append(topHTML)
-                    .append(imageMainHTML)
-                    .append(titleHTML)
-                    .append(authorHTML)
-                    .append(categoryHTML)
-                    .append(lineHTML)
-                    .append(contentHTML)
-                    .append(bottomHTML)
-                    .toString();
-
+            String html = createContentHTML();
             html = html.replace("\\\"", "\"").replace("\\n", "\n");
-            webViewNew.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    Log.i("WebView onPageFinished", "onPageFinished");
-                }
-
-                @Override
-                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                    super.onReceivedError(view, request, error);
-                    Log.e("WebView onReceivedError", error.toString());
-                }
-
-                @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                    super.onPageStarted(view, url, favicon);
-                    Log.i("WebView onPageStarted", "onPageStarted");
-                }
-            });
             webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
             layout.addView(webViewNew);
             webViewNew.setVisibility(View.GONE);
         }
+    }
+
+    @NonNull
+    public String createContentHTML() {
+        String topHTML = "<html><header> " +
+                "<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>" +
+                "<link href='http://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>" +
+                "<link rel='stylesheet' type='text/css' media='all' href='http://www.upsocl.com/wp-content/themes/upso3/style.css'>" +
+                "</header><body>";
+        String imageMainHTML = "<center><img align='middle' alt='Portada' class='wp-image-480065 size-full' " +
+                "height='605' itemprop='contentURL' sizes='(max-width: 728px) 100vw, 728px' src=" + news.getImage() + " width='728' > </center>";
+
+        String titleHTML = "<h2 style='text-align: justify;'><strong> " + news.getTitle() + "</strong></h2>";
+        String authorHTML = "<div class='entry-meta socialtop socialextra'>  " +
+                "Autor: <font color='#009688'>" + news.getAuthor() + "</font>.  " +
+                "El: <font color='#009688'> " + news.getDate() + " </font> ";
+        String categoryHTML = "<br/> Categorias: <font color='#009688'>" + news.getCategories() + "</font> </div> ";
+        String lineHTML = "<hr  color='#009688' />";
+        String contentHTML = news.getContent();
+        String bottomHTML = "</body> </html>";
+
+        return new StringBuilder()
+                .append(topHTML)
+                .append(imageMainHTML)
+                .append(titleHTML)
+                .append(authorHTML)
+                .append(categoryHTML)
+                .append(lineHTML)
+                .append(contentHTML)
+                .append(bottomHTML)
+                .toString();
     }
 
     private class loadAdMob  extends AsyncTask <LinearLayout, Integer, Boolean> {
@@ -289,7 +277,6 @@ public class DetailPageFragment extends Fragment {
         private AdView adView;
         private AdRequest adRequest;
         private LinearLayout layout;
-        private View view;
 
         @Override
         protected void onPreExecute() {
@@ -299,24 +286,29 @@ public class DetailPageFragment extends Fragment {
             adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
             adView.setAdUnitId("ca-mb-app-pub-7682123866908966/7102497723");
             adView.setPadding(0,0,0,8);
-
         }
 
         @Override
         protected Boolean doInBackground(LinearLayout... voids) {
             layout = voids[0];
 
-
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
                     if (adView!=null && adRequest!=null) {
                         adView.loadAd(adRequest);
                         adView.setAdListener(new AdListener() {
+
                             @Override
                             public void onAdFailedToLoad(int i) {
+                                Log.e("loadAdMob onAdFailedToLoad", String.valueOf(i));
                                 super.onAdFailedToLoad(i);
-                                Log.e("Error", String.valueOf(i));
+                                if (webViewNew.getVisibility() == View.GONE){
+                                    webViewNew.setVisibility(View.VISIBLE);
+                                    progresNew.setVisibility(View.GONE);
+                                }
+                                new loadAdMob().execute(layout);
                             }
                             @Override
                             public void onAdLoaded() {
@@ -392,7 +384,6 @@ public class DetailPageFragment extends Fragment {
             // [START custom_event]
             sendReportGoogleAnalytics(news.getLink(), "CompartirBotonFacebook");
             // [END custom_event]
-
 
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(news.getTitle())
