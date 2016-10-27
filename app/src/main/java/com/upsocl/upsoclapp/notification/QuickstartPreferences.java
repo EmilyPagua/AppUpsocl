@@ -1,7 +1,7 @@
 package com.upsocl.upsoclapp.notification;
 
 /**
- * Created by upsocl on 20-07-16.
+ * Created by emily.pagua on 20-07-16.
  */
 public class QuickstartPreferences {
 

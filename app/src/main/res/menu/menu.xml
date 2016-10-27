@@ -7,21 +7,21 @@
         android:id="@+id/menu_share_facebook"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Bookmarks"
+        android:title="@string/menuCompartirFacebook"
         android:icon="@mipmap/ic_facebook_share" />
 
     <item
         android:id="@+id/menu_item_share"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Compartir"
+        android:title="@string/menuCompartir"
         android:icon="@drawable/ic_share_white_36dp" />
 
     <item
         android:id="@+id/menu_item_bookmarks"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="Bookmarks"
+        android:title="@string/menuBookmarks"
         android:icon="@drawable/ic_bookmark_border_white_36dp" />
 
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by upsocl on 12-07-16.
+ * Created by emily.pagua on 12-07-16.
  */
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     ImageView imageView;

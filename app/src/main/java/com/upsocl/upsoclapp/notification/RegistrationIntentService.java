@@ -23,7 +23,7 @@ import com.upsocl.upsoclapp.keys.Preferences;
 import java.io.IOException;
 
 /**
- * Created by upsocl on 20-07-16.
+ * Created by emily.pagua on 20-07-16.
  */
 public class RegistrationIntentService extends IntentService {
 
@@ -56,7 +56,7 @@ public class RegistrationIntentService extends IntentService {
 
             // otherwise your server should have already received the token.
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
-            prefs.edit().putString(CustomerKeys.DATA_USER_TOKEN, token).commit();
+            prefs.edit().putString(CustomerKeys.DATA_USER_TOKEN, token).apply();
             // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 /**
- * Created by leninluque on 09-11-15.
+ * Created by emily.pagua on 09-11-15.
  */
 public class News {
 

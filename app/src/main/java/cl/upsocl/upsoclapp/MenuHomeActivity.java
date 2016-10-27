@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -72,10 +73,11 @@ import com.upsocl.upsoclapp.ui.fragments.InterestsListViewFragment;
 import com.upsocl.upsoclapp.ui.fragments.PreferencesFragment;
 import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
+
+/**
+ * Created by emily.pagua on 21-90-16.
+ */
 
 public class MenuHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -84,28 +86,21 @@ public class MenuHomeActivity extends AppCompatActivity
 
     boolean exit = false;
 
-    //VAR MENU
-    private SearchView searchView;
-
     //PreferencesUser
     private SharedPreferences prefs, prefsInterests, prefsUser;
 
     //VAR Menu Tabs
     private TabLayout tabs;
-    private PagerAdapter adapter;
     private ViewPager viewPager;
     private int tabPosition;
     private AppBarLayout appBarLayout;
 
     //VAr Google
     private GoogleApiClient mGoogleApiClient;
-    private GoogleSignInOptions gso;
 
     private Toolbar toolbar;
     private ProgressBar progressBar;
     private FrameLayout frameLayout;
-
-    private NavigationView navigationView;
 
     private int lastSelected;
     private int tabPositionPager;
@@ -136,18 +131,11 @@ public class MenuHomeActivity extends AppCompatActivity
         }
 
         //Get tokentID
-        SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            Date dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,new Date().toString()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefsUser.getString(CustomerKeys.DATA_USER_TOKEN,null);
         System.out.println("Tocken: " + token);
-        //
+
+
         uploadView();
 
         //INIT COD CONTENT
@@ -159,10 +147,10 @@ public class MenuHomeActivity extends AppCompatActivity
             selectTabsOption();
             uploadPager();
             //GOOGLE
-            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestScopes(new Scope(Scopes.PLUS_LOGIN))
-                    .requestEmail()
-                    .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestEmail()
+                .build();
 
             // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
             // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -185,13 +173,13 @@ public class MenuHomeActivity extends AppCompatActivity
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
+                //if (sentToken) {
                   //  Log.i("HomeActivity", String.valueOf(R.string.gcm_send_message));
                     //Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                } else {
+                //} else {
                    // Log.i("HomeActivity", String.valueOf(R.string.token_error_message));
                     //Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                }
+                //}
             }
         };
 
@@ -220,7 +208,7 @@ public class MenuHomeActivity extends AppCompatActivity
         // Associate searchable configuration with the SearchView
         MenuItem menuItem =  menu.findItem(R.id.menu_item_search);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menuItem.getActionView();
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         changeIconNotification(menu);
@@ -255,7 +243,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
         Fragment fragment = null;
@@ -280,6 +268,7 @@ public class MenuHomeActivity extends AppCompatActivity
                 viewPager.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.INVISIBLE);
 
+                //noinspection ConstantConditions
                 getSupportActionBar().setTitle(item.getTitle());
 
 
@@ -350,6 +339,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
                 break;
         }
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -371,9 +361,6 @@ public class MenuHomeActivity extends AppCompatActivity
             intent.putExtra("isBookmarks",false);
             intent.putExtra("leght",1);
             startActivity(intent);
-
-            //Intent intent = new Intent(this, NotificationActivity2.class);
-            //startActivity(intent);
         }
         else
             Toast.makeText(MenuHomeActivity.this, R.string.msg_notification_empty, Toast.LENGTH_SHORT).show();
@@ -383,7 +370,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
         SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_white_24dp).commit();
+        editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_white_24dp).apply();
         NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         nMgr.cancel(prefs.getInt(Preferences.NOTI_ID,0));
         return  prefs.getString(Preferences.NOTI_DATA,null);
@@ -411,11 +398,10 @@ public class MenuHomeActivity extends AppCompatActivity
 
         for (Map.Entry<String, ?> e: map.entrySet()) {
 
-            if (e.getKey().equals(Interests.INTERESTS_SIZE)==false && e.getValue().equals(true)){
+            if (!e.getKey().equals(Interests.INTERESTS_SIZE) && e.getValue().equals(true)){
                 i++;
             }
         }
-
         return i;
     }
 
@@ -434,7 +420,7 @@ public class MenuHomeActivity extends AppCompatActivity
     }
 
     private void uploadPager() {
-        adapter = new PagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
         adapter.setPrefs(prefsInterests);
         adapter.setHome(true);
         viewPager = (ViewPager) findViewById(R.id.pager_home_menu);
@@ -496,10 +482,10 @@ public class MenuHomeActivity extends AppCompatActivity
 
     private void setColorBarLayout(int statusBarColor, int barLayoutColor) {
         Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        if (android.os.Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(this.getResources().getColor(statusBarColor));
             appBarLayout.setBackgroundColor(Color.parseColor(getString(barLayoutColor)));
         }else{
@@ -507,6 +493,8 @@ public class MenuHomeActivity extends AppCompatActivity
             progressBar.setBackgroundColor(barLayoutColor);
             progressBar.setDrawingCacheBackgroundColor(Color.parseColor(getString(barLayoutColor)));
         }
+
+
     }
 
     //Metodo de GoogleMessage
@@ -520,7 +508,7 @@ public class MenuHomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view_menu_home);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_menu_home);
         navigationView.setNavigationItemSelectedListener(this);
 
         //
@@ -559,9 +547,9 @@ public class MenuHomeActivity extends AppCompatActivity
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
-                        public void onResult(Status status) {
+                        public void onResult(@NonNull Status status) {
                             // ...
-                        }
+                            Log.e("GoogleSignInApi", status.getStatusMessage());                        }
                     });
             goActivityLogin();
         }
@@ -597,7 +585,7 @@ public class MenuHomeActivity extends AppCompatActivity
 
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorUser =  prefsUser.edit();
-        editorUser.clear().commit();
+        editorUser.clear().apply();
 
         Intent login = new Intent(MenuHomeActivity.this, MainActivity.class);
         startActivity(login);

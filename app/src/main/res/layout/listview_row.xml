@@ -10,6 +10,7 @@
         android:id="@+id/cardView">
 
         <ImageView
+            android:contentDescription="@string/imagenpost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/fondo_belleza"
@@ -27,11 +28,10 @@
                 android:id="@+id/checkBox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignBottom="@+id/textViewTitle" />
+                />
 
             <TextView
-                android:text="Category"
+                android:text="@string/category"
                 android:id="@+id/textViewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

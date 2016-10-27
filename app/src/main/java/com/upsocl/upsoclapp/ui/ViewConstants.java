@@ -1,7 +1,7 @@
 package com.upsocl.upsoclapp.ui;
 
 /**
- * Created by leninluque on 13-11-15.
+ * Created by emily.pagua on 13-10-16.
  */
 public class ViewConstants {
     public static final String PLACEHOLDER_IMAGE = "http://dgnb-navigator.de/Content/Images/noimage-placeholder.png";

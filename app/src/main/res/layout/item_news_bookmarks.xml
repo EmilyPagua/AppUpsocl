@@ -14,6 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:contentDescription="@string/imagenpost"
             android:id="@+id/img_post_bookmark"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -28,19 +29,9 @@
             android:maxLines="3"
             android:padding="5dp"
             android:textColor="#222"
-            android:text="Titulo"
+            android:text="@string/titlePost"
             android:textStyle="bold"
-            android:textSize="14dp" />
-<!--
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_post_bookmark"
-            android:padding="2dp"
-            android:text="Descripcion"
-            android:textColor="#666"
-            android:id="@+id/data_post_bookmark"
-            android:textSize="12dp" /> -->
+            android:textSize="14sp" />
 
         <View
             android:id="@+id/line1"
@@ -50,23 +41,22 @@
             android:background="@color/cardBgColor"/>
 
             <ImageButton
+                android:contentDescription="@string/imagenpost"
                 android:background="@color/tw__solid_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ima_bookmarks"
                 android:layout_below="@+id/line1"
-                android:onClick="share"
-                android:layout_alignParentLeft="true"
                 android:src="@mipmap/ic_bookmarks"/>
 
             <ImageButton
+                android:contentDescription="@string/imagenpost"
                 android:background="@color/tw__solid_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ima_share"
                 android:src="@mipmap/ic_share"
                 android:layout_below="@+id/line1"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 />
 

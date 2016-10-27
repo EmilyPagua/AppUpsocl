@@ -18,16 +18,17 @@ import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.keys.JsonKeys;
 import com.upsocl.upsoclapp.ui.adapters.BookmarksAdapter;
 
-
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Created by emily.pagua on 13-07-16.
+ */
 
 public class BookmarksFragment extends Fragment  {
 
     private SharedPreferences preferences;
     private ArrayList<News> newses;
-    private ImageButton ima_bookmarks;
 
 
     private ListView newsListView;
@@ -54,7 +55,7 @@ public class BookmarksFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){
         View root = inflater.inflate(R.layout.fragment_bookmarks, container, false);
         newsListView =  (ListView) root.findViewById(R.id.news_list);
-        ima_bookmarks =  (ImageButton)root.findViewById(R.id.ima_bookmarks);
+        ImageButton ima_bookmarks = (ImageButton) root.findViewById(R.id.ima_bookmarks);
 
         loadPosts();
 

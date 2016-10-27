@@ -12,6 +12,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:contentDescription="@string/imagenUser"
         android:id="@+id/img_profile"
         android:layout_width="80dp"
         android:layout_height="70dp"
@@ -24,13 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Perfil"
+        android:text="@string/userName"
         android:layout_gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/tv_msg"
-        android:text="Optimismo que nos une."
+        android:text="@string/messageUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

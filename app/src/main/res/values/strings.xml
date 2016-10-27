@@ -7,24 +7,13 @@
     <string name="msg_welcome">Bienvenido a Upsocl</string>
     <string name="msg_notification_empty">No tiene avisos disponibles</string>
 
-
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_activity_principal">PrincipalActivity</string>
-
-    <string name="banner_ad_unit_id">/100064084/andorid_test</string>
-    <string name="banner_ad_unit_id_2">ca-app-pub-3940256099942544/6300978111</string>
-
-
     <string name="gcm_send_message">Token entregado con exito </string>
-    <string name="msg_save_wordpress">Registro procesado</string>
     <string name="msg_selected_category_preferences">Seleccione las categorías de su preferencia</string>
     <string name="msg_dialog_title">Validando datos</string>
-    <string name="msg_dialog_postDetail">Cargando contenido</string>
     <string name="msg_dialog_content">Espere, procesando datos..!</string>
     <string name="token_error_message">Error en token</string>
 
     <!-- Facebook 1232475846804351 -->
-    <string name="facebook_app_id_vieja">278628459160126</string>
     <string name="facebook_app_id">1232475846804351</string>
 
     <!-- Google numero de proyecto 927839621447 -->
@@ -71,13 +60,7 @@
     <!-- PRICIPAL MENU -->
     <string name="home_item">Home</string>
     <string name="productos_item">Productos</string>
-    <string name="compras_item">Carrito</string>
-    <string name="ordenes_item">Ordenes</string>
-    <string name="facturas_item">Facturas</string>
-    <string name="log_out_item">Cerrar Sesión</string>
-    <string name="configuracion_item">Configuración</string>
-    <string name="title_activity_search_results">Resultado...</string>
-    <string name="title_activity_prueba">PruebaActivity</string>
+    <string name="title_activity_search_results">Resultado…</string>
 
     <!-- SocialNetwork -->
     <string name="name_facebook">facebook</string>
@@ -96,24 +79,6 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="about_us_1">¿Qué pasaría si dejamos de usar Internet para ver a un perro
-        persiguiendo su cola o una persona cayéndose a un río y empezáramos  a usarlo para
-        esparcir ideas que puedan cambiar la forma en que vemos el mundo?
-        ¿Qué pasaría si tomamos esa enorme cantidad de ideas que no están disponibles en español y
-        elimináramos la brecha del idioma?… Así nació Upsocl</string>
-
-    <string name="about_us_2">Somos una compañía de medios con la misión de volver a conectar a
-        las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser
-        un campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad</string>
-
-     <string name="about_us_3">Nos preguntan con frecuencia de donde es Upsocl. Si bien, por el
-         momento trabajamos desde Chile, Colombia y Panamá, para ser justos Upsocl le pertenece
-         toda la comunidad hispano parlante.</string>
-
-    <string name="mean_detail"> Teníamos una idea y misión muy clara de lo que queríamos hacer, faltaba el nombre…
-        Upsocl es la unión de dos palabras: “up”, arriba en inglés y nuestra propia versión de la abreviación de “social”.  Pero tú le puedes decir como quieras.</string>
-
-
     <string name="welcome">Theme Example</string>
 
     <string-array name="themes">
@@ -124,71 +89,17 @@
     <string name="OK">OK</string>
     <string name="def_theme">Theme1</string>
     <string name="theme_summary">Appearance</string>
-    <string name="theme_dialog_title">Theme</string>
-    <string name="settings">Settings</string>
 
     <string name="banner_up">ca-mb-app-pub-7682123866908966/2346534963</string>
     <string name="banner_down">ca-mb-app-pub-7682123866908966/7102497723</string>
-
-
     <string name="banner_popup">ca-mb-app-pub-7682123866908966/8579205603</string>
 
-    <string name="privacity_1">Upsocl, es una compañía de medios con la misión de volver a conectar a
-        las personas a través de Internet. Nuestras ideas y forma de ver el mundo, no intentan ser una
-        campaña política, sino que buscan generar movimiento y conciencia en nuestra sociedad, la presente
-        política de privacidad fue actualizada el 08 de agosto de 2016; es posible que actualicemos las
-        políticas se seguridad en las próximas versiones de la aplicación, por lo que es recomendable
-        leer la misma con regularidad para mantenerse informado.</string>
-
-    <string name="privacity_2">El objetivo de esta Política de privacidad es informarle sobre los
-        datos que recogemos, los motivos por los que los recogemos y lo que hacemos con ellos. Esta
-        información es importante, por lo que esperamos que dediques el tiempo necesario para leerla
-        detenidamente, esto con la finalidad de brindar la total seguridad de que usted está en una
-        aplicación que protege su información e identidad.</string>
-
-    <string name="privacity_3">Seguridad y protección de datos personales: La seguridad de sus datos
-        personales es una prioridad para esta aplicación móvil, la cual ofrece seguridad total. Sin embargo,
-        no nos responsabilizamos por las actividades de hackers o terceros que realizan acciones para dañar y romper la seguridad.
-        Teniendo en consideración las características técnicas de transmisión de información a
-        través de Internet, ningún sistema es 100% seguro o exento de ataques.</string>
-
-    <string name="privacity_4">Privacidad: esta aplicación respeta la privacidad de cada uno de sus
-        visitantes. Toda información ingresada por el usuario a través de nuestra aplicaciòn movila,
-        será tratada con la mayor seguridad, y sólo será usada de acuerdo con las limitaciones
-        establecidas en este documento</string>
-
-    <string name="privacity_5">Esta aplicación obtiene los datos personales
-        suministrados directa, voluntaria y conscientemente por cada usuario. La información personal
-        que solicitamos corresponde a datos básicos, los cuales serán adquiridos en la información obtenida
-        según la red social con la que se inicie sesión .</string>
-    <string name="privacity_6">Al suministrar datos personales, automáticamente
-        estará autorizandonos para usar sus datos personales de conformidad con nuestra Política de Privacidad,
-        lo cual comprende los siguientes eventos:</string>
-    <string name="privacity_7">1) Para incrementar nuestra oferta al mercado y hacer publicidad de productos
-        que pueden ser de sumo interés para el usuario; incluyendo los llamados para confirmación de su información.</string>
-    <string name="privacity_8">2) Para personalizar y mejorar nuestros productos y servicios.</string>
-    <string name="privacity_9">3) para enviar correos electrónicos con nuestros boletines, responder
-        inquietudes o comentarios, y mantener informado a nuestros usuarios.</string>
-
-    <string name="privacity_10">La aplicación móvil Upsocl, tiene el compromiso permanente de presentar
-         nuevas soluciones que mejoren el valor de sus productos y servicios; con el objeto de ofrecer
-         oportunidades especiales de mercado, como incentivos, promociones y novedades actualizadas.
-         Upsocl.com no comercializa, vende ni alquila su base de datos a otras empresas.</string>
-
-    <string name="privacity_11">En ningún momento se utiliza o revela a terceros, la información individual
-        de los usuarios así como los datos sobre las visitas, o la información que nos proporcionan: nombre,
-        dirección, dirección de correo electrónico, localización, fecha de nacimiento, etc.</string>
-
-    <string name="privacity_12">La Aplicación Móvil Upsocl, se reserva en forma exclusiva el derecho
-        de modificar, rectificar, alterar, agregar o eliminar cualquier punto del presente escrito en
-        cualquier momento y sin previo aviso..</string>
     <string name="title_activity_menu_home">MenuHomeActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_detail_post">Post</string>
     <string name="title_perfil">Perfil</string>
     <string name="title_usuario">Usuario</string>
     <string name="title_email">Email</string>
@@ -206,22 +117,31 @@
     <string name="title_activity_notification">Detalle post</string>
     <string name="notification_title">Title</string>
 
-    <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
-    <string name="start_level">Level 1</string>
-    <string name="next_level">Next Level</string>
-    <!-- -
-        This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
-        For more information, see https://support.google.com/admob/answer/3052638
-    <!- -->
-    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="title_activity_admob">AdmobActivity</string>
-    <string name="title_activity_ad_mob">AdMobActivity</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="post_comeBack">Regresar</string>
     <string name="detalle_post">Detalle post</string>
     <string name="share_facebook">Compartir Facebook</string>
     <string name="post_compartir">Compartir</string>
     <string name="post_bookmark">Bookmark</string>
+    <string name="imagenprincipal">imagenPrincipal</string>
+    <string name="imagenpost">imagenPost</string>
+    <string name="imagenUser">imagenUser</string>
+    <string name="titlePost">Titulo</string>
+    <string name="menuNotificacion">Notificacion</string>
+    <string name="menuHome">Home</string>
+    <string name="menuIntereses">Intereses</string>
+    <string name="menuPreferencia">Preferencia</string>
+    <string name="menuAboutUs">Sobre nosotros</string>
+    <string name="menuAboutPrivacy">Politica de privacidad</string>
+    <string name="menuBookmarks">Bookmarks</string>
+    <string name="menuConfiguraciones">Configuraciones</string>
+    <string name="menuAndroidStudio">Android Studio</string>
+    <string name="navMessage">Optimismo que nos une.</string>
+    <string name="menuCompartirFacebook">Compartir Facebook</string>
+    <string name="menuCompartir">Compartir</string>
+    <string name="userName">Perfil</string>
+    <string name="messageUser">Optimismo que nos une.</string>
+    <string name="category">Category</string>
+    <string name="noData">No se encontraron resultados</string>
+    <string name="noDataWorld">No se encontraron resultados para la busqueda: </string>
 
 </resources>

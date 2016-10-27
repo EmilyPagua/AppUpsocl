@@ -1,6 +1,5 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,13 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by upsocl on 22-08-16.
+ * Created by emily.pagua on 22-08-16.
  */
 public class InterestsListViewFragment  extends Fragment {
 
     List<Interests> rows;
-
-    private ListView listView;
 
     private SharedPreferences preferences;
 
@@ -39,7 +36,7 @@ public class InterestsListViewFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates) {
         View root = inflater.inflate(R.layout.listview, container, false);
 
-        listView = (ListView) root.findViewById(R.id.list);
+        ListView listView = (ListView) root.findViewById(R.id.list);
         loadInterests();
         CustomArrayAdapter  customArrayAdapter = new CustomArrayAdapter(getContext(),rows);
         customArrayAdapter.setPreferences(preferences);
@@ -67,7 +64,7 @@ public class InterestsListViewFragment  extends Fragment {
         for (Map.Entry<String, ?> e: map.entrySet()) {
 
             Interests interests = new Interests();
-            if (e.getKey().equals(Interests.INTERESTS_SIZE)==false){
+            if (!e.getKey().equals(Interests.INTERESTS_SIZE)){
                 obj = new Interests().getInterestByID(Integer.valueOf(e.getKey()));
                 interests.setId(obj.getId());
                 interests.setTitle(obj.getTitle());

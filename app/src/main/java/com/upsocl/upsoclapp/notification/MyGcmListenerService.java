@@ -1,5 +1,6 @@
 package com.upsocl.upsoclapp.notification;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,7 +31,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by upsocl on 20-07-16.
+ * Created by emily.pagua on 20-07-16.
  */
 public class MyGcmListenerService extends GcmListenerService implements Callback<News> {
 
@@ -104,7 +105,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     public void success(News news, Response response) {
         if (news!=null){
 
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
             Gson gS = new Gson();
             String newsJson = gS.toJson(news);
@@ -148,7 +149,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     }
 
     public void loadPosts(String idPost){
-        if (idPost!= null && idPost.equals("0")==false)
+        if (idPost!= null && !idPost.equals("0"))
             WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPost(idPost, this);
     }
 

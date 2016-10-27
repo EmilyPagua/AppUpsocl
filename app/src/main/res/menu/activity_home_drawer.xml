@@ -5,38 +5,38 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_white_24dp"
-            android:title="Home" />
+            android:title="@string/menuHome" />
 
         <item
             android:id="@+id/nav_bookmarks"
             android:icon="@android:drawable/ic_input_get"
-            android:title="Bookmarks" />
+            android:title="@string/menuBookmarks" />
 
         <item
             android:id="@+id/nav_interests"
             android:icon="@android:drawable/btn_star_big_off"
-            android:title="Intereses" />
+            android:title="@string/menuIntereses" />
 
     </group>
 
-    <item android:title="Configuraciones">
+    <item android:title="@string/menuConfiguraciones">
         <menu>
             <group android:checkableBehavior="single">
 
                 <item
                     android:id="@+id/nav_manage"
                     android:icon="@drawable/ic_settings_black_24dp"
-                    android:title="Preferencia" />
+                    android:title="@string/menuPreferencia" />
 
                 <item
                     android:id="@+id/nav_us"
                     android:icon="@android:drawable/ic_dialog_info"
-                    android:title="Sobre nosotros" />
+                    android:title="@string/menuAboutUs" />
 
                 <item
                     android:id="@+id/nav_profile"
                     android:icon="@drawable/ic_lock_black_24dp"
-                    android:title="Politica de privacidad" />
+                    android:title="@string/menuAboutPrivacy" />
 
             </group>
 

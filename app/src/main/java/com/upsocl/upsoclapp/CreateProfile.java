@@ -1,5 +1,6 @@
 package com.upsocl.upsoclapp;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -18,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -57,14 +59,12 @@ import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.JsonObject;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 import com.upsocl.upsoclapp.domain.Interests;
-import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.domain.UserLogin;
 import com.upsocl.upsoclapp.io.ApiConstants;
 import com.upsocl.upsoclapp.io.WordpressApiAdapter;
@@ -92,6 +92,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * Created by emily.pagua on 13-09-10.
+ */
+
 public class CreateProfile extends AppCompatActivity implements Callback<JsonObject> ,
         View.OnClickListener, GoogleApiClient.OnConnectionFailedListener  {
 
@@ -99,10 +103,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private static final String TWITTER_KEY = "YHKSSBjXVukNLxKgV2FbYAjyx";
     private static final String TWITTER_SECRET = "ovzgDNisjtBnyPzU4CI50myqh3BUOFvRUxZHMHEITifPss5eY7";
 
-    private LoginButton loginButton;
     private CallbackManager callbackManager;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
 
     private Button btn_culture, btn_community,  btn_quiz,        btn_world,  btn_green ,
                    btn_women,   btn_colaboration,       btn_inspiration, btn_health, btn_relations,
@@ -117,7 +118,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     //GOOGLE Login
     private SignInButton signInButton;
-    private GoogleSignInOptions gso;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN =  9001;//100
     //END GOOGLE LOGIN
@@ -196,28 +196,27 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         uploadData();
 
-        if (isConnect()==true){
+        if (isConnect()){
             //-------------------------FACEBOOOK LOGIN
 
 
-            loginButton = (LoginButton) findViewById(R.id.login_button);
+            LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
             callbackManager = null;
             callbackManager = CallbackManager.Factory.create();
 
-            accessTokenTracker = new AccessTokenTracker() {
+            AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
                 @Override
                 protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
 
                     if (countCategorySelected >= 3) {
                         AccessToken.setCurrentAccessToken(currentAccessToken);
                         layoutButton.setVisibility(View.INVISIBLE);
-                    }
-                    else
+                    } else
                         LoginManager.getInstance().logOut();
                 }
             };
 
-            profileTracker = new ProfileTracker() {
+            ProfileTracker profileTracker = new ProfileTracker() {
                 @Override
                 protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
 
@@ -248,9 +247,9 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                 public void onReceive(Context context, Intent intent) {
                     SharedPreferences sharedPreferences =
                             PreferenceManager.getDefaultSharedPreferences(context);
-                    boolean sentToken = sharedPreferences
+                    /*boolean sentToken = sharedPreferences
                             .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                /*if (sentToken) {
+                if (sentToken) {
                     Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
                 } else {
                      Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
@@ -495,6 +494,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     //----------GOOGLE CONFIGURE
     private void configureGoogleLogin() {
 
+        GoogleSignInOptions gso;
         if (error==0){
             //Initializing google signin option
             gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -537,7 +537,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
 
     private void signIn() {
-        if (isConnect()==true){
+        if (isConnect()){
             //Creating an intent
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             //Starting intent for result
@@ -558,7 +558,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             String urlIma =null;
             //Displaying name and email
 
-            urlImagen = acct.getPhotoUrl();
+            urlImagen = acct != null ? acct.getPhotoUrl() : null;
 
             if (person==null){
 
@@ -706,6 +706,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                             @Override
                             public void success(JsonObject object, Response response) {
 
+                                //noinspection EqualsBetweenInconvertibleTypes
                                 if (object.get("success").equals("true")){
                                     int id = object.get("id").getAsInt();
                                     userLoginFinal.setId(id);
@@ -739,14 +740,14 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
         editor.putString(CustomerKeys.DATA_USER_EMAIL, userLoginFinal.getEmail());
         editor.putInt(CustomerKeys.DATA_USER_ID, userLoginFinal.getId());
         editor.putString(CustomerKeys.DATA_USER_SOCIAL_NETWORK, userLoginFinal.getSocialNetwork());
-        editor.commit();
+        editor.apply();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
 
         SharedPreferences prefsNoti =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorNoti =  prefsNoti.edit();
-        editorNoti.putInt(Preferences.NOTIFICATIONS_FRECUENCY,1).commit();
+        editorNoti.putInt(Preferences.NOTIFICATIONS_FRECUENCY,1).apply();
         editorNoti.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
 
     }
@@ -765,7 +766,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     private void savePreferencesNotifications(){
         SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.clear().commit();
+        editor.clear().apply();
     }
 
     private class DownloadTask extends AsyncTask {
@@ -787,11 +788,10 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         @Override
         protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
             Intent intent = new Intent(CreateProfile.this, MenuHomeActivity.class);
             startActivity(intent);
             CreateProfile.this.finish();
-            super.onPostExecute(o);
-
         }
     }
 
@@ -902,12 +902,12 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
-        editor.putBoolean(String.valueOf(objet), flag).commit();
+        editor.putBoolean(String.valueOf(objet), flag).apply();
     }
 
 
     @Override
-    public void onConnectionFailed( ConnectionResult error) {
+    public void onConnectionFailed(@NonNull ConnectionResult error) {
         uploadDialog();
     }
 

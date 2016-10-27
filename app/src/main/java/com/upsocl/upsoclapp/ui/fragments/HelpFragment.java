@@ -2,6 +2,7 @@ package com.upsocl.upsoclapp.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+/**
+ * Created by emily.pagua on 13-07-16.
+ */
 
 public class HelpFragment extends Fragment {
 
@@ -35,14 +40,14 @@ public class HelpFragment extends Fragment {
         bar.setVisibility(View.VISIBLE);
 
         webViewNew = (WebView) root.findViewById(R.id.webViewContent);
-        load("1039");
+        load();
         return root;
     }
 
+    public void load() {
 
-    public void load(String page) {
-
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPrivacity(page, new Callback<News>() {
+        String page = "1039";
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getTerminos(page, new Callback<News>() {
 
             @Override
             public void success(News newsContent, Response response) {
@@ -65,7 +70,7 @@ public class HelpFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println(error);
+               Log.e("HelpFragment",error.getMessage());
             }
         });
 

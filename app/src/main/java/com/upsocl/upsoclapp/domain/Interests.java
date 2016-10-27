@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by upsocl on 19-07-16.
+ * Created by emily.pagua on 19-07-16.
  */
 public class Interests {
 

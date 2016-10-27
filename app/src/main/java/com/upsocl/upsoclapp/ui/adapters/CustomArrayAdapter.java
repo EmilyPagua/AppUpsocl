@@ -1,5 +1,6 @@
 package com.upsocl.upsoclapp.ui.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
@@ -18,8 +19,9 @@ import com.upsocl.upsoclapp.domain.Interests;
 import java.util.List;
 
 /**
- * Created by upsocl on 22-08-16.
+ * Created by emily.pagua on 22-08-16.
  */
+@SuppressWarnings("NullableProblems")
 public class CustomArrayAdapter extends ArrayAdapter<Interests> implements View.OnClickListener{
 
     private LayoutInflater layoutInflater;
@@ -31,10 +33,11 @@ public class CustomArrayAdapter extends ArrayAdapter<Interests> implements View.
         layoutInflater = LayoutInflater.from(context);
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Holder holder = null;
+        Holder holder;
         if (convertView ==null)
         {
             holder = new Holder();
@@ -74,7 +77,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Interests> implements View.
 
     private void savePreferences(int id, Boolean flag) {
         SharedPreferences.Editor editor =  preferences.edit();
-        editor.putBoolean(String.valueOf(id), flag).commit();
+        editor.putBoolean(String.valueOf(id), flag).apply();
 
     }
 

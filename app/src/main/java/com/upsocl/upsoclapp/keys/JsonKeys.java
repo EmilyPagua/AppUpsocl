@@ -1,7 +1,7 @@
 package com.upsocl.upsoclapp.keys;
 
 /**
- * Created by leninluque on 12-11-15.
+ * Created by emily.pagua on 12-11-15.
  */
 public class JsonKeys {
     public static final String NEWS_TITLE = "title";

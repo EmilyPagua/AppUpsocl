@@ -6,8 +6,8 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,65 +23,52 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 import java.util.ArrayList;
 
 import cl.upsocl.upsoclapp.DetailPagerAdapter;
-import cl.upsocl.upsoclapp.DetailPostActivity;
 
 /**
- * Created by leninluque on 09-11-15.
+ * Created by emily.pagua on 09-11-15.
  */
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     private ArrayList<News> news;
     private Context context;
-    private Boolean isHome;
 
-    public NewsAdapter(Context context, Boolean isHome) {
+    public NewsAdapter(Context context) {
         this.context = context;
         this.news = new ArrayList<>();
-        this.isHome =  isHome;
     }
 
     @Override
     public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View newsView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_news, parent, false);
-        return new NewsHolder(newsView, news);
+        try{
+            View newsView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_news, parent, false);
+            return new NewsHolder(newsView, news);
+        }catch (Exception e){
+            return null;
+        }
+
     }
 
     @Override
     public void onBindViewHolder(NewsHolder holder, int position) {
 
-        holder.setNewsObj(news.get(position));
-        holder.setPosition(position);
+        try{
+            holder.setNewsObj(news.get(position));
+            holder.setPosition(position);
 
-        holder.name.setText(news.get(position).getTitle());
-        //String author = "Por: "+news.get(position).getAuthor();
-        //String  date = "El: "+news.get(position).getDate();
-        //String categories = "Categoria: "+news.get(position).getCategories();
+            holder.name.setText(news.get(position).getTitle());
 
-        //SpannableStringBuilder sBauthor = setStyleText(author, 4,  author.length());
-        //SpannableStringBuilder sBdetail = setStyleText(date, 3,  date.length());
-        //Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
-        //SpannableStringBuilder result = new SpannableStringBuilder(spanned);
+            if (!(news.get(position).getImage() == "")){
+                holder.setImage(news.get(position).getImage());}
+            else
+                holder.setImage(ViewConstants.PLACEHOLDER_IMAGE);
+            Log.e("NewsAdapter", "bien");
+        }catch (Exception e){
+            Log.e("NewsAdapter", e.getMessage());
+        }
 
-        //holder.dataPost.setText(result, TextView.BufferType.SPANNABLE);
-
-
-        //SpannableStringBuilder sCategories = setStyleText(categories, 10,  categories.length());
-        //holder.categories.setText(sCategories);
-
-        if (!(news.get(position).getImage() == "")){
-            holder.setImage(news.get(position).getImage());}
-        else
-            holder.setImage(ViewConstants.PLACEHOLDER_IMAGE);
     }
 
-    private SpannableStringBuilder setStyleText(String text, int i, int length) {
-
-        SpannableStringBuilder result = new SpannableStringBuilder(text);
-        result.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), i, length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        return result;
-    }
 
     @Override
     public int getItemCount() {
@@ -112,8 +99,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             image = (ImageView) itemView.findViewById(R.id.img_post);
             name = (TextView) itemView.findViewById(R.id.title_post);
 
-            //dataPost = (TextView) itemView.findViewById(R.id.data_post);
-            //categories =  (TextView)itemView.findViewById(R.id.categories);
             newsArrayList =  news;
 
 

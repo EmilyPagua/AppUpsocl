@@ -1,5 +1,7 @@
 package com.upsocl.upsoclapp.io.deserializer;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -15,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by leninluque on 13-11-15.
+ * Created by emily.pagua on 13-10-16.
  */
 public class NewsDeserializer implements JsonDeserializer<News> {
 
@@ -67,10 +69,10 @@ public class NewsDeserializer implements JsonDeserializer<News> {
     }
 
     private String cenvertToDate(String dateInString ){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
 
-        Date date =  null;
+        Date date;
         try {
 
             date = formatter.parse(dateInString.substring(1, 11 ));

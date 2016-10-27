@@ -1,7 +1,7 @@
 package com.upsocl.upsoclapp.keys;
 
 /**
- * Created by upsocl on 05-07-16.
+ * Created by emily.pagua on 05-07-16.
  */
 public class CategoryKeys {
 

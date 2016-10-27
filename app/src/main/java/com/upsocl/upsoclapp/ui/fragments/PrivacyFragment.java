@@ -1,22 +1,18 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.io.ApiConstants;
 import com.upsocl.upsoclapp.io.WordpressApiAdapter;
-import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.ui.ViewConstants;
 
 import retrofit.Callback;
@@ -24,7 +20,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by upsocl on 09-08-16.
+ * Created by emily.pagua on 09-08-16.
  */
 public class PrivacyFragment extends Fragment {
 
@@ -45,13 +41,13 @@ public class PrivacyFragment extends Fragment {
         bar = (ProgressBar) root.findViewById(R.id.progress_bar_help);
         bar.setVisibility(View.VISIBLE);
 
-        load("445196");
+        load();
         return root;
     }
 
-    public void load(String page) {
-
-        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPrivacity(page, new Callback<News>() {
+    public void load() {
+        String page = "445196";
+        WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getTerminos(page, new Callback<News>() {
 
             @Override
             public void success(News newsContent, Response response) {
@@ -76,6 +72,7 @@ public class PrivacyFragment extends Fragment {
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error);
+                Log.e("PrivacyFragment",error.getMessage());
             }
         });
 

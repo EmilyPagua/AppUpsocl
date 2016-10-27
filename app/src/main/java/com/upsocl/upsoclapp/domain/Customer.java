@@ -3,7 +3,7 @@ package com.upsocl.upsoclapp.domain;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by upsocl on 25-07-16.
+ * Created by emily.pagua on 25-07-16.
  */
 public class Customer {
     @SerializedName("id")

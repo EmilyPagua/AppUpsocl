@@ -1,7 +1,7 @@
 package com.upsocl.upsoclapp.io;
 
 /**
- * Created by leninluque on 11-11-15.
+ * Created by ${emily.pagua} on ${11-09-16}.
  */
 public class ApiConstants {
 

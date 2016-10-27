@@ -3,11 +3,7 @@ package com.upsocl.upsoclapp.ui.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +20,18 @@ import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.ui.ViewConstants;
 
 import java.util.List;
-
-import cl.upsocl.upsoclapp.DetailPostActivity;
+import java.util.Objects;
+import cl.upsocl.upsoclapp.NotificationActivity;
 
 /**
- * Created by upsocl on 18-07-16.
+ * Created by $emily.pagua on $10-09-16.
  */
 public class BookmarksAdapter  extends ArrayAdapter<News>{
 
     private ImageView image;
     private TextView name;
     private TextView dataPost;
-    private ImageButton ima_bookmarks, ima_share;
+    private ImageButton ima_bookmarks;
     private static SharedPreferences preferences;
     private final Context context;
 
@@ -44,8 +40,9 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent ) {
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent ) {
 
         LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,28 +54,13 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
 
         image = (ImageView) convertView.findViewById(R.id.img_post_bookmark);
         name = (TextView) convertView.findViewById(R.id.title_post_bookmark);
-        //dataPost = (TextView) convertView.findViewById(R.id.data_post_bookmark);
         ima_bookmarks = (ImageButton)convertView.findViewById(R.id.ima_bookmarks);
-        ima_share = (ImageButton) convertView.findViewById(R.id.ima_share);
+        ImageButton ima_share = (ImageButton) convertView.findViewById(R.id.ima_share);
 
-
-        /*String author = "Por: "+news.getAuthor();
-        String  date = "El: "+news.getDate();
-
-        SpannableStringBuilder sBauthor = new SpannableStringBuilder(author);
-        sBauthor.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 4, author.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        SpannableStringBuilder sBdetail = new SpannableStringBuilder(date);
-        sBdetail.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 3, date.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail);
-        SpannableStringBuilder result = new SpannableStringBuilder(spanned);
-
-        dataPost.setText(result, TextView.BufferType.SPANNABLE);*/
 
         name.setText(news.getTitle());
 
-        if (!(news.getImage() == ""))
+        if (!(Objects.equals(news.getImage(), "")))
             Picasso.with(context)
                     .load(news.getImage())
                     .placeholder(R.drawable.placeholder)
@@ -93,7 +75,7 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(context, DetailPostActivity.class);
+                Intent intent = new Intent(context, NotificationActivity.class);
                 Gson gS = new Gson();
                 String target = gS.toJson(news);
                 intent.putExtra("new", target);
@@ -112,7 +94,7 @@ public class BookmarksAdapter  extends ArrayAdapter<News>{
                 remove(news);
                 preferences = context.getSharedPreferences("bookmarks", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor =  preferences.edit();
-                editor.remove(String.valueOf(news.getId())).commit();
+                editor.remove(String.valueOf(news.getId())).apply();
                 Toast.makeText(context, "No esta como preferido", Toast.LENGTH_SHORT).show();
             }
         });

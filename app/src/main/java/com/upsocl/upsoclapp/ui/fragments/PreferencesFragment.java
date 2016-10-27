@@ -1,5 +1,6 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -7,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.upsocl.upsoclapp.R;
@@ -18,6 +17,10 @@ import com.upsocl.upsoclapp.keys.Preferences;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+/**
+ * Created by emily.pagua on 22-08-16.
+ */
 
 public class PreferencesFragment  extends Fragment {
 
@@ -48,7 +51,7 @@ public class PreferencesFragment  extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 SharedPreferences.Editor editorNotifi =  preferencesNoti.edit();
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                 int frecuency=0;
                 Date date = new Date();
                 if (checkedId == R.id.rb_day){
@@ -60,8 +63,8 @@ public class PreferencesFragment  extends Fragment {
                 }else if (checkedId == R.id.rb_month){
                     frecuency=30;
                 }
-                editorNotifi.putInt(Preferences.NOTIFICATIONS_FRECUENCY,frecuency).commit();
-                editorNotifi.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).commit();
+                editorNotifi.putInt(Preferences.NOTIFICATIONS_FRECUENCY,frecuency).apply();
+                editorNotifi.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).apply();
             }
         });
 
@@ -69,11 +72,11 @@ public class PreferencesFragment  extends Fragment {
         TextView locationProfile = (TextView) root.findViewById(R.id.locationProfile);
         TextView emailProfile = (TextView) root.findViewById(R.id.emailProfile);
 
-        nameProfile.setText("Usuario: "+preferencesUser.getString(CustomerKeys.DATA_USER_FIRST_NAME," "));
-        emailProfile.setText("Email: "+preferencesUser.getString(CustomerKeys.DATA_USER_EMAIL," "));
+        nameProfile.setText(getString(R.string.title_usuario)+" "+preferencesUser.getString(CustomerKeys.DATA_USER_FIRST_NAME," "));
+        emailProfile.setText(getString(R.string.title_email)+" "+preferencesUser.getString(CustomerKeys.DATA_USER_EMAIL," "));
         String location = preferencesUser.getString(CustomerKeys.DATA_USER_LOCATION,null);
         if (location!=null)
-            locationProfile.setText("Ubicación: "+location);
+            locationProfile.setText(getString(R.string.title_localizacion)+" "+location);
 
         return root;
     }

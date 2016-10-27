@@ -8,9 +8,11 @@ import com.upsocl.upsoclapp.io.deserializer.NewsDeserializer;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
+
 /**
- * Created by leninluque on 11-11-15.
+ * Created by emily.pagua on 11-11-15.
  */
+
 public class WordpressApiAdapter {
 
     private static WordpressService API_SERVICE_CUSTOMER;
@@ -19,16 +21,19 @@ public class WordpressApiAdapter {
 
     public static WordpressService getApiService(String url){
 
-        if(API_SERVICE == null){
-            RestAdapter adapter = new RestAdapter.Builder()
-                    .setEndpoint(url)
-                    .setLogLevel(RestAdapter.LogLevel.BASIC)
-                    .setConverter(builWordpressApiGsonConverter())
-                    .build();
+        try {
+            if(API_SERVICE == null){
+                RestAdapter adapter = new RestAdapter.Builder()
+                        .setEndpoint(url)
+                        .setLogLevel(RestAdapter.LogLevel.BASIC)
+                        .setConverter(builWordpressApiGsonConverter())
+                        .build();
 
-            API_SERVICE = adapter.create(WordpressService.class);
+                API_SERVICE = adapter.create(WordpressService.class);
+            }
+        }catch (Exception e){
+            return null;
         }
-
         return API_SERVICE;
     }
 
@@ -55,7 +60,6 @@ public class WordpressApiAdapter {
 
         return API_SERVICE_CUSTOMER;
     }
-
 
 
 }

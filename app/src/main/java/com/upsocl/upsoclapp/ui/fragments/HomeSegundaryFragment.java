@@ -29,11 +29,10 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by upsocl on 29-07-16.
+ * Created by emily.pagua on 29-07-16.
  */
 public class HomeSegundaryFragment extends Fragment implements Callback<ArrayList<News>> {
 
-    private RecyclerView newsList;
     private NewsAdapter adapter;
     private Integer page;
     private LinearLayoutManager llm;
@@ -74,9 +73,9 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
         loadPosts(page);
 
         header_news = (TextView) root.findViewById(R.id.header_news);
-        newsList = (RecyclerView) root.findViewById(R.id.news_list);
+        RecyclerView newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewsAdapter(getActivity(),isHome);
+        adapter = new NewsAdapter(getActivity());
         newsList.setAdapter(adapter);
         spinner = (ProgressBar) getActivity().findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
@@ -101,7 +100,7 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
     public void success(ArrayList<News> newses, Response response) {
         header_news.setVisibility(View.GONE);
         if (newses.size()==0){
-            header_news.setText("No se encontraron resultados");
+            header_news.setText(getString(R.string.noData));
             header_news.setVisibility(View.VISIBLE);
         }
 

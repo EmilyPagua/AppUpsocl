@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:contentDescription="@string/imagenpost"
             android:id="@+id/img_post"
             android:layout_width="match_parent"
             android:layout_height="165dp"
@@ -29,36 +30,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:textColor="#222"
-            android:text="Titulo"
+            android:text="@string/titlePost"
             android:textStyle="bold"
-            android:textSize="16dp" />
-
-        <!--
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title_post"
-            android:maxLines="3"
-            android:layout_marginTop="3dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Descripcion"
-            android:textColor="#666"
-            android:id="@+id/data_post"
-            android:textSize="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/data_post"
-            android:maxLines="3"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="Category"
-            android:textColor="#666"
-            android:id="@+id/categories"
-            android:textSize="12dp" />
--->
+            android:textSize="16sp" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

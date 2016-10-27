@@ -17,6 +17,10 @@ import com.upsocl.upsoclapp.ui.fragments.NewsFragment;
 
 import cl.upsocl.upsoclapp.MenuHomeActivity;
 
+/**
+ * Created by emily.pagua on 13-10-16.
+ */
+
 public class SearchResultsActivity extends AppCompatActivity {
 
     private String word;

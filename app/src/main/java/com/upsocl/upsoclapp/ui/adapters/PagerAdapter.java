@@ -13,7 +13,7 @@ import com.upsocl.upsoclapp.ui.fragments.HomeSegundaryFragment;
 import java.util.Map;
 
 /**
- * Created by upsocl on 13-07-16.
+ * Created by emily.pagua on 13-07-16.
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
@@ -94,7 +94,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         for (Map.Entry<String, ?> e: map.entrySet()) {
 
-            if (e.getKey().equals(Interests.INTERESTS_SIZE) == false &&
+            if (!e.getKey().equals(Interests.INTERESTS_SIZE) &&
                     e.getValue().equals(true)){
 
                 obj = new Interests().getInterestByID(Integer.valueOf(e.getKey()));
