@@ -23,6 +23,7 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 import java.util.ArrayList;
 
 import cl.upsocl.upsoclapp.DetailPagerAdapter;
+import cl.upsocl.upsoclapp.NotificationActivity;
 
 /**
  * Created by emily.pagua on 09-11-15.
@@ -62,7 +63,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 holder.setImage(news.get(position).getImage());}
             else
                 holder.setImage(ViewConstants.PLACEHOLDER_IMAGE);
-            Log.e("NewsAdapter", "bien");
+            //Log.e("NewsAdapter", "bien");
         }catch (Exception e){
             Log.e("NewsAdapter", e.getMessage());
         }
@@ -106,29 +107,46 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(view.getContext(), DetailPagerAdapter.class);
                     Gson gS = new Gson();
-                    int lenght = 1;
-                    String target = gS.toJson(newsObj);
-                    intent.putExtra("new", target);
-                    intent.putExtra("position",position);
-                    intent.putExtra("isBookmarks",false);
+                    if (android.os.Build.VERSION.SDK_INT <= 21) {
+                        Intent intent = new Intent(context, NotificationActivity.class);
+                        String target = gS.toJson(newsObj);
+                        intent.putExtra("new", target);
+                        intent.putExtra("position","0");
+                        intent.putExtra("isBookmarks",true);
+                        intent.putExtra("leght",1);
+                        view.getContext().startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(view.getContext(), DetailPagerAdapter.class);
 
-                    if (newsArrayList.size()>position+1 && newsArrayList.get(position+1)!=null){
-                        intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position+1)));
-                        lenght++;}
+                        int lenght = 1;
+                        String target = gS.toJson(newsObj);
+                        intent.putExtra("new", target);
+                        intent.putExtra("position", position);
+                        intent.putExtra("isBookmarks", false);
 
-                    if (newsArrayList.size()>position+2 && newsArrayList.get(position+2)!=null){
-                        intent.putExtra("newsThree", gS.toJson(newsArrayList.get(position+2)));lenght++;}
+                        if (newsArrayList.size() > position + 1 && newsArrayList.get(position + 1) != null) {
+                            intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position + 1)));
+                            lenght++;
+                        }
 
-                    if (newsArrayList.size()>position+3 && newsArrayList.get(position+3)!=null){
-                        intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position+3)));lenght++;}
+                        if (newsArrayList.size() > position + 2 && newsArrayList.get(position + 2) != null) {
+                            intent.putExtra("newsThree", gS.toJson(newsArrayList.get(position + 2)));
+                            lenght++;
+                        }
 
-                    if (newsArrayList.size()>position+4 && newsArrayList.get(position+4)!=null){
-                        intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position+4)));lenght++;}
+                        if (newsArrayList.size() > position + 3 && newsArrayList.get(position + 3) != null) {
+                            intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position + 3)));
+                            lenght++;
+                        }
 
-                    intent.putExtra("leght",lenght);
-                    view.getContext().startActivity(intent);
+                        if (newsArrayList.size() > position + 4 && newsArrayList.get(position + 4) != null) {
+                            intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position + 4)));
+                            lenght++;
+                        }
+
+                        intent.putExtra("leght", lenght);
+                        view.getContext().startActivity(intent);
 
 
                     /*Intent intent = new Intent(view.getContext(), DetailPostActivity.class);
@@ -154,6 +172,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
                     intent.putExtra("leght",lenght);
                     view.getContext().startActivity(intent);*/
+                    }
                 }
             });
         }

@@ -74,24 +74,29 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
         page = 1;
         loadPosts(page);
         header_news = (TextView) root.findViewById(R.id.header_food);
-        RecyclerView newsList = (RecyclerView) root.findViewById(R.id.news_list);
+        final RecyclerView newsList = (RecyclerView) root.findViewById(R.id.news_list);
         newsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewsAdapter(getActivity());
         newsList.setAdapter(adapter);
         spinner = (ProgressBar) getActivity().findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
 
-        newsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                llm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int size = llm.getItemCount();
-                if (size == llm.findLastCompletelyVisibleItemPosition() + 4) {
-                    page = page + 1;
-                    spinner.setVisibility(View.VISIBLE);
-                    loadPosts(page);
-                }
+            public void run() {
+                newsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                        int size = llm.getItemCount();
+                        if (size == llm.findLastCompletelyVisibleItemPosition() + 4) {
+                            page = page + 1;
+                            spinner.setVisibility(View.VISIBLE);
+                            loadPosts(page);
+                        }
+                    }
+                });
             }
         });
     }
@@ -110,7 +115,6 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     @Override
     public void failure(RetrofitError error) {
-        //System.out.println("HomePrimaryFragment "+error.getMessage() );
         try{
             Toast.makeText(HomePrimaryFragment.this.getContext(), "Ha ocurrido un error, verifique su conexión a red", Toast.LENGTH_SHORT).show();
         }catch (Exception e){

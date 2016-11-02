@@ -2,6 +2,7 @@ package cl.upsocl.upsoclapp;
 
 import android.app.NotificationManager;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -130,6 +132,11 @@ public class MenuHomeActivity extends AppCompatActivity
             layout.setPadding(16,0,16,16);
         }
 
+        SharedPreferences prefs =  getSharedPreferences(Preferences.GOOGLE_PLAY, Context.MODE_PRIVATE);
+        Boolean obj =  prefs.getBoolean("GOOGLE", true);
+        SharedPreferences.Editor editor =  prefs.edit();
+
+
         //Get tokentID
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefsUser.getString(CustomerKeys.DATA_USER_TOKEN,null);
@@ -247,6 +254,7 @@ public class MenuHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
 
         Fragment fragment = null;
+        String title = "";
         FragmentManager fragmentManager =  null;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -259,6 +267,7 @@ public class MenuHomeActivity extends AppCompatActivity
         switch (item.getItemId()){
             case R.id.nav_home:
 
+                title = item.getTitle().toString();
                 if (lastSelected == R.id.nav_interests)
                     uploadPager();
                 else
@@ -270,12 +279,11 @@ public class MenuHomeActivity extends AppCompatActivity
 
                 //noinspection ConstantConditions
                 getSupportActionBar().setTitle(item.getTitle());
-
-
                 lastSelected =R.id.nav_home;
                 break;
 
             case R.id.nav_bookmarks:
+                title = item.getTitle().toString();
                 lastSelected =R.id.nav_bookmarks;
                 visibleGoneElement();
                 fragment =  BookmarksFragment.newInstance(prefs);
@@ -283,9 +291,9 @@ public class MenuHomeActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame_menu_home, fragment)
                         .commit();
-
                 break;
             case R.id.nav_interests:
+                title = item.getTitle().toString();
                 lastSelected =R.id.nav_interests;
 
                 Toast.makeText(MenuHomeActivity.this, R.string.msg_selected_category_preferences, Toast.LENGTH_SHORT).show();
@@ -302,8 +310,10 @@ public class MenuHomeActivity extends AppCompatActivity
 
                 uploadPager();
 
+
                 break;
             case R.id.nav_manage:
+                title = item.getTitle().toString();
                 lastSelected =R.id.nav_manage;
                 visibleGoneElement();
                 SharedPreferences prefsNoti =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
@@ -319,6 +329,7 @@ public class MenuHomeActivity extends AppCompatActivity
                         .commit();
                 break;
             case R.id.nav_us:
+                title = item.getTitle().toString();
                 lastSelected =R.id.nav_us;
                 visibleGoneElement();
                 fragment =  new HelpFragment();
@@ -329,6 +340,7 @@ public class MenuHomeActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_profile:
+                title = item.getTitle().toString();
                 lastSelected =R.id.nav_profile;
                visibleGoneElement();
                 fragment =  new PrivacyFragment();
@@ -338,11 +350,40 @@ public class MenuHomeActivity extends AppCompatActivity
                         .commit();
 
                 break;
+
+            case R.id.calification:
+                title = "Home";
+                sendCalification();
+                break;
         }
         //noinspection ConstantConditions
-        getSupportActionBar().setTitle(item.getTitle());
+        getSupportActionBar().setTitle(title);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void sendCalification() {
+        getSupportActionBar().setTitle("Home");
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+        builder.setTitle("Alerta");
+        builder.setMessage("Tu comentario es muy importante para nosotros. " +
+                "Por favor, califícanos y comenta para poder mejorar esta aplicación. " +
+                "Gracias por tu ayuda..!");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Valorar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final String appPackageName = getPackageName();
+                try{
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+
+                }catch (ActivityNotFoundException e){
+                    Log.e("MenuHomeActivity", e.getMessage());
+                }
+            }
+        });
+        builder.show();
+
     }
 
     private void goNotifications() {

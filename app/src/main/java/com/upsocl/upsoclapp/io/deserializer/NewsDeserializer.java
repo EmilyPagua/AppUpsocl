@@ -1,6 +1,7 @@
 package com.upsocl.upsoclapp.io.deserializer;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -20,6 +21,8 @@ import java.util.Date;
  * Created by emily.pagua on 13-10-16.
  */
 public class NewsDeserializer implements JsonDeserializer<News> {
+
+    private static final String TAG = "NewsDeserializer";
 
     @Override
     public News deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -48,6 +51,8 @@ public class NewsDeserializer implements JsonDeserializer<News> {
                 .replace("&#8220;", "'").replace("&#8221;", "'")
                 .replace("&#8216;", "'").replace("&#8217;", "'").replace("&#8230;", "'"));
         currentNews.setContent(getJsonValue(item.get(JsonKeys.NEWS_CONTENT)));
+               // .replace("wp-image-511328","size-full wp-image-511325")
+                //.replace("(wp-image)(\\W|$)\\d{6}[\"]","class=\"wp-image-511029 size-full\" src="));
 
         String urlImage = item.get(JsonKeys.NEWS_IMAGES_URL).toString();
         currentNews.setImage(urlImage.substring(1, urlImage.length() - 1));
@@ -79,7 +84,7 @@ public class NewsDeserializer implements JsonDeserializer<News> {
             return formatter2.format(date);
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG +" cenvertToDate",  e.getMessage());
         }
         return null;
     }

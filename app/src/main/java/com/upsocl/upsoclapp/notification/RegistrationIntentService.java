@@ -77,6 +77,7 @@ public class RegistrationIntentService extends IntentService {
                     AndroidHttp.newCompatibleTransport(),new AndroidJsonFactory(), null)
                    // .setRootUrl("http://192.168.27.185:8080/_ah/api/")
                     .setRootUrl("http://quiz.upsocl.com/dev/?regId="+getString(R.string.gcm_defaultSenderId))
+                    //.setRootUrl("http://104.130.164.44/dev/?regId="+getString(R.string.gcm_defaultSenderId))
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
@@ -87,9 +88,7 @@ public class RegistrationIntentService extends IntentService {
             Registration regService = builder.build();
             regService.register(token).execute();
         } catch (IOException e) {
-            e.printStackTrace();
-            Log.d(TAG,  e.getMessage());
-
+            Log.e(TAG +" sendRegistrationToServer",  e.getMessage());
         }
     }
 

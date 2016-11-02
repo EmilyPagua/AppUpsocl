@@ -2,6 +2,7 @@ package cl.upsocl.upsoclapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,7 @@ import com.upsocl.upsoclapp.AnalyticsApplication;
 import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.keys.Preferences;
+import com.upsocl.upsoclapp.ui.ViewConstants;
 
 /**
  * Created by emily.pagua on 21-10-16.
@@ -64,7 +67,7 @@ public class DetailPageFragment extends Fragment {
     private Gson gs = new Gson();
 
     private AdView mAdView;
-    private ProgressBar progresNew,progressBar;
+    private ProgressBar progresNew;
     private WebView webViewNew;
 
     private String html = "";
@@ -74,6 +77,8 @@ public class DetailPageFragment extends Fragment {
     private ShareDialog shareDialog;
 
     private ImageButton  bookmark;
+    private AdView adViewUp;
+    private Boolean  loadAdViewUp = false;
 
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
@@ -125,11 +130,19 @@ public class DetailPageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ViewGroup rootView;
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container,false);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container,false);
         final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.viewDetailLinear);
 
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBarPost);
+        progresNew = (ProgressBar) rootView.findViewById(R.id.progressBarPost);
+        progresNew.setVisibility(View.VISIBLE);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loadImageView(news,layout);
+                loadDetail(news, rootView);
+            }
+        });
 
 
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainerPost);
@@ -137,6 +150,7 @@ public class DetailPageFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Log.e("swipeContainer", "refesh");
+                webViewNew.reload();
                 swipeContainer.setRefreshing(false);
             }
         });
@@ -177,10 +191,47 @@ public class DetailPageFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        loadImageView(news,layout);
+
+                        AdRequest adRequest = new AdRequest.Builder().build();
+                        adViewUp = new AdView(DetailPageFragment.this.getContext());
+                        adViewUp.setAdSize(AdSize.MEDIUM_RECTANGLE);
+                        adViewUp.setAdUnitId(getString(R.string.banner_up));
+                        adViewUp.setPadding(0, 0, 0, 0);
+                        adViewUp.loadAd(adRequest);
+                        adViewUp.setVisibility(View.GONE);
+                        adViewUp.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdClosed() {
+                                super.onAdClosed();
+                            }
+
+                            @Override
+                            public void onAdFailedToLoad(int i) {
+                                super.onAdFailedToLoad(i);
+                            }
+
+                            @Override
+                            public void onAdLeftApplication() {
+                                super.onAdLeftApplication();
+                            }
+
+                            @Override
+                            public void onAdOpened() {
+                                super.onAdOpened();
+                            }
+
+                            @Override
+                            public void onAdLoaded() {
+                                super.onAdLoaded();
+
+                                loadAdViewUp =  true;
+                            }
+                        });
+
+                        layout.addView(adViewUp);
+
                     }
                 });
-
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -236,7 +287,7 @@ public class DetailPageFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layoutParams.setMargins(10,0,10,0);
+        layoutParams.setMargins(30,20,30,0);
 
         webViewNew.setLayoutParams(layoutParams);
 
@@ -268,7 +319,7 @@ public class DetailPageFragment extends Fragment {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
-                    Log.e("DetailPageFragment webView", "onPageFinished");
+                    //Log.e("DetailPageFragment webView", "onPageFinished");
                 }
 
                 @Override
@@ -286,12 +337,8 @@ public class DetailPageFragment extends Fragment {
 
     @NonNull
     public String createContentHTML() {
-        String topHTML = "<html><header> " +
-                "<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>" +
-                "<link href='http://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>" +
-                "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>" +
-                "<link rel='stylesheet' type='text/css' media='all' href='http://www.upsocl.com/wp-content/themes/upso3/style.css'>" +
-                "</header><body>";
+        String topHTML = "<html><header> " + ViewConstants.HTML_HEAD+ "</header><body>";
+
         String imageMainHTML = "<center><img align='middle' alt='Portada' class='wp-image-480065 size-full' " +
                 "height='605' itemprop='contentURL' sizes='(max-width: 728px) 100vw, 728px' src=" + news.getImage() + " width='728' > </center>";
 
@@ -304,9 +351,7 @@ public class DetailPageFragment extends Fragment {
         String contentHTML = news.getContent();
         String bottomHTML = "</body> </html>";
 
-        return topHTML +
-                contentHTML +
-                bottomHTML;
+        return topHTML +contentHTML +bottomHTML;
     }
 
     private class loadAdMob  extends AsyncTask <LinearLayout, Integer, Boolean> {
@@ -356,6 +401,9 @@ public class DetailPageFragment extends Fragment {
                                 @Override
                                 public void onAdLoaded() {
                                     super.onAdLoaded();
+                                    if (loadAdViewUp)
+                                        adViewUp.setVisibility(View.VISIBLE);
+
                                     webViewNew.setVisibility(View.VISIBLE);
                                     adView.setVisibility(View.VISIBLE);
                                     progresNew.setVisibility(View.GONE);
@@ -432,6 +480,7 @@ public class DetailPageFragment extends Fragment {
 
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentTitle(news.getTitle())
+                    .setImageUrl(Uri.parse(news.getImage()))
                     .setContentDescription(getString(R.string.msg_detail_facebook))
                     .setContentUrl(Uri.parse(news.getLink()))
                     .build();
@@ -505,9 +554,9 @@ public class DetailPageFragment extends Fragment {
         }
     }
 
-    private void loadImageView(News news, final LinearLayout layout ) {
+    private void loadImageView(News news, ViewGroup rootView ) {
 
-        String topHTML = "<html><header> " +
+       /* String topHTML = "<html><header> " +
                 "<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>" +
                 "<link href='http://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>" +
                 "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>" +
@@ -556,7 +605,7 @@ public class DetailPageFragment extends Fragment {
             }
         });
 
-      /*  ImageView imageview = new ImageView(DetailPageFragment.this.getContext());
+       ImageView imageview = new ImageView(DetailPageFragment.this.getContext());
         String urlImagen = news.getImage();
         Picasso.with(getActivity().getApplication().getApplicationContext())
                 .load(urlImagen)
@@ -571,18 +620,42 @@ public class DetailPageFragment extends Fragment {
         imageview.setLayoutParams(layoutParams);
 
         layout.addView(imageview);*/
+
+        ImageView imageview = (ImageView) rootView.findViewById(R.id.imageViewDetail);
+        String urlImagen = news.getImage();
+        Picasso.with(getActivity().getApplicationContext())
+                .load(urlImagen)
+                .into(imageview);
     }
 
-    private void loadDetail(News news, LinearLayout layout) {
-        TextView title = new TextView(DetailPageFragment.this.getContext());
+    private void loadDetail(News news, ViewGroup rootView) {
+
+        TextView title = (TextView) rootView.findViewById(R.id.detailTextView);
         title.setText(news.getTitle());
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView detail = (TextView) rootView.findViewById(R.id.detail);
+        String author = "Por: " + news.getAuthor();
+        String date = "El: " + news.getDate();
+        String category = news.getCategories();
 
-        layoutParams.setMargins(10,0,10,0);
-        title.setLayoutParams(layoutParams);
-        layout.addView(title);
+        if (category!=null && !category.equals(""))
+            category = "Categorias: " + category;
+        else
+            category = "Categorias: " + "Popular";
+
+        SpannableStringBuilder sBauthor = setStyleText(author, 4,author.length());
+        SpannableStringBuilder sBdetail = setStyleText(date, 3,date.length());
+        SpannableStringBuilder sBcategory = setStyleText(category, 10, category.length());
+
+        Spanned spanned = (Spanned) TextUtils.concat(sBauthor, ". ", sBdetail, ". ",sBcategory);
+        SpannableStringBuilder result = new SpannableStringBuilder(spanned);
+
+        detail.setText(result, TextView.BufferType.SPANNABLE);
+    }
+
+    private SpannableStringBuilder setStyleText(String text, int i, int length) {
+        SpannableStringBuilder result = new SpannableStringBuilder(text);
+        result.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), i, length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        return result;
     }
 }

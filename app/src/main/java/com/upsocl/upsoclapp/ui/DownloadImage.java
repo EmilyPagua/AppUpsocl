@@ -9,6 +9,8 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.upsocl.upsoclapp.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,8 +18,10 @@ import java.io.InputStream;
  * Created by emily.pagua on 12-07-16.
  */
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-    ImageView imageView;
-    Resources resources;
+
+    private static final String TAG = "DownloadImage";
+    private ImageView imageView;
+    private Resources resources;
 
     public DownloadImage(ImageView imageView, Resources resources) {
         this.imageView = imageView;
@@ -34,7 +38,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             mIcon11 = BitmapFactory.decodeStream(in);
 
         } catch (IOException e) {
-            Log.e("ERROR DownloadImage", e.getMessage());
+            Log.e(TAG + " doInBackground", e.getMessage());
             e.printStackTrace();
         }
 
@@ -48,6 +52,8 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             //asignamos el CornerRadius
             roundedDrawable.setCornerRadius(resutl.getHeight());
             imageView.setImageDrawable(roundedDrawable);
+
+
         }
 
     }

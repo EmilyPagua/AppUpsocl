@@ -15,4 +15,8 @@ public class Preferences {
     public static final String NOTI_ID= "notificartion_id";
     public static final String NOTI_DATA  = "data_notification";
     public static final String NOTI_ICON = "noti_icon";
+
+    public static final String GOOGLE_PLAY= "google_play";
 }
+
+

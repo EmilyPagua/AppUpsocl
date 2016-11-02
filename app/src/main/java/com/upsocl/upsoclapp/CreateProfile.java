@@ -99,6 +99,8 @@ import retrofit.client.Response;
 public class CreateProfile extends AppCompatActivity implements Callback<JsonObject> ,
         View.OnClickListener, GoogleApiClient.OnConnectionFailedListener  {
 
+    private static final String TAG = "CreateProfile";
+
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "YHKSSBjXVukNLxKgV2FbYAjyx";
     private static final String TWITTER_SECRET = "ovzgDNisjtBnyPzU4CI50myqh3BUOFvRUxZHMHEITifPss5eY7";
@@ -398,7 +400,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                                         validateInformation(userLogin);
 
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Log.e(TAG +" FacebookCallback",  e.getMessage());
                                 }
                             }
                         });

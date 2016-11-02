@@ -122,7 +122,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
                 }
 
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(TAG +" success",  e.getMessage());
             }
             int rest = 0;
             if (dateLast != null){

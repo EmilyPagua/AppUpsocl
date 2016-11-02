@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ima_bookmarks"
                 android:layout_below="@+id/line1"
-                android:src="@mipmap/ic_bookmarks"/>
+                android:src="@mipmap/ic_bookmarks_2"/>
 
             <ImageButton
                 android:contentDescription="@string/imagenpost"
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ima_share"
-                android:src="@mipmap/ic_share"
+                android:src="@mipmap/ic_share_2"
                 android:layout_below="@+id/line1"
                 android:layout_alignParentEnd="true"
                 />

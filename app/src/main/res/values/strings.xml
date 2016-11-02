@@ -19,7 +19,7 @@
     <!-- Google numero de proyecto 927839621447 -->
     <string name="gcm_defaultSenderId">805861910509</string>
 
-    <string name="msg_detail_facebook">WWW.upsocl.com</string>
+    <string name="msg_detail_facebook">www.upsocl.com</string>
 
     <!-- Twitter -->
     <string name="twitter_key">dc15702c4f4e7da7bd7a7e9a197a75b3b8b196a0</string>
@@ -143,5 +143,6 @@
     <string name="category">Category</string>
     <string name="noData">No se encontraron resultados</string>
     <string name="noDataWorld">No se encontraron resultados para la busqueda: </string>
+    <string name="calification">Valora esta app</string>
 
 </resources>

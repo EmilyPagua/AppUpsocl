@@ -24,8 +24,8 @@ android {
         applicationId 'cl.upsocl.upsoclapp'
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 32
-        versionName "1.1"
+        versionCode 34
+        versionName "1.3"
         multiDexEnabled true
     }
     buildTypes {

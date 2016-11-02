@@ -27,16 +27,19 @@
                     android:id="@+id/nav_manage"
                     android:icon="@drawable/ic_settings_black_24dp"
                     android:title="@string/menuPreferencia" />
-
+                <item
+                    android:id="@+id/calification"
+                    android:icon="@drawable/ic_star_half_black_24dp"
+                    android:title="@string/calification" />
                 <item
                     android:id="@+id/nav_us"
                     android:icon="@android:drawable/ic_dialog_info"
                     android:title="@string/menuAboutUs" />
-
                 <item
                     android:id="@+id/nav_profile"
                     android:icon="@drawable/ic_lock_black_24dp"
                     android:title="@string/menuAboutPrivacy" />
+
 
             </group>
 
