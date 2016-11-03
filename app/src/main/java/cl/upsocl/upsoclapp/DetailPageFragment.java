@@ -491,6 +491,7 @@ public class DetailPageFragment extends Fragment {
     public void sendReportGoogleAnalytics(String link, String category) {
 
         // [START custom_event]
+
         mTracker.setScreenName(link);
         mTracker.setReferrer(link);
         mTracker.send(new HitBuilders.EventBuilder()
