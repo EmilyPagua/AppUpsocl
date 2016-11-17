@@ -154,9 +154,17 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             String acept = manager.getPreferenceString(Preferences.NOTIFICATIONS, Preferences.NOTIFICATIONS_ACEPT);
             if (acept.equals(Preferences.YES)){
                 sendNotification(message, contentTitle, idMessage);
+
+                manager.SavePreferencesString(Preferences.NOTIFICATIONS, Preferences.NOTI_ID_POST,idPost );
+                manager.SavePreferencesInt(Preferences.NOTIFICATIONS, Preferences.NOTI_ID, idMessage );
+                manager.SavePreferencesString(Preferences.NOTIFICATIONS, Preferences.NOTI_DATA,newsJson );
+                manager.SavePreferencesInt(Preferences.NOTIFICATIONS,
+                        Preferences.NOTI_ICON,
+                        R.drawable.ic_notifications_active_white_24dp);
             }
 
-            /*SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+            /*
+            SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
             Date date = new Date();
             Date dateLast = null;
             try {

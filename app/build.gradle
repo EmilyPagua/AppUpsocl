@@ -74,4 +74,5 @@ dependencies {
     compile 'net.sjava:advancedasynctask:1.0.4'
 
     compile 'com.github.ceryle:SegmentedButton:v1.1.7'
+    compile 'org.neotech.library:android-retainable-tasks:0.2.5'
 }
