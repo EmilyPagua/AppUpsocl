@@ -25,7 +25,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -77,6 +79,8 @@ import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
 import java.util.Map;
 
+import static java.security.AccessController.getContext;
+
 /**
  * Created by emily.pagua on 21-90-16.
  */
@@ -85,6 +89,7 @@ public class MenuHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private ActionBarDrawerToggle toggle;
+    private PreferencesManager manager;
 
     boolean exit = false;
 
@@ -132,16 +137,22 @@ public class MenuHomeActivity extends AppCompatActivity
             layout.setPadding(16,0,16,16);
         }
 
-        SharedPreferences prefs =  getSharedPreferences(Preferences.GOOGLE_PLAY, Context.MODE_PRIVATE);
-        Boolean obj =  prefs.getBoolean("GOOGLE", true);
-        SharedPreferences.Editor editor =  prefs.edit();
+        manager = new PreferencesManager(getApplicationContext());
+        String objeto = manager.getPreferenceString(Preferences.MESSAGE_UPSOCL, Preferences.MESSAGE_UPSOCL);
+        int views = manager.getPreferenceInt(Preferences.MESSAGE_UPSOCL, Preferences.MESSAGE_VIEWS);
 
+        /*if (views!=0){
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View convertView = inflater.inflate(R.layout.content_message,layout);
+            TextView message =  (TextView) convertView.findViewById(R.id.messageTextV) ;
+            message.setText(objeto);
+            convertView.setVisibility(View.VISIBLE);
+
+            manager.SavePreferencesInt(Preferences.MESSAGE_UPSOCL,Preferences.MESSAGE_VIEWS,views-1);
+        }*/
 
         //Get tokentID
-        SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
-        String token = prefsUser.getString(CustomerKeys.DATA_USER_TOKEN,null);
-        System.out.println("Tocken: " + token);
-
+        String token = manager.getPreferenceString(Preferences.DATA_USER,CustomerKeys.DATA_USER_TOKEN);
 
         uploadView();
 
@@ -149,11 +160,10 @@ public class MenuHomeActivity extends AppCompatActivity
         uploadPreferencesUser();
         tabs = createTabLayout();
 
+        selectTabsOption();
+        uploadPager();
 
-
-            selectTabsOption();
-            uploadPager();
-            //GOOGLE
+        //GOOGLE
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .requestEmail()
@@ -176,17 +186,8 @@ public class MenuHomeActivity extends AppCompatActivity
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
-                //if (sentToken) {
-                  //  Log.i("HomeActivity", String.valueOf(R.string.gcm_send_message));
-                    //Toast.makeText(HomeActivity.this, R.string.gcm_send_message, Toast.LENGTH_SHORT).show();
-                //} else {
-                   // Log.i("HomeActivity", String.valueOf(R.string.token_error_message));
-                    //Toast.makeText(HomeActivity.this, R.string.token_error_message, Toast.LENGTH_SHORT).show();
-                //}
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences.getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
             }
         };
 

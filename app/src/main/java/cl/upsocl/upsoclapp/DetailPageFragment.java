@@ -59,6 +59,7 @@ import com.upsocl.upsoclapp.ui.ViewConstants;
 
 public class DetailPageFragment extends Fragment {
 
+    private static final String TAG = "DetailPageFragment";
     private static final String ARG_NEWS = "news";
     private PreferencesManager manager;
     private boolean flag_bookmarks;
@@ -149,7 +150,7 @@ public class DetailPageFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.e("swipeContainer", "refesh");
+                Log.e(TAG + " swipeContainer", "refesh");
                 webViewNew.reload();
                 swipeContainer.setRefreshing(false);
             }
@@ -238,7 +239,7 @@ public class DetailPageFragment extends Fragment {
                         try{
                         loadWebView(layout);
                         }catch (Exception e){
-                            Log.e("comeBack", e.getMessage());
+                            Log.e(TAG + " comeBack", e.getMessage());
                         }
                     }
                 });
@@ -264,7 +265,7 @@ public class DetailPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 facebookShare();
-                Log.e("shareFacebook", "shareFacebook");
+                Log.e(TAG + " shareFacebook", "shareFacebook");
             }
         });
 
@@ -273,7 +274,7 @@ public class DetailPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createShareIntent();
-                Log.e("share", "share");
+                Log.e(TAG + " share", "share");
 
             }
         });
@@ -307,25 +308,27 @@ public class DetailPageFragment extends Fragment {
 
             String html = createContentHTML();
             html = html.replace("\\\"", "\"").replace("\\n", "\n");
+            html = html.replaceAll("(class)[=][\"](wp-image-)\\d{6}[\"]","class=\\\"wp-image-511029 size-full\\\" ");
+
             webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
             layout.addView(webViewNew);
             webViewNew.setWebViewClient(new WebViewClient(){
                 @Override
                 public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                     super.onReceivedError(view, request, error);
-                    Log.e("DetailPageFragment webView", error.toString());
+                    Log.e(TAG + " DetailPageFragment webView", error.toString());
                 }
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
-                    //Log.e("DetailPageFragment webView", "onPageFinished");
+                    Log.e(TAG + "  webView", "onPageFinished");
                 }
 
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     super.onReceivedError(view, errorCode, description, failingUrl);
-                    Log.e("DetailPageFragment webView", description);
+                    Log.e(TAG + " webView", description);
                 }
             });
             //webViewNew.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -390,7 +393,7 @@ public class DetailPageFragment extends Fragment {
 
                                 @Override
                                 public void onAdFailedToLoad(int i) {
-                                    Log.e("loadAdMob onAdFailedToLoad", String.valueOf(i));
+                                    Log.e(TAG + "  loadAdMob onAdFailedToLoad", String.valueOf(i));
                                     super.onAdFailedToLoad(i);
                                     if (webViewNew.getVisibility() == View.GONE){
                                         webViewNew.setVisibility(View.VISIBLE);
@@ -422,7 +425,7 @@ public class DetailPageFragment extends Fragment {
                             });
                         }
                     }catch (Exception e){
-                        Log.e("loadAdMob onAdFailedToLoad", e.getMessage());
+                        Log.e(TAG + " loadAdMob onAdFailedToLoad", e.getMessage());
                     }
                 }
             });
@@ -538,13 +541,13 @@ public class DetailPageFragment extends Fragment {
                 bookmark.setImageResource(R.drawable.ic_bookmark_white_24dp);
             }
         }catch (Exception e){
-            Log.e("savePreferences", e.getMessage());
+            Log.e(TAG + " savePreferences", e.getMessage());
         }
     }
 
     private void uploadPreferences() {
         if (news != null) {
-            String objeto = manager.getPreference(Preferences.BOOKMARKS, news.getId());
+            String objeto = manager.getPreferenceString(Preferences.BOOKMARKS, news.getId());
             if (objeto!=null){
                 bookmark.setImageResource(R.drawable.ic_bookmark_white_24dp);
                 flag_bookmarks = true;
@@ -557,76 +560,21 @@ public class DetailPageFragment extends Fragment {
 
     private void loadImageView(News news, ViewGroup rootView ) {
 
-       /* String topHTML = "<html><header> " +
-                "<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>" +
-                "<link href='http://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>" +
-                "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>" +
-                "<link rel='stylesheet' type='text/css' media='all' href='http://www.upsocl.com/wp-content/themes/upso3/style.css'>" +
-                "</header><body>";
-        String imageMainHTML = "<center><img align='middle' alt='Portada' class='wp-image-480065 size-full' " +
-                "height='605' itemprop='contentURL' sizes='(max-width: 728px) 100vw, 728px' src=" + news.getImage() + " width='728' > </center>";
-
-        String titleHTML = "<h2 style='text-align: justify;'><strong> " + news.getTitle() + "</strong></h2>";
-        String authorHTML = "<div class='entry-meta socialtop socialextra'>  " +
-                "Autor: <font color='#009688'>" + news.getAuthor() + "</font>.  " +
-                "El: <font color='#009688'> " + news.getDate() + " </font> ";
-        String categoryHTML = "<br/> Categorias: <font color='#009688'>" + news.getCategories() + "</font> </div> ";
-        String lineHTML = "<hr  color='#009688'/> </body> </html>";
-
-        String content =  topHTML +""+ imageMainHTML +""+ titleHTML  +""+authorHTML +""+categoryHTML +""+lineHTML ;
-
-
-        WebView header = new WebView(DetailPageFragment.this.getContext());
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        layoutParams.setMargins(0,1,0,0);
-        header.setLayoutParams(layoutParams);
-        header.clearHistory();
-        header.clearCache(true);
-        header.clearFormData();
-        header.getSettings().setJavaScriptEnabled(true);
-        header.getSettings().setLoadWithOverviewMode(true);
-        header.getSettings().setUseWideViewPort(true);
-        header.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        header.getSettings().setSaveFormData(false);
-        header.getSettings().getLoadsImagesAutomatically();
-
-        header.loadDataWithBaseURL("http://api.instagram.com/oembed", content, "text/html", "UTF-8", null);
-        layout.addView(header);
-        header.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                progressBar.setVisibility(View.GONE);
-                progresNew = new ProgressBar(DetailPageFragment.this.getContext());
-                layout.addView(progresNew);
+        try{
+            ImageView imageview = (ImageView) rootView.findViewById(R.id.imageViewDetail);
+            if (news!=null &&  news.getImage()!=null){
+                String urlImagen = news.getImage();
+                Picasso.with(getActivity().getApplicationContext())
+                        .load(urlImagen)
+                        .into(imageview);
+            }else{
+                imageview.setVisibility(View.GONE);
             }
-        });
 
-       ImageView imageview = new ImageView(DetailPageFragment.this.getContext());
-        String urlImagen = news.getImage();
-        Picasso.with(getActivity().getApplication().getApplicationContext())
-                .load(urlImagen)
-                .into(imageview);
+        }catch (Exception e){
+            Log.e(TAG + "loadImageView ", e.getMessage());
+        }
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        layoutParams.setMargins(0,0,0,3);
-
-        imageview.setLayoutParams(layoutParams);
-
-        layout.addView(imageview);*/
-
-        ImageView imageview = (ImageView) rootView.findViewById(R.id.imageViewDetail);
-        String urlImagen = news.getImage();
-        Picasso.with(getActivity().getApplicationContext())
-                .load(urlImagen)
-                .into(imageview);
     }
 
     private void loadDetail(News news, ViewGroup rootView) {

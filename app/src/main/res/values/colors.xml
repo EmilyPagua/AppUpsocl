@@ -94,4 +94,14 @@
     <color name="secondary_text_quiz">#757575</color>
     <color name="icons_quiz">#FFFFFF</color>
     <color name="divider_quiz">#BDBDBD</color>
+
+    <color name="DarkRed">#8B0000</color>
+    <color name="Black">#000000</color>
+    <color name="blue_300">#64B5F6</color>
+    <color name="yellow_600">#FDD835</color>
+
+    <!-- Black -->
+    <color name="black">#000000</color>
+    <!-- Black -->
+
 </resources>

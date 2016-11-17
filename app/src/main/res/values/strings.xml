@@ -105,10 +105,13 @@
     <string name="title_email">Email</string>
     <string name="title_localizacion">Localización</string>
     <string name="title_notificaciones">Notificaciones</string>
-    <string name="detail_message">Con que frecuencia desea recibir notificaciones</string>
+    <string name="detail_message">¿Desea recibir mensajes con los post más destacados del día?</string>
     <string name="detail_notificaction_day">1 día</string>
     <string name="detail_notificaction_week">1 semana</string>
     <string name="detail_notificaction_month">1 mes</string>
+    <string name="detail_notificaction_yes">Si</string>
+    <string name="detail_notificaction_no">No</string>
+
     <string name="close_session_facebook">Cerrar sesión Facebook</string>
     <string name="close_session_google">Cerrar sesión Google</string>
     <string name="close_session_twitter">Cerrar sesión Twitter</string>

@@ -25,10 +25,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cl.upsocl.upsoclapp.MenuHomeActivity;
 import cl.upsocl.upsoclapp.NotificationActivity;
+import cl.upsocl.upsoclapp.PreferencesManager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static java.security.AccessController.getContext;
 
 /**
  * Created by emily.pagua on 20-07-16.
@@ -40,6 +44,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     private String contentTitle;
     private int idMessage;
     private String idPost;
+    private PreferencesManager manager;
 
     // [START receive_message]
     @Override
@@ -48,6 +53,8 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
         contentTitle = data.getString("contentTitle");
         idMessage =  Integer.valueOf(data.getString("idMessage"));
         idPost =  data.getString("idPost");
+
+        manager = new PreferencesManager(getApplicationContext());
 
         Log.d(TAG, "Message: " + message);
 
@@ -75,13 +82,42 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
         SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
         if (token!=null){
-            loadPosts(idPost);
+            if (idPost.equals("upsocl123")){
+                sendMessage(message, contentTitle, idMessage);
+            }else{
+                loadPosts(idPost);
+            }
         }
         // [END_EXCLUDE]
     }
 
     private void sendNotification (String message,String title, int idMessage){
         Intent intent = new Intent(this, NotificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent =  PendingIntent.getActivity (this, 0,
+                intent,PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.logo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(idMessage /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendMessage(String message,String title, int idMessage){
+        manager =  new PreferencesManager(this.getApplication());
+        manager.SavePreferencesString(Preferences.MESSAGE_UPSOCL,Preferences.MESSAGE_UPSOCL,message);
+        manager.SavePreferencesInt(Preferences.MESSAGE_UPSOCL,Preferences.MESSAGE_VIEWS,3);
+
+        Intent intent = new Intent(this, MenuHomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent =  PendingIntent.getActivity (this, 0,
@@ -110,7 +146,17 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             Gson gS = new Gson();
             String newsJson = gS.toJson(news);
 
-            SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
+            String notification = manager.getPreferenceString(Preferences.NOTIFICATIONS, Preferences.NOTIFICATIONS_ACEPT);
+            if (notification == null) {
+                manager.SavePreferencesString(Preferences.NOTIFICATIONS,Preferences.NOTIFICATIONS_ACEPT,Preferences.YES);
+            }
+
+            String acept = manager.getPreferenceString(Preferences.NOTIFICATIONS, Preferences.NOTIFICATIONS_ACEPT);
+            if (acept.equals(Preferences.YES)){
+                sendNotification(message, contentTitle, idMessage);
+            }
+
+            /*SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
             Date date = new Date();
             Date dateLast = null;
             try {
@@ -138,7 +184,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
                 editor.putString(Preferences.NOTI_DATA,newsJson).apply();
                 editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_active_white_24dp).apply();
                 sendNotification(message, contentTitle, idMessage);
-            }
+            }*/
         }
     }
 

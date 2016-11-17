@@ -48,11 +48,14 @@ public class NewsDeserializer implements JsonDeserializer<News> {
         }
 
         currentNews.setTitle(getJsonValue(item.get(JsonKeys.NEWS_TITLE))
-                .replace("&#8220;", "'").replace("&#8221;", "'")
-                .replace("&#8216;", "'").replace("&#8217;", "'").replace("&#8230;", "'"));
+                .replace("&#8220;", "'")
+                .replace("&#8221;", "'")
+                .replace("&#8216;", "'")
+                .replace("&#8217;", "'")
+                .replace("&#8230;", "'")
+                .replace("&#8242;", "'"));
+
         currentNews.setContent(getJsonValue(item.get(JsonKeys.NEWS_CONTENT)));
-               // .replace("wp-image-511328","size-full wp-image-511325")
-                //.replace("(wp-image)(\\W|$)\\d{6}[\"]","class=\"wp-image-511029 size-full\" src="));
 
         String urlImage = item.get(JsonKeys.NEWS_IMAGES_URL).toString();
         currentNews.setImage(urlImage.substring(1, urlImage.length() - 1));

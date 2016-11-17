@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +19,23 @@ import com.upsocl.upsoclapp.keys.Preferences;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cl.upsocl.upsoclapp.PreferencesManager;
+import co.ceryle.segmentedbutton.SegmentedButtonGroup;
+
 /**
  * Created by emily.pagua on 22-08-16.
  */
 
 public class PreferencesFragment  extends Fragment {
 
+    private static  final String  TAG = "PreferencesFragment";
     private RadioGroup radioGroup;
     private SharedPreferences preferencesUser;
     private SharedPreferences preferencesNoti;
     private Button logoutFacebook;
     private Button logoutGoogle,logoutTwitter;
+    private SegmentedButtonGroup group;
+    private PreferencesManager manager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceStates){
@@ -41,9 +48,18 @@ public class PreferencesFragment  extends Fragment {
 
         validateSocialNetwork(socialNetwork);
 
+        manager = new PreferencesManager(getContext());
 
+        group = (SegmentedButtonGroup) root.findViewById(R.id.segmentedButtonGroup);
+        group.setOnClickedButtonPosition(new SegmentedButtonGroup.OnClickedButtonPosition(){
 
-        radioGroup = (RadioGroup) root.findViewById(R.id.radioGroup);
+            @Override
+            public void onClickedButtonPosition(int position) {
+                updateButton(position);
+            }
+        });
+
+        /*radioGroup = (RadioGroup) root.findViewById(R.id.radioGroup);
         radioGroupCheck();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
@@ -66,7 +82,7 @@ public class PreferencesFragment  extends Fragment {
                 editorNotifi.putInt(Preferences.NOTIFICATIONS_FRECUENCY,frecuency).apply();
                 editorNotifi.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).apply();
             }
-        });
+        });*/
 
         TextView nameProfile = (TextView) root.findViewById(R.id.nameProfile);
         TextView locationProfile = (TextView) root.findViewById(R.id.locationProfile);
@@ -81,25 +97,34 @@ public class PreferencesFragment  extends Fragment {
         return root;
     }
 
-    private void radioGroupCheck() {
+    private void updateButton(int position) {
 
-        switch (preferencesNoti.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1)){
-            case 0:
-                radioGroup.check(R.id.rb_day);
-                break;
-            case 1:
-                radioGroup.check(R.id.rb_day);
-                break;
-            case 7:
-                radioGroup.check(R.id.rb_week);
-                break;
-            case 30:
-                radioGroup.check(R.id.rb_month);
-                break;
-
-        }
+        if (position==0)
+            manager.SavePreferencesString(Preferences.NOTIFICATIONS,Preferences.NOTIFICATIONS_ACEPT,Preferences.YES);
+        else
+            manager.SavePreferencesString(Preferences.NOTIFICATIONS,Preferences.NOTIFICATIONS_ACEPT,Preferences.NO);
     }
 
+    /*
+        private void radioGroupCheck() {
+
+            switch (preferencesNoti.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1)){
+                case 0:
+                    radioGroup.check(R.id.rb_day);
+                    break;
+                case 1:
+                    radioGroup.check(R.id.rb_day);
+                    break;
+                case 7:
+                    radioGroup.check(R.id.rb_week);
+                    break;
+                case 30:
+                    radioGroup.check(R.id.rb_month);
+                    break;
+
+            }
+        }
+    */
     private void validateSocialNetwork(String socialNetwork) {
         if (socialNetwork.equals(getString(R.string.name_facebook))){
             logoutFacebook.setVisibility(View.VISIBLE);
