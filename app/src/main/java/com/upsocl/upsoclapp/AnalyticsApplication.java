@@ -43,6 +43,7 @@ public class AnalyticsApplication extends Application {
 
             // Set the dispatch period in seconds.
             analytics.setLocalDispatchPeriod(1);
+            analytics.dispatchLocalHits();
 
             //ID SEGUIMIENTO = UA-44944096-19
             mTracker = analytics.newTracker("UA-44944096-19");

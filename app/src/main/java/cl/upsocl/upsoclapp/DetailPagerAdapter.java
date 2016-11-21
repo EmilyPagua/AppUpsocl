@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.Gravity;
 
 import com.facebook.FacebookSdk;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.gson.Gson;
 import com.upsocl.upsoclapp.R;
 
@@ -44,7 +47,6 @@ public class DetailPagerAdapter extends AppCompatActivity {
         News newsThree = gs.fromJson(getIntent().getStringExtra("newsThree"), News.class);
         News newsFour = gs.fromJson(getIntent().getStringExtra("newsFour"), News.class);
         News newsFive = gs.fromJson(getIntent().getStringExtra("newsFive"), News.class);
-        int leght = getIntent().getIntExtra("leght", 0);
 
         newsList.add(newsPrimary);
         newsList.add(newsSegundary);
@@ -60,7 +62,6 @@ public class DetailPagerAdapter extends AppCompatActivity {
         layoutParams.width = LayoutParams.MATCH_PARENT;
         layoutParams.height = LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = Gravity.BOTTOM;
-
     }
 
     private class PageAdapter extends FragmentPagerAdapter {
