@@ -153,9 +153,68 @@ public class DetailPageFragment extends Fragment {
             }
         });
 
-        loadWebView(layout);
-        loadAdView(layout);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
+                new loadAdMob().execute(layout);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        AdRequest adRequest = new AdRequest.Builder().build();
+                        adViewUp = new AdView(DetailPageFragment.this.getContext());
+                        adViewUp.setAdSize(AdSize.MEDIUM_RECTANGLE);
+                        adViewUp.setAdUnitId(getString(R.string.banner_up));
+                        adViewUp.setPadding(0, 0, 3, 0);
+                        adViewUp.loadAd(adRequest);
+                        adViewUp.setVisibility(View.GONE);
+                        adViewUp.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdClosed() {
+                                super.onAdClosed();
+                            }
+
+                            @Override
+                            public void onAdFailedToLoad(int i) {
+                                super.onAdFailedToLoad(i);
+                            }
+
+                            @Override
+                            public void onAdLeftApplication() {
+                                super.onAdLeftApplication();
+                            }
+
+                            @Override
+                            public void onAdOpened() {
+                                super.onAdOpened();
+                            }
+
+                            @Override
+                            public void onAdLoaded() {
+                                super.onAdLoaded();
+
+                                loadAdViewUp =  true;
+                            }
+                        });
+
+                        layout.addView(adViewUp);
+
+                    }
+                });
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            loadWebView(layout);
+                        }catch (Exception e){
+                            Log.e(TAG + " comeBack", e.getMessage());
+                        }
+                    }
+                });
+            }
+        }).start();
 
 
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainerPost);
@@ -294,7 +353,6 @@ public class DetailPageFragment extends Fragment {
                         }
                     });
                     webViewNew.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-                    webViewNew.setVisibility(View.GONE);
                 }
             }
         });
@@ -445,79 +503,6 @@ public class DetailPageFragment extends Fragment {
         return result;
     }
 
-
-    public void loadWebView(final News news) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-
-
-                webView = new WebView(DetailPageFragment.this.getContext());
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                layoutParams.setMargins(30,20,30,0);
-
-                webView.setLayoutParams(layoutParams);
-
-                webView.clearHistory();
-                webView.clearCache(true);
-                webView.clearFormData();
-
-
-                if (news!=null){
-
-                    String topHTML = "<html><header> " + ViewConstants.HTML_HEAD+ "</header><body>";
-
-                    String html = topHTML + news.getContent() +" </body></html>";
-                    html =  html.replace("\\\"","\"").replace("\\n","\n");
-                    html =  html.replaceAll("(class)[=][\"](wp-image-)\\d{6}[\"]","class=\\\"wp-image-511029 size-full\\\" ");
-
-                    webView.getSettings().setJavaScriptEnabled(true);
-                    webView.getSettings().setLoadWithOverviewMode(true);
-                    webView.getSettings().setUseWideViewPort(true);
-                    webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-                    webView.getSettings().setSaveFormData(false);
-                    webView.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", "");
-                    webView.setWebViewClient(new WebViewClient(){
-                        @Override
-                        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                            super.onReceivedError(view, request, error);
-                            Log.e("NotificationActivity webView", error.toString());
-                        }
-
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            super.onPageFinished(view, url);
-                            progresNew.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                            super.onReceivedError(view, errorCode, description, failingUrl);
-                        }
-                    });
-
-                    rootView.addView(webViewNew);
-
-                    try
-                    {
-                        progresNew.setVisibility(View.VISIBLE);
-                        sleep(1000);
-                        webView.setVisibility(View.VISIBLE);
-                    }
-                    catch (InterruptedException e)
-                    {
-                        Log.e(TAG, "Try del progress bar");
-                    }
-
-                }
-            }
-        });
-    }
-
     private void loadImageView(News news) {
 
         try{
@@ -565,32 +550,85 @@ public class DetailPageFragment extends Fragment {
     }
 
 
-    private void loadAdView(final LinearLayout layout) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                final AdView adView = new AdView(DetailPageFragment.this.getContext());
-                AdRequest adRequest = new AdRequest.Builder().build();
+    private class loadAdMob  extends AsyncTask <LinearLayout, Integer, Boolean> {
+
+        private AdView adView;
+        private AdRequest adRequest;
+        private LinearLayout layout;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            try {
+                adRequest = new AdRequest.Builder().build();
+                adView = new AdView(DetailPageFragment.this.getContext());
                 adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
-                adView.setAdUnitId(getString(R.string.banner_up));
-                adView.setPadding(0, 0, 0, 0);
-                adView.loadAd(adRequest);
-                adView.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(int i) {
-                        super.onAdFailedToLoad(i);
-                        Log.e("Error adView1", String.valueOf(i));
-                    }
-                    @Override
-                    public void onAdLoaded() {
-                        super.onAdLoaded();
-                        adView.setVisibility(View.VISIBLE);
-                        progresNew.setVisibility(View.GONE);
-                        webViewNew.setVisibility(View.VISIBLE);
-                    }
-                });
-                layout.addView(adView);
+                adView.setAdUnitId(getString(R.string.banner_down));
+                adView.setPadding(0, 0, 0, 3);
             }
-        });
+            catch (Exception e){
+                Log.e("loadAdMob onAdFailedToLoad", e.getMessage());
+                adView = null;
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(LinearLayout... voids) {
+            layout = voids[0];
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        if (adView!=null && adRequest!=null) {
+                            adView.loadAd(adRequest);
+                            adView.setAdListener(new AdListener() {
+
+                                @Override
+                                public void onAdFailedToLoad(int i) {
+                                    Log.e(TAG + "  loadAdMob onAdFailedToLoad", String.valueOf(i));
+                                    super.onAdFailedToLoad(i);
+                                    if (webViewNew.getVisibility() == View.GONE){
+                                        webViewNew.setVisibility(View.VISIBLE);
+                                        progresNew.setVisibility(View.GONE);
+                                    }
+                                    new loadAdMob().execute(layout);
+                                }
+                                @Override
+                                public void onAdLoaded() {
+                                    super.onAdLoaded();
+                                    if (loadAdViewUp)
+                                        adViewUp.setVisibility(View.VISIBLE);
+
+                                    webViewNew.setVisibility(View.VISIBLE);
+                                    adView.setVisibility(View.VISIBLE);
+                                    progresNew.setVisibility(View.GONE);
+                                    layout.addView(adView);
+
+                                }
+                                @Override
+                                public void onAdLeftApplication() {
+                                    super.onAdLeftApplication();
+                                }
+
+                                @Override
+                                public void onAdOpened() {
+                                    super.onAdOpened();
+                                }
+                            });
+                        }
+                    }catch (Exception e){
+                        Log.e(TAG + " loadAdMob onAdFailedToLoad", e.getMessage());
+                    }
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
     }
+
 }

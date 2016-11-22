@@ -99,9 +99,6 @@
     <list default="true" id="85458c0f-4c40-48bf-8585-dfab3ec1a465" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPageFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPagerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPagerAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/AnalyticsApplication.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/AnalyticsApplication.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/keys/Preferences.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/keys/Preferences.java" />
     </list>
     <list id="7a0291b1-e861-4b26-98a0-e57e50c9eda6" name="Cambios" comment="eliminado algunos archivos que no se usan" />
     <ignored path="AppUpsocl.iws" />
@@ -143,35 +140,44 @@
       <file leaf-file-name="DetailPageFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPageFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="270" column="50" selection-start-line="270" selection-start-column="50" selection-end-line="270" selection-end-column="50" />
+            <state relative-caret-position="380">
+              <caret line="345" column="29" selection-start-line="345" selection-start-column="29" selection-end-line="346" selection-end-column="25" />
               <folding>
                 <element signature="e#4879#5044#0" expanded="true" />
                 <element signature="e#5043#5044#0" expanded="true" />
-                <element signature="e#6333#6611#0" expanded="true" />
-                <element signature="e#6610#6611#0" expanded="true" />
-                <element signature="e#6854#7020#0" expanded="true" />
-                <element signature="e#7019#7020#0" expanded="true" />
-                <element signature="e#7165#7381#0" expanded="true" />
-                <element signature="e#7380#7381#0" expanded="true" />
-                <element signature="e#7796#10948#0" expanded="true" />
-                <element signature="e#10947#10948#0" expanded="true" />
-                <element signature="e#16398#19350#0" expanded="true" />
-                <element signature="e#19349#19350#0" expanded="true" />
-                <element signature="e#21089#22229#0" expanded="true" />
-                <element signature="e#21413#21442#0" expanded="true" />
-                <element signature="e#22228#22229#0" expanded="true" />
+                <element signature="e#5067#7373#0" expanded="true" />
+                <element signature="e#5233#6954#0" expanded="true" />
+                <element signature="e#5599#5628#0" expanded="true" />
+                <element signature="e#5956#5957#0" expanded="true" />
+                <element signature="e#6038#6039#0" expanded="true" />
+                <element signature="e#6143#6144#0" expanded="true" />
+                <element signature="e#6232#6233#0" expanded="true" />
+                <element signature="e#6335#6336#0" expanded="true" />
+                <element signature="e#6426#6427#0" expanded="true" />
+                <element signature="e#6520#6521#0" expanded="true" />
+                <element signature="e#6602#6603#0" expanded="true" />
+                <element signature="e#6953#6954#0" expanded="true" />
+                <element signature="e#7001#7347#0" expanded="true" />
+                <element signature="e#7346#7347#0" expanded="true" />
+                <element signature="e#7372#7373#0" expanded="true" />
+                <element signature="e#8611#8889#0" expanded="true" />
+                <element signature="e#8888#8889#0" expanded="true" />
+                <element signature="e#9132#9298#0" expanded="true" />
+                <element signature="e#9297#9298#0" expanded="true" />
+                <element signature="e#9443#9659#0" expanded="true" />
+                <element signature="e#9658#9659#0" expanded="true" />
+                <element signature="e#10074#13169#0" expanded="true" />
+                <element signature="e#13168#13169#0" expanded="true" />
+                <element signature="e#20730#20761#0" expanded="true" />
+                <element signature="e#21139#23328#0" expanded="true" />
+                <element signature="e#22798#22799#0" expanded="true" />
+                <element signature="e#22897#22898#0" expanded="true" />
+                <element signature="e#22999#23000#0" expanded="true" />
+                <element signature="e#23089#23090#0" expanded="true" />
+                <element signature="e#23327#23328#0" expanded="true" />
+                <element signature="e#23440#23441#0" expanded="true" />
+                <element signature="e#23493#23494#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DetailPagerAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPagerAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="77" column="38" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -3053,7 +3059,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="2" />
     <option name="y" value="23" />
-    <option name="width" value="1268" />
+    <option name="width" value="1294" />
     <option name="height" value="969" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -3132,24 +3138,7 @@
       <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AppUpsocl" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AppUpsocl" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
       <pane id="PackagesPane" />
     </panes>
@@ -3646,13 +3635,6 @@
       <option name="presentableId" value="Default" />
       <updated>1467937901199</updated>
     </task>
-    <task id="LOCAL-00010" summary="Agregadas lista de categorias, modificada actualizacion automatica de pestaña principal.&#10;">
-      <created>1469742661182</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1469742661182</updated>
-    </task>
     <task id="LOCAL-00011" summary="Agregadas lista de categorias, modificada actualizacion automatica de pestaña principal.&#10;">
       <created>1469742674380</created>
       <option name="number" value="00011" />
@@ -3989,7 +3971,14 @@
       <option name="project" value="LOCAL" />
       <updated>1479395074391</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="modifcado notificaciones para mejorar la carga del post y la publicidad&#10;&#10;">
+      <created>1479761871879</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1479761871892</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TodoView" selected-index="1">
@@ -4002,7 +3991,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="23" width="1268" height="969" extended-state="0" />
+    <frame x="2" y="23" width="1294" height="969" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -4014,7 +4003,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21932115" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32957292" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2637749" sideWeight="0.71884733" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3024619" sideWeight="0.71884733" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3235639" sideWeight="0.4866744" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26611957" sideWeight="0.7349693" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -4026,7 +4015,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23798358" sideWeight="0.5404908" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24809161" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35990623" sideWeight="0.21059783" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14600326" sideWeight="0.49118683" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18474576" sideWeight="0.49118683" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27198124" sideWeight="0.50570124" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16725978" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6716102" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -4090,7 +4079,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Agregado el actualizar de la lista de post en cada aplicación, el actualizar de la busqueda." />
     <MESSAGE value="Acomodado la imagen de facebook al iniciar sesión." />
     <MESSAGE value="modificado numero de codigo de android.&#10;modificado el perfil, problemas al obtener la fecha de nacimiento con google." />
     <MESSAGE value="acomodado login con facebook nuevamente. acomo dado codigo para versiones menores a 19." />
@@ -4115,7 +4103,8 @@
     <MESSAGE value="Agregado google Analitycs" />
     <MESSAGE value="Modificado opción de preferencias.&#10;Modificado googleCloundMessage para que envie mensajes siempre y cuando la variable Notitication_acept =  yes.&#10;&#10;" />
     <MESSAGE value="Modificado googleCloundMessage para que guardara la infomación de la notificación&#10;&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modificado googleCloundMessage para que guardara la infomación de la notificación&#10;&#10;" />
+    <MESSAGE value="modifcado notificaciones para mejorar la carga del post y la publicidad&#10;&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="modifcado notificaciones para mejorar la carga del post y la publicidad&#10;&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -4167,19 +4156,38 @@
           <folding>
             <element signature="e#4879#5044#0" expanded="true" />
             <element signature="e#5043#5044#0" expanded="true" />
-            <element signature="e#6333#6611#0" expanded="true" />
-            <element signature="e#6610#6611#0" expanded="true" />
-            <element signature="e#6854#7020#0" expanded="true" />
-            <element signature="e#7019#7020#0" expanded="true" />
-            <element signature="e#7165#7381#0" expanded="true" />
-            <element signature="e#7380#7381#0" expanded="true" />
-            <element signature="e#7796#10948#0" expanded="true" />
-            <element signature="e#10947#10948#0" expanded="true" />
-            <element signature="e#16398#19350#0" expanded="true" />
-            <element signature="e#19349#19350#0" expanded="true" />
-            <element signature="e#21089#22229#0" expanded="true" />
-            <element signature="e#21413#21442#0" expanded="true" />
-            <element signature="e#22228#22229#0" expanded="true" />
+            <element signature="e#5067#7373#0" expanded="true" />
+            <element signature="e#5233#6954#0" expanded="true" />
+            <element signature="e#5599#5628#0" expanded="true" />
+            <element signature="e#5956#5957#0" expanded="true" />
+            <element signature="e#6038#6039#0" expanded="true" />
+            <element signature="e#6143#6144#0" expanded="true" />
+            <element signature="e#6232#6233#0" expanded="true" />
+            <element signature="e#6335#6336#0" expanded="true" />
+            <element signature="e#6426#6427#0" expanded="true" />
+            <element signature="e#6520#6521#0" expanded="true" />
+            <element signature="e#6602#6603#0" expanded="true" />
+            <element signature="e#6953#6954#0" expanded="true" />
+            <element signature="e#7001#7347#0" expanded="true" />
+            <element signature="e#7346#7347#0" expanded="true" />
+            <element signature="e#7372#7373#0" expanded="true" />
+            <element signature="e#8611#8889#0" expanded="true" />
+            <element signature="e#8888#8889#0" expanded="true" />
+            <element signature="e#9132#9298#0" expanded="true" />
+            <element signature="e#9297#9298#0" expanded="true" />
+            <element signature="e#9443#9659#0" expanded="true" />
+            <element signature="e#9658#9659#0" expanded="true" />
+            <element signature="e#10074#13169#0" expanded="true" />
+            <element signature="e#13168#13169#0" expanded="true" />
+            <element signature="e#20730#20761#0" expanded="true" />
+            <element signature="e#21139#23328#0" expanded="true" />
+            <element signature="e#22798#22799#0" expanded="true" />
+            <element signature="e#22897#22898#0" expanded="true" />
+            <element signature="e#22999#23000#0" expanded="true" />
+            <element signature="e#23089#23090#0" expanded="true" />
+            <element signature="e#23327#23328#0" expanded="true" />
+            <element signature="e#23440#23441#0" expanded="true" />
+            <element signature="e#23493#23494#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -4391,6 +4399,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-60">
           <caret line="44" column="70" selection-start-line="44" selection-start-column="70" selection-end-line="44" selection-end-column="70" />
+          <folding>
+            <element signature="e#1909#2111#0" expanded="true" />
+            <element signature="e#2110#2111#0" expanded="true" />
+            <element signature="e#3840#3878#0" expanded="true" />
+            <marker date="1479392058000" expanded="false" signature="2261:2401" ph="(group, checkedId) → {" />
+            <marker date="1479392058000" expanded="false" signature="3156:3171" ph="}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -4398,6 +4413,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
           <caret line="149" column="39" selection-start-line="149" selection-start-column="39" selection-end-line="149" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -4496,6 +4512,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/DownloadImage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPagerAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3">
+          <caret line="60" column="14" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_screen_slide_page.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="953">
@@ -4507,42 +4539,53 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/upsocl/upsoclapp/ui/DownloadImage.java">
+    <entry file="jar://$USER_HOME$/Library/Android/sdk/platforms/android-23/android.jar!/android/view/View.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="41" column="32" selection-start-line="41" selection-start-column="32" selection-end-line="41" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPagerAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="77" column="38" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="38" />
+        <state relative-caret-position="212">
+          <caret line="2066" column="67" selection-start-line="2066" selection-start-column="61" selection-end-line="2066" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/cl/upsocl/upsoclapp/DetailPageFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="270" column="50" selection-start-line="270" selection-start-column="50" selection-end-line="270" selection-end-column="50" />
+        <state relative-caret-position="380">
+          <caret line="345" column="29" selection-start-line="345" selection-start-column="29" selection-end-line="346" selection-end-column="25" />
           <folding>
             <element signature="e#4879#5044#0" expanded="true" />
             <element signature="e#5043#5044#0" expanded="true" />
-            <element signature="e#6333#6611#0" expanded="true" />
-            <element signature="e#6610#6611#0" expanded="true" />
-            <element signature="e#6854#7020#0" expanded="true" />
-            <element signature="e#7019#7020#0" expanded="true" />
-            <element signature="e#7165#7381#0" expanded="true" />
-            <element signature="e#7380#7381#0" expanded="true" />
-            <element signature="e#7796#10948#0" expanded="true" />
-            <element signature="e#10947#10948#0" expanded="true" />
-            <element signature="e#16398#19350#0" expanded="true" />
-            <element signature="e#19349#19350#0" expanded="true" />
-            <element signature="e#21089#22229#0" expanded="true" />
-            <element signature="e#21413#21442#0" expanded="true" />
-            <element signature="e#22228#22229#0" expanded="true" />
+            <element signature="e#5067#7373#0" expanded="true" />
+            <element signature="e#5233#6954#0" expanded="true" />
+            <element signature="e#5599#5628#0" expanded="true" />
+            <element signature="e#5956#5957#0" expanded="true" />
+            <element signature="e#6038#6039#0" expanded="true" />
+            <element signature="e#6143#6144#0" expanded="true" />
+            <element signature="e#6232#6233#0" expanded="true" />
+            <element signature="e#6335#6336#0" expanded="true" />
+            <element signature="e#6426#6427#0" expanded="true" />
+            <element signature="e#6520#6521#0" expanded="true" />
+            <element signature="e#6602#6603#0" expanded="true" />
+            <element signature="e#6953#6954#0" expanded="true" />
+            <element signature="e#7001#7347#0" expanded="true" />
+            <element signature="e#7346#7347#0" expanded="true" />
+            <element signature="e#7372#7373#0" expanded="true" />
+            <element signature="e#8611#8889#0" expanded="true" />
+            <element signature="e#8888#8889#0" expanded="true" />
+            <element signature="e#9132#9298#0" expanded="true" />
+            <element signature="e#9297#9298#0" expanded="true" />
+            <element signature="e#9443#9659#0" expanded="true" />
+            <element signature="e#9658#9659#0" expanded="true" />
+            <element signature="e#10074#13169#0" expanded="true" />
+            <element signature="e#13168#13169#0" expanded="true" />
+            <element signature="e#20730#20761#0" expanded="true" />
+            <element signature="e#21139#23328#0" expanded="true" />
+            <element signature="e#22798#22799#0" expanded="true" />
+            <element signature="e#22897#22898#0" expanded="true" />
+            <element signature="e#22999#23000#0" expanded="true" />
+            <element signature="e#23089#23090#0" expanded="true" />
+            <element signature="e#23327#23328#0" expanded="true" />
+            <element signature="e#23440#23441#0" expanded="true" />
+            <element signature="e#23493#23494#0" expanded="true" />
           </folding>
         </state>
       </provider>
