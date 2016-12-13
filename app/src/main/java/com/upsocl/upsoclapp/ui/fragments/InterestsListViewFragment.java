@@ -1,6 +1,5 @@
 package com.upsocl.upsoclapp.ui.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -50,40 +49,40 @@ public class InterestsListViewFragment  extends Fragment {
                 Toast.makeText(getActivity(), "Ha seleccionado un elemento", Toast.LENGTH_LONG).show();
             }
         });
-
         return root;
-
     }
 
     public void loadInterests(){
 
-        CategoryList listOptions = new CategoryList();
         Map<String, ?> map = preferences.getAll();
         map.size();
         rows= new ArrayList<>();
+        SharedPreferences.Editor editor =  preferences.edit();
+        CategoryList listOptions = new CategoryList();
 
         Category obj;
-        int i = CategoryList.INTERESTS_SIZE_VALUE-1;
-        for (Map.Entry<String, ?> e: map.entrySet()) {
 
+        for (Map.Entry<String, ?> e: map.entrySet()) {
+            int i = CategoryList.INTERESTS_SIZE_VALUE;
 
             if (!e.getKey().equals(CategoryList.INTERESTS_SIZE)){
+
                 obj = listOptions.getCategoryById(Integer.valueOf(e.getKey()));
                 if (obj !=null && obj.getImage()!=0){
-                    rows.add(obj);
+                    obj.setCheck(Boolean.valueOf(e.getValue().toString()));
                 }else{
-                    SharedPreferences.Editor editor =  preferences.edit();
+                    obj =  listOptions.categoryList.get(i);
                     editor.remove(String.valueOf(e.getKey())).apply();
 
-                    obj =  listOptions.getCategoryList().get(i);
-                    if (obj.getId() >300 )
-                        editor.putBoolean(String.valueOf(obj.getId()), true).apply();
-                    else
-                        editor.putBoolean(String.valueOf(obj.getId()), true).apply();
+                    boolean value = false;
+                    if (obj.getId() >306 )
+                        value = true;
 
-                    rows.add(obj);
+                    editor.putBoolean(String.valueOf(obj.getId()), value).apply();
+                    obj.setCheck(value);
                     i--;
                 }
+                rows.add(obj);
             }
         }
     }

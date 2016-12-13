@@ -255,11 +255,11 @@ public class MenuHomeActivity extends AppCompatActivity
         FragmentManager fragmentManager =  null;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-       /* if (countPreference()<=3){
+        if (countPreference()<=3){
             Toast.makeText(MenuHomeActivity.this, R.string.msg_select_category, Toast.LENGTH_SHORT).show();
             drawer.closeDrawers();
             return false;
-        }*/
+        }
 
         switch (item.getItemId()){
             case R.id.nav_home:

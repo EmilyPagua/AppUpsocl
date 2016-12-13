@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,11 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,8 +46,6 @@ import com.upsocl.upsoclapp.R;
 import com.upsocl.upsoclapp.domain.News;
 import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.ui.ViewConstants;
-
-import static java.lang.Thread.sleep;
 
 /**
  * Created by emily.pagua on 21-10-16.
