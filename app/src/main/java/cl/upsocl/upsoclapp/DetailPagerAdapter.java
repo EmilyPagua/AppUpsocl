@@ -42,17 +42,13 @@ public class DetailPagerAdapter extends AppCompatActivity {
         this.setContentView(R.layout.main);
         List<News> newsList = new ArrayList<>();
 
-        News newsPrimary = gs.fromJson(getIntent().getStringExtra("new"), News.class);
-        News newsSegundary = gs.fromJson(getIntent().getStringExtra("newsSegundary"), News.class);
-        News newsThree = gs.fromJson(getIntent().getStringExtra("newsThree"), News.class);
-        News newsFour = gs.fromJson(getIntent().getStringExtra("newsFour"), News.class);
-        News newsFive = gs.fromJson(getIntent().getStringExtra("newsFive"), News.class);
+        int lenght = getIntent().getIntExtra("lenght",0);
+        int position = getIntent().getIntExtra("position",0);
 
-        newsList.add(newsPrimary);
-        newsList.add(newsSegundary);
-        newsList.add(newsThree);
-       // newsList.add(newsFour);
-        //newsList.add(newsFive);
+        for(int i=position; i<position+lenght; i++){
+            News news = gs.fromJson(getIntent().getStringExtra("pos_"+i), News.class);
+            newsList.add(news);
+        }
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager(), newsList);
@@ -85,6 +81,7 @@ public class DetailPagerAdapter extends AppCompatActivity {
                 return null;
             }
         }
+
         @Override
         public int getCount() {
             return newsList.size();
@@ -98,14 +95,7 @@ public class DetailPagerAdapter extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         Log.e("DetailPagerAdapter onStop", "onStop");
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.onDestroy();
-        Log.e("DetailPagerAdapter onDestroy", "onDestroy");
-    }
 }

@@ -109,7 +109,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                    btn_women,   btn_colaboration,       btn_inspiration, btn_health, btn_relations,
                    btn_family,  btn_creativity, btn_beauty,      btn_diversity, btn_movies, btn_styleLive;
 
-   // FIXME private ArrayList<Interests> listOptions =  new ArrayList<>();
     private CategoryList listOptions = new CategoryList();
 
     private Integer countCategorySelected;
@@ -327,7 +326,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     //END RegistrationToken Wordpress
     private void uploadData() {
 
-        //Fixme listOptions = (ArrayList<Interests>) new Interests().createList();
         SharedPreferences prefs =  getSharedPreferences(listOptions.INTERESTS , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.clear().apply();
@@ -758,7 +756,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     @Override
     public void failure(RetrofitError error) {
-        //System.out.println(" Error" + error);
+        Log.e(TAG, error.getMessage());
     }
 
     private void savePreferencesNotifications(){

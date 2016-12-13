@@ -58,6 +58,7 @@ public class CategoryList {
     }
 
     public List<Category> getCategoryList() {
+        createCategoryList();
         return categoryList;
     }
 

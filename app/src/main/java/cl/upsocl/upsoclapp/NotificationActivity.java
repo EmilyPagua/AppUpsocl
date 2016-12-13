@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,9 +38,6 @@ import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.upsoclapp.AnalyticsApplication;
@@ -69,7 +65,7 @@ public class NotificationActivity extends TaskActivityCompat {
 
     boolean isBookmarks = false;
     // [START shared_tracker]
-    private Tracker mTracker;
+    ReportAnalytics analytics;
 
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
         @Override
@@ -114,6 +110,7 @@ public class NotificationActivity extends TaskActivityCompat {
 
             loadAdView(R.id.adViewNotificationUp);
             loadAdView(R.id.adViewNotification);
+
             loadWebView(news);
 
             handler.postAtFrontOfQueue(new Runnable() {
@@ -126,9 +123,8 @@ public class NotificationActivity extends TaskActivityCompat {
 
             // [START shared_tracker]
             AnalyticsApplication application = (AnalyticsApplication) getApplicationContext();
-            mTracker = application.getDefaultTracker();
-
-            sendReportGoogleAnalytics(news.getLink(), "ClickPost");
+            analytics = new ReportAnalytics(application, this);
+            analytics.sendReportGoogleAnalytics(news.getLink(), "ClickPost");
         }
     }
 
@@ -243,6 +239,8 @@ public class NotificationActivity extends TaskActivityCompat {
                 webView.getSettings().setUseWideViewPort(true);
                 webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
                 webView.getSettings().setSaveFormData(false);
+                webView.getSettings().setDomStorageEnabled(true);
+
                 webView.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", "");
                 webView.setWebViewClient(new WebViewClient(){
                     @Override
@@ -352,7 +350,7 @@ public class NotificationActivity extends TaskActivityCompat {
     }
 
     private void createShareIntent(){
-        sendReportGoogleAnalytics(news.getLink(),"CompartirOtrosMedios" );
+        analytics.sendReportGoogleAnalytics(news.getLink(),"CompartirOtrosMedios" );
 
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -374,7 +372,7 @@ public class NotificationActivity extends TaskActivityCompat {
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
 
-            sendReportGoogleAnalytics(news.getLink(), "CompartirBotonFacebook");
+            analytics.sendReportGoogleAnalytics(news.getLink(), "CompartirBotonFacebook");
 
             ShareDialog shareDialog = new ShareDialog(this);
 
@@ -387,19 +385,4 @@ public class NotificationActivity extends TaskActivityCompat {
             shareDialog.show(linkContent);
         }
     }
-
-    public void sendReportGoogleAnalytics(String link, String category) {
-
-        // [START custom_event]
-        mTracker.setScreenName(link);
-        mTracker.setReferrer(link);
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setLabel(link)
-                .setCategory(link)
-                .setAction(category)
-                .build());
-
-        GoogleAnalytics.getInstance(this).dispatchLocalHits();
-    }
-
 }

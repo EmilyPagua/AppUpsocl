@@ -23,7 +23,7 @@ public interface WordpressService {
     void getListWord(@Query(ApiConstants.FILTER_WORD) String word, @Query(ApiConstants.PAGE) int page, Callback<ArrayList<News>> response);
 
     @GET(ApiConstants.FILTER_POST)
-    void getPost(@Path("id") String page, Callback<News> response);
+    void getPost(@Path("id") String idPost, Callback<News> response);
 
     @GET(ApiConstants.FILTER_PAGES)
     void getTerminos(@Path("id")String page, Callback<News> response);
@@ -43,6 +43,4 @@ public interface WordpressService {
 
     @GET(ApiConstants.CUSTOMER)
     void getCustomerById(@Query(ApiConstants.CUSTOMER_ID) Integer idUser, Callback<Customer> response );
-
-    //http://upsocl.com/wp-json/wp/v2/pages/445196
 }

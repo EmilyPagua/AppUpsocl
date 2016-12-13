@@ -127,33 +127,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                     } else {
                         Intent intent = new Intent(view.getContext(), DetailPagerAdapter.class);
 
-                        int lenght = 1;
-                        String target = gS.toJson(newsObj);
-                        intent.putExtra("new", target);
+                        int lenght = 0;
                         intent.putExtra("position", position);
                         intent.putExtra("isBookmarks", false);
 
-                        if (newsArrayList.size() > position + 1 && newsArrayList.get(position + 1) != null) {
-                            intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position + 1)));
-                            lenght++;
+                        for (int i=position; i<position+3;i++) {
+                            if (newsArrayList.size() > i) {
+                                intent.putExtra("pos_"+i, gS.toJson(newsArrayList.get(i)));
+                                lenght++;
+                            }
                         }
 
-                        if (newsArrayList.size() > position + 2 && newsArrayList.get(position + 2) != null) {
-                            intent.putExtra("newsThree", gS.toJson(newsArrayList.get(position + 2)));
-                            lenght++;
-                        }
-
-                        /*if (newsArrayList.size() > position + 3 && newsArrayList.get(position + 3) != null) {
-                            intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position + 3)));
-                            lenght++;
-                        }
-
-                        if (newsArrayList.size() > position + 4 && newsArrayList.get(position + 4) != null) {
-                            intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position + 4)));
-                            lenght++;
-                        }*/
-
-                        intent.putExtra("leght", lenght);
+                        intent.putExtra("lenght", lenght);
                         view.getContext().startActivity(intent);
                     }
                 }

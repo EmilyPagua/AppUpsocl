@@ -39,9 +39,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
         } catch (IOException e) {
             Log.e(TAG + " doInBackground", e.getMessage());
-            e.printStackTrace();
         }
-
         return mIcon11;
     }
 

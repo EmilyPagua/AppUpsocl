@@ -141,8 +141,6 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
     public void success(News news, Response response) {
         if (news!=null){
 
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
             Gson gS = new Gson();
             String newsJson = gS.toJson(news);
 
@@ -162,44 +160,12 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
                         Preferences.NOTI_ICON,
                         R.drawable.ic_notifications_active_white_24dp);
             }
-
-            /*
-            SharedPreferences prefs =  getSharedPreferences(Preferences.NOTIFICATIONS, Context.MODE_PRIVATE);
-            Date date = new Date();
-            Date dateLast = null;
-            try {
-                dateLast = formatter.parse(prefs.getString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)));
-                if (dateLast==null){
-                    SharedPreferences.Editor editor =  prefs.edit();
-                    editor.putString(Preferences.NOTIFICATIONS_LAST_DATE,formatter.format(date)).apply();
-                    dateLast = date;
-                }
-
-            } catch (ParseException e) {
-                Log.e(TAG +" success",  e.getMessage());
-            }
-            int rest = 0;
-            if (dateLast != null){
-                rest = getLastDayNotification(dateLast, date );
-            }
-
-            int frecuency = prefs.getInt(Preferences.NOTIFICATIONS_FRECUENCY,1);
-
-            if (rest == 0 || rest >= frecuency){
-                SharedPreferences.Editor editor =  prefs.edit();
-                editor.putString(Preferences.NOTI_ID_POST,idPost).apply();
-                editor.putInt(Preferences.NOTI_ID,idMessage).apply();
-                editor.putString(Preferences.NOTI_DATA,newsJson).apply();
-                editor.putInt(Preferences.NOTI_ICON,R.drawable.ic_notifications_active_white_24dp).apply();
-                sendNotification(message, contentTitle, idMessage);
-            }*/
         }
     }
 
-
     @Override
     public void failure(RetrofitError error) {
-        System.out.println("Error MyGcmListenerService: "+ error);
+        Log.e("MyGcmListenerService: ", error.getMessage());
     }
 
     public void loadPosts(String idPost){
@@ -207,11 +173,6 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
             WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getPost(idPost, this);
     }
 
-    public static int getLastDayNotification(Date fechaMayor, Date fechaMenor) {
-        long diferenciaEn_ms = fechaMayor.getTime() - fechaMenor.getTime();
-        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24) *  (-1);
-        return (int) dias;
-    }
 }
 
 

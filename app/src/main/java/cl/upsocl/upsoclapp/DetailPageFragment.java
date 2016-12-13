@@ -44,9 +44,6 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.upsocl.upsoclapp.AnalyticsApplication;
@@ -72,11 +69,8 @@ public class DetailPageFragment extends Fragment {
 
     private Gson gs = new Gson();
 
-    private AdView mAdView;
     private ProgressBar progresNew;
     private WebView webViewNew;
-
-    private String html = "";
 
     //Element Facebook
     CallbackManager callbackManager;
@@ -87,7 +81,7 @@ public class DetailPageFragment extends Fragment {
     private Boolean  loadAdViewUp = false;
 
     private ViewGroup rootView;
-    private WebView webView;
+    private LinearLayout layout;
 
 
     private static FacebookCallback<Sharer.Result> resultFacebookCallback = new FacebookCallback<Sharer.Result>(){
@@ -109,7 +103,9 @@ public class DetailPageFragment extends Fragment {
     //End Element Facebook
 
     // [START shared_tracker]
-    private Tracker mTracker;
+    ReportAnalytics analytics;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,10 +137,9 @@ public class DetailPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container,false);
-        final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.viewDetailLinear);
+        layout = (LinearLayout) rootView.findViewById(R.id.viewDetailLinear);
 
         progresNew = (ProgressBar) rootView.findViewById(R.id.progressBarPost);
-
         handler.postAtFrontOfQueue(new Runnable() {
             @Override
             public void run() {
@@ -153,78 +148,19 @@ public class DetailPageFragment extends Fragment {
             }
         });
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                new loadAdMob().execute(layout);
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        AdRequest adRequest = new AdRequest.Builder().build();
-                        adViewUp = new AdView(DetailPageFragment.this.getContext());
-                        adViewUp.setAdSize(AdSize.MEDIUM_RECTANGLE);
-                        adViewUp.setAdUnitId(getString(R.string.banner_up));
-                        adViewUp.setPadding(0, 0, 3, 0);
-                        adViewUp.loadAd(adRequest);
-                        adViewUp.setVisibility(View.GONE);
-                        adViewUp.setAdListener(new AdListener() {
-                            @Override
-                            public void onAdClosed() {
-                                super.onAdClosed();
-                            }
-
-                            @Override
-                            public void onAdFailedToLoad(int i) {
-                                super.onAdFailedToLoad(i);
-                            }
-
-                            @Override
-                            public void onAdLeftApplication() {
-                                super.onAdLeftApplication();
-                            }
-
-                            @Override
-                            public void onAdOpened() {
-                                super.onAdOpened();
-                            }
-
-                            @Override
-                            public void onAdLoaded() {
-                                super.onAdLoaded();
-
-                                loadAdViewUp =  true;
-                            }
-                        });
-
-                        layout.addView(adViewUp);
-
-                    }
-                });
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            loadWebView(layout);
-                        }catch (Exception e){
-                            Log.e(TAG + " comeBack", e.getMessage());
-                        }
-                    }
-                });
-            }
-        }).start();
-
+        loadAdView();
+        loadWebView(layout);
 
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainerPost);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 webViewNew.reload();
+                adViewUp.refreshDrawableState();
                 swipeContainer.setRefreshing(false);
             }
         });
+
         //Content Faceboook
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -234,7 +170,8 @@ public class DetailPageFragment extends Fragment {
 
         // [START shared_tracker]
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
-        mTracker = application.getDefaultTracker();
+        analytics = new ReportAnalytics(application, this.getContext());
+
 
         flag_bookmarks = false;
         manager =  new PreferencesManager(getContext().getApplicationContext());
@@ -253,8 +190,45 @@ public class DetailPageFragment extends Fragment {
             }
         });
         loadButton(rootView);
-
         return  rootView;
+    }
+
+    private void loadAdView() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adViewUp = new AdView(DetailPageFragment.this.getContext());
+                adViewUp.setAdSize(AdSize.MEDIUM_RECTANGLE);
+                adViewUp.setAdUnitId(getString(R.string.banner_up));
+                adViewUp.setPadding(0, 0, 3, 0);
+                adViewUp.loadAd(adRequest);
+                adViewUp.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        super.onAdFailedToLoad(i);
+                        adViewUp.setVisibility(View.GONE);
+                        progresNew.setVisibility(View.GONE);
+                        webViewNew.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        loadAdViewUp =  true;
+                        layout.addView(adViewUp);
+                        progresNew.setVisibility(View.GONE);
+                        webViewNew.setVisibility(View.VISIBLE);
+                    }
+                });
+
+            }
+        });
     }
 
 
@@ -303,9 +277,6 @@ public class DetailPageFragment extends Fragment {
                 layoutParams.setMargins(30,20,30,0);
 
                 webViewNew.setLayoutParams(layoutParams);
-                webViewNew.clearHistory();
-                webViewNew.clearCache(true);
-                webViewNew.clearFormData();
 
                 webViewNew.getSettings().setJavaScriptEnabled(true);
                 webViewNew.getSettings().setLoadWithOverviewMode(true);
@@ -315,7 +286,7 @@ public class DetailPageFragment extends Fragment {
 
                 if (news!=null) {
 
-                    sendReportGoogleAnalytics(news.getLink(), "ClickPost");
+                    analytics.sendReportGoogleAnalytics(news.getLink(), "ClickPost");
 
                     String html = createContentHTML();
                     html = html.replace("\\\"", "\"").replace("\\n", "\n");
@@ -323,35 +294,8 @@ public class DetailPageFragment extends Fragment {
 
                     webViewNew.loadDataWithBaseURL("http://api.instagram.com/oembed", html, "text/html", "UTF-8", null);
                     layout.addView(webViewNew);
-                    webViewNew.setWebViewClient(new WebViewClient(){
-                        @Override
-                        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                            super.onReceivedError(view, request, error);
-                            Log.e(TAG + " DetailPageFragment webView", error.toString());
-                        }
-
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            super.onPageFinished(view, url);
-                            try
-                            {
-                                sleep(1000);
-                                progresNew.setVisibility(View.GONE);
-                                webViewNew.setVisibility(View.VISIBLE);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                Log.e(TAG, "Try del progress bar");
-                            }
-                        }
-
-                        @Override
-                        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                            super.onReceivedError(view, errorCode, description, failingUrl);
-                            Log.e(TAG + " webView", description);
-                        }
-                    });
-                    webViewNew.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+                    //webViewNew.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+                    //webViewNew.setVisibility(View.GONE);
                 }
             }
         });
@@ -369,29 +313,15 @@ public class DetailPageFragment extends Fragment {
     /** Called before the activity is destroyed */
    @Override
     public void onDestroy() {
-
-       Log.e(TAG + " loadImageView ", "DESTRUIR TODO");
-       if (webViewNew!=null){
-           webViewNew.clearView();
-       }
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-
-        super.onDestroy();
+       super.onDestroy();
     }
 
     @Override
     public void onPause() {
-        Log.e(TAG + " loadImageView ", "PAUSAR TODO");
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        if (webViewNew!=null){
-            webViewNew.destroy();
-        }
-
         super.onPause();
+        if (webViewNew!=null){
+            webViewNew.clearView();
+        }
     }
 
     @Override
@@ -416,7 +346,8 @@ public class DetailPageFragment extends Fragment {
 
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             // [START custom_event]
-            sendReportGoogleAnalytics(news.getLink(), "CompartirBotonFacebook");
+            analytics.sendReportGoogleAnalytics(news.getLink(), "CompartirBotonFacebook");
+
             // [END custom_event]
 
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
@@ -429,25 +360,10 @@ public class DetailPageFragment extends Fragment {
         }
     }
 
-    public void sendReportGoogleAnalytics(String link, String category) {
-
-        // [START custom_event]
-
-        mTracker.setScreenName(link);
-        mTracker.setReferrer(link);
-        mTracker.send(new HitBuilders.EventBuilder()
-                .setLabel(link)
-                .setCategory(link)
-                .setAction(category)
-                .build());
-
-        GoogleAnalytics.getInstance(this.getActivity()).dispatchLocalHits();
-    }
-
 
     private void createShareIntent(){
 
-        sendReportGoogleAnalytics(news.getLink(),"CompartirOtrosMedios" );
+        analytics.sendReportGoogleAnalytics(news.getLink(),"CompartirOtrosMedios" );
 
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -519,21 +435,22 @@ public class DetailPageFragment extends Fragment {
         }catch (Exception e){
             Log.e(TAG + "loadImageView ", e.getMessage());
         }
-
     }
 
     private void loadDetail(News news) {
+        String author = "",date= "",category;
         TextView title = (TextView) rootView.findViewById(R.id.detailTextView);
         if (news!=null)
         title.setText(news.getTitle());
 
         TextView detail = (TextView) rootView.findViewById(R.id.detail);
-        String author = "Por: " + news.getAuthor();
-        String date = "El: " + news.getDate();
-        String category = news.getCategories();
+        if (news.getAuthor()!=null)
+            author = "Por: " + news.getAuthor();
+        if (news.getDate()!=null)
+            date = "El: " + news.getDate();
 
-        if (category!=null && !category.equals(""))
-            category = "Categorias: " + category;
+        if (news.getCategories()!=null && !news.getCategories().equals("") )
+            category = "Categorias: " + news.getCategories();
         else
             category = "Categorias: " + "Popular";
 
@@ -545,89 +462,5 @@ public class DetailPageFragment extends Fragment {
         SpannableStringBuilder result = new SpannableStringBuilder(spanned);
 
         detail.setText(result, TextView.BufferType.SPANNABLE);
-
     }
-
-
-    private class loadAdMob  extends AsyncTask <LinearLayout, Integer, Boolean> {
-
-        private AdView adView;
-        private AdRequest adRequest;
-        private LinearLayout layout;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            try {
-                adRequest = new AdRequest.Builder().build();
-                adView = new AdView(DetailPageFragment.this.getContext());
-                adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
-                adView.setAdUnitId(getString(R.string.banner_down));
-                adView.setPadding(0, 0, 0, 3);
-            }
-            catch (Exception e){
-                Log.e("loadAdMob onAdFailedToLoad", e.getMessage());
-                adView = null;
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(LinearLayout... voids) {
-            layout = voids[0];
-
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        if (adView!=null && adRequest!=null) {
-                            adView.loadAd(adRequest);
-                            adView.setAdListener(new AdListener() {
-
-                                @Override
-                                public void onAdFailedToLoad(int i) {
-                                    Log.e(TAG + "  loadAdMob onAdFailedToLoad", String.valueOf(i));
-                                    super.onAdFailedToLoad(i);
-                                    if (webViewNew.getVisibility() == View.GONE){
-                                        webViewNew.setVisibility(View.VISIBLE);
-                                        progresNew.setVisibility(View.GONE);
-                                    }
-                                    new loadAdMob().execute(layout);
-                                }
-                                @Override
-                                public void onAdLoaded() {
-                                    super.onAdLoaded();
-                                    if (loadAdViewUp)
-                                        adViewUp.setVisibility(View.VISIBLE);
-
-                                    webViewNew.setVisibility(View.VISIBLE);
-                                    adView.setVisibility(View.VISIBLE);
-                                    progresNew.setVisibility(View.GONE);
-                                    layout.addView(adView);
-
-                                }
-                                @Override
-                                public void onAdLeftApplication() {
-                                    super.onAdLeftApplication();
-                                }
-
-                                @Override
-                                public void onAdOpened() {
-                                    super.onAdOpened();
-                                }
-                            });
-                        }
-                    }catch (Exception e){
-                        Log.e(TAG + " loadAdMob onAdFailedToLoad", e.getMessage());
-                    }
-                }
-            });
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-        }
-    }
-
 }

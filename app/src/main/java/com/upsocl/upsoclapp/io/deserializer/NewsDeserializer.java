@@ -82,7 +82,6 @@ public class NewsDeserializer implements JsonDeserializer<News> {
 
         Date date;
         try {
-
             date = formatter.parse(dateInString.substring(1, 11 ));
             return formatter2.format(date);
 
