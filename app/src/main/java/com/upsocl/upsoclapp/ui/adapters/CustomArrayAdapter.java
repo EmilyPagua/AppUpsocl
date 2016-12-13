@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.upsocl.upsoclapp.R;
-import com.upsocl.upsoclapp.domain.Interests;
+import com.upsocl.upsoclapp.domain.Category;
 
 
 import java.util.List;
@@ -22,13 +22,13 @@ import java.util.List;
  * Created by emily.pagua on 22-08-16.
  */
 @SuppressWarnings("NullableProblems")
-public class CustomArrayAdapter extends ArrayAdapter<Interests> implements View.OnClickListener{
+public class CustomArrayAdapter extends ArrayAdapter<Category> implements View.OnClickListener{
 
     private LayoutInflater layoutInflater;
     private SharedPreferences preferences;
 
 
-    public CustomArrayAdapter(Context context, List<Interests> objects) {
+    public CustomArrayAdapter(Context context, List<Category> objects) {
         super(context,0,objects);
         layoutInflater = LayoutInflater.from(context);
     }
@@ -51,14 +51,14 @@ public class CustomArrayAdapter extends ArrayAdapter<Interests> implements View.
             holder =  (Holder) convertView.getTag();
         }
 
-        final Interests row = getItem(position);
-        holder.getTextViewTitle().setText(row.getTitle());
+        final Category row = getItem(position);
+        holder.getTextViewTitle().setText(row.getName());
 
         holder.getCheckBox().setTag(position);
-        holder.getCheckBox().setChecked(row.getIsCheck());
+        holder.getCheckBox().setChecked(row.getCheck());
         holder.getCheckBox().setOnClickListener(this);
 
-        holder.getImageView().setImageResource(row.getImagen());
+        holder.getImageView().setImageResource(row.getImage());
 
         return convertView;
     }
@@ -68,10 +68,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Interests> implements View.
 
         CheckBox checkBox =  (CheckBox) view;
         int position  = (Integer) view.getTag();
-        getItem(position).setIsCheck(checkBox.isChecked());
+        getItem(position).setCheck(checkBox.isChecked());
 
-        Toast.makeText(this.getContext(), "Ha seleccionado: " + getItem(position).getTitle(), Toast.LENGTH_LONG).show();
-        savePreferences(getItem(position).getId(),getItem(position).getIsCheck());
+        Toast.makeText(this.getContext(), "Ha seleccionado: " + getItem(position).getName(), Toast.LENGTH_LONG).show();
+        savePreferences(getItem(position).getId(),getItem(position).getCheck());
 
     }
 

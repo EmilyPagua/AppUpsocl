@@ -64,11 +64,10 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
-import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.domain.UserLogin;
 import com.upsocl.upsoclapp.io.ApiConstants;
 import com.upsocl.upsoclapp.io.WordpressApiAdapter;
-import com.upsocl.upsoclapp.keys.CategoryKeys;
+import com.upsocl.upsoclapp.domain.CategoryList;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.notification.QuickstartPreferences;
@@ -82,7 +81,6 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -111,7 +109,8 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
                    btn_women,   btn_colaboration,       btn_inspiration, btn_health, btn_relations,
                    btn_family,  btn_creativity, btn_beauty,      btn_diversity, btn_movies, btn_styleLive;
 
-    private ArrayList<Interests> listOptions =  new ArrayList<>();
+   // FIXME private ArrayList<Interests> listOptions =  new ArrayList<>();
+    private CategoryList listOptions = new CategoryList();
 
     private Integer countCategorySelected;
 
@@ -167,6 +166,8 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         //LoginManager.getInstance().logOut();
 
+        listOptions.createCategoryList();
+
         setContentView(R.layout.activity_create_perfil);
 
         error =getIntent().getIntExtra("error",0);
@@ -200,8 +201,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
         if (isConnect()){
             //-------------------------FACEBOOOK LOGIN
-
-
             LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
             callbackManager = null;
             callbackManager = CallbackManager.Factory.create();
@@ -229,9 +228,6 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
             profileTracker.startTracking();
 
             createCallbackFacebook();
-
-
-
             loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email", "user_birthday", "user_location"));
             loginButton.registerCallback(callbackManager, callback);
 
@@ -331,15 +327,15 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     //END RegistrationToken Wordpress
     private void uploadData() {
 
-        listOptions = (ArrayList<Interests>) new Interests().createList();
-        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        //Fixme listOptions = (ArrayList<Interests>) new Interests().createList();
+        SharedPreferences prefs =  getSharedPreferences(listOptions.INTERESTS , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.clear().apply();
-        int sizeList =  listOptions.size();
+        int sizeList =  listOptions.getCategoryList().size();
         for (int i =0; i<sizeList; i++){
-            editor.putBoolean(String.valueOf(listOptions.get(i).getId()), false).apply();
+            editor.putBoolean(String.valueOf(listOptions.getCategoryList().get(i).getId()), false).apply();
         }
-        editor.putInt(Interests.INTERESTS_SIZE, Interests.INTERESTS_SIZE_VALUE).apply();
+        editor.putInt(listOptions.INTERESTS_SIZE, listOptions.INTERESTS_SIZE_VALUE).apply();
 
         SharedPreferences prefsUser =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorUser =  prefsUser.edit();
@@ -674,7 +670,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (listOptions.size()>=3){
+        if (listOptions.getCategoryList().size()>=3){
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
@@ -798,97 +794,102 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
     }
 
     public void btnCuture(View view){
-        changeStatusButton(CategoryKeys.OPT_CULTURA,btn_culture);
+        changeStatusButton(CategoryList.OPT_CULTURA,btn_culture);
     }
 
     public void btnCommunity(View view){
 
-        changeStatusButton(CategoryKeys.OPT_COMMUNITY,btn_community);
+        changeStatusButton(CategoryList.OPT_COMMUNITY,btn_community);
     }
 
     public void btnQuiz(View view){
-        changeStatusButton(CategoryKeys.OPT_QUIZ,btn_quiz);
+        changeStatusButton(CategoryList.OPT_QUIZ,btn_quiz);
     }
 
     public void bntWorl(View view){
-        changeStatusButton(CategoryKeys.OPT_WORLD,btn_world);
+        changeStatusButton(CategoryList.OPT_WORLD,btn_world);
     }
 
     public void btnWomen(View view){
-        changeStatusButton(CategoryKeys.OPT_WOMEN,btn_women);
+        changeStatusButton(CategoryList.OPT_WOMEN,btn_women);
     }
 
     public void btnDiversity(View view){
-        changeStatusButton(CategoryKeys.OPT_DIVERSITY,btn_diversity);
+        changeStatusButton(CategoryList.OPT_DIVERSITY,btn_diversity);
     }
 
     public void btnGreen(View view){
-        changeStatusButton(CategoryKeys.OPT_GREEN,btn_green);
+        changeStatusButton(CategoryList.OPT_GREEN,btn_green);
     }
 
     public void btnColaboration(View view){
 
-        changeStatusButton(CategoryKeys.OPT_COLABORATION,btn_colaboration);
+        changeStatusButton(CategoryList.OPT_COLABORATION,btn_colaboration);
     }
 
     public void btnInspiration(View view){
 
-        changeStatusButton(CategoryKeys.OPT_INSPIRATION,btn_inspiration);
+        changeStatusButton(CategoryList.OPT_INSPIRATION,btn_inspiration);
     }
 
     public void btnHealth(View view){
-        changeStatusButton(CategoryKeys.OPT_HEALTH, btn_health);
+        changeStatusButton(CategoryList.OPT_HEALTH, btn_health);
     }
 
     public void btnRelations(View view){
 
-        changeStatusButton(CategoryKeys.OPT_RELATIONS, btn_relations);
+        changeStatusButton(CategoryList.OPT_RELATIONS, btn_relations);
     }
 
     public void btnFamily(View view){
-        changeStatusButton(CategoryKeys.OPT_FAMILY, btn_family);
+        changeStatusButton(CategoryList.OPT_FAMILY, btn_family);
     }
 
     public void btnCreativity(View view){
-        changeStatusButton(CategoryKeys.OPT_CREATIVITY, btn_creativity);
+        changeStatusButton(CategoryList.OPT_CREATIVITY, btn_creativity);
     }
     public void btnBeauty(View view){
-        changeStatusButton(CategoryKeys.OPT_BEAUTY, btn_beauty);
+        changeStatusButton(CategoryList.OPT_BEAUTY, btn_beauty);
     }
 
     public void btnMovies(View view){
-        changeStatusButton(CategoryKeys.OPT_MOVIES, btn_movies);
+        changeStatusButton(CategoryList.OPT_MOVIES, btn_movies);
     }
 
     public void btnStyleLive(View view){
-        changeStatusButton(CategoryKeys.OPT_STYLELIVE, btn_styleLive);
+        changeStatusButton(CategoryList.OPT_STYLELIVE, btn_styleLive);
     }
 
     private void changeStatusButton(String optCultura, Button button) {
 
-        if (changeListOpt(optCultura)){
-            button.setBackground(getResources().getDrawable(R.drawable.boton_desahabilitado));
-            button.setTextColor(Color.WHITE);
-        } else{
-            button.setBackground(getResources().getDrawable(R.drawable.boton_normal));
-            button.setTextColor(Color.BLACK);
+        try{
+            if (changeListOpt(optCultura)){
+                button.setBackground(getResources().getDrawable(R.drawable.boton_desahabilitado));
+                button.setTextColor(Color.WHITE);
+            } else{
+                button.setBackground(getResources().getDrawable(R.drawable.boton_normal));
+                button.setTextColor(Color.BLACK);
+            }
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
         }
+
     }
 
     private Boolean changeListOpt(String option) {
         boolean flag= true;
 
-        for (int i=0;i< listOptions.size(); i++){
-            if (listOptions.get(i).getTitle().equals(option)){
-                if (listOptions.get(i).getIsCheck().equals(true)){
+        for (int i=0;i< listOptions.getCategoryList().size(); i++){
+            if (listOptions.getCategoryList().get(i).getName().equals(option)){
+                if (listOptions.getCategoryList().get(i).getCheck().equals(true)){
                     flag=false;
                     countCategorySelected --;
                 }
                 else{
                     countCategorySelected ++;
                 }
-                listOptions.get(i).setIsCheck(flag);
-                saveInterests(listOptions.get(i).getId(),flag);
+                listOptions.getCategoryList().get(i).setCheck(flag);
+                saveInterests(listOptions.getCategoryList().get(i).getId(),flag);
             }
         }
 
@@ -902,7 +903,7 @@ public class CreateProfile extends AppCompatActivity implements Callback<JsonObj
 
     private void saveInterests(int objet, boolean flag){
 
-        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        SharedPreferences prefs =  getSharedPreferences(listOptions.INTERESTS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor =  prefs.edit();
         editor.putBoolean(String.valueOf(objet), flag).apply();
     }

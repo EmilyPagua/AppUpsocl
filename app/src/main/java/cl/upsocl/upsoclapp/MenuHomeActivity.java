@@ -25,9 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -63,8 +61,8 @@ import com.google.android.gms.plus.Plus;
 import com.google.gson.Gson;
 import com.upsocl.upsoclapp.MainActivity;
 import com.upsocl.upsoclapp.R;
-import com.upsocl.upsoclapp.domain.Interests;
 import com.upsocl.upsoclapp.domain.News;
+import com.upsocl.upsoclapp.domain.CategoryList;
 import com.upsocl.upsoclapp.keys.CustomerKeys;
 import com.upsocl.upsoclapp.keys.Preferences;
 import com.upsocl.upsoclapp.notification.QuickstartPreferences;
@@ -78,8 +76,6 @@ import com.upsocl.upsoclapp.ui.fragments.PreferencesFragment;
 import com.upsocl.upsoclapp.ui.fragments.PrivacyFragment;
 
 import java.util.Map;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by emily.pagua on 21-90-16.
@@ -300,7 +296,7 @@ public class MenuHomeActivity extends AppCompatActivity
                 Toast.makeText(MenuHomeActivity.this, R.string.msg_selected_category_preferences, Toast.LENGTH_SHORT).show();
                 visibleGoneElement();
 
-                SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+                SharedPreferences prefs =  getSharedPreferences(CategoryList.INTERESTS, Context.MODE_PRIVATE);
                 InterestsListViewFragment viewFragment = new InterestsListViewFragment();
                 viewFragment.setPreferences(prefs);
                 fragment =  viewFragment;
@@ -428,19 +424,19 @@ public class MenuHomeActivity extends AppCompatActivity
 
     private void uploadPreferencesUser() {
         prefs = getSharedPreferences(Preferences.BOOKMARKS, Context.MODE_PRIVATE);
-        prefsInterests = getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        prefsInterests = getSharedPreferences(CategoryList.INTERESTS, Context.MODE_PRIVATE);
         prefsUser = getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
     }
 
     private int countPreference() {
-        SharedPreferences prefs =  getSharedPreferences(Interests.INTERESTS, Context.MODE_PRIVATE);
+        SharedPreferences prefs =  getSharedPreferences(CategoryList.INTERESTS, Context.MODE_PRIVATE);
         Map<String, ?> map = prefs.getAll();
         map.size();
         int i = 1;
 
         for (Map.Entry<String, ?> e: map.entrySet()) {
 
-            if (!e.getKey().equals(Interests.INTERESTS_SIZE) && e.getValue().equals(true)){
+            if (!e.getKey().equals(CategoryList.INTERESTS_SIZE) && e.getValue().equals(true)){
                 i++;
             }
         }

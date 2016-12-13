@@ -108,6 +108,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                 public void onClick(View view) {
 
                     Gson gS = new Gson();
+                    /*Intent intent = new Intent(context, NotificationActivity.class);
+                    String target = gS.toJson(newsObj);
+                    intent.putExtra("new", target);
+                    intent.putExtra("position","0");
+                    intent.putExtra("isBookmarks",true);
+                    intent.putExtra("leght",1);
+                    view.getContext().startActivity(intent); */
+
                     if (android.os.Build.VERSION.SDK_INT <= 21) {
                         Intent intent = new Intent(context, NotificationActivity.class);
                         String target = gS.toJson(newsObj);
@@ -135,7 +143,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                             lenght++;
                         }
 
-                        if (newsArrayList.size() > position + 3 && newsArrayList.get(position + 3) != null) {
+                        /*if (newsArrayList.size() > position + 3 && newsArrayList.get(position + 3) != null) {
                             intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position + 3)));
                             lenght++;
                         }
@@ -143,35 +151,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
                         if (newsArrayList.size() > position + 4 && newsArrayList.get(position + 4) != null) {
                             intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position + 4)));
                             lenght++;
-                        }
+                        }*/
 
                         intent.putExtra("leght", lenght);
                         view.getContext().startActivity(intent);
-
-
-                    /*Intent intent = new Intent(view.getContext(), DetailPostActivity.class);
-                    int lenght = 1;
-                    Gson gS = new Gson();
-                    String target = gS.toJson(newsObj);
-                    intent.putExtra("new", target);
-                    intent.putExtra("position",position);
-                    intent.putExtra("isBookmarks",false);
-
-                    if (newsArrayList.size()>position+1 && newsArrayList.get(position+1)!=null){
-                        intent.putExtra("newsSegundary", gS.toJson(newsArrayList.get(position+1)));
-                        lenght++;}
-
-                    if (newsArrayList.size()>position+2 && newsArrayList.get(position+2)!=null){
-                        intent.putExtra("newsThree", gS.toJson(newsArrayList.get(position+2)));lenght++;}
-
-                    if (newsArrayList.size()>position+3 && newsArrayList.get(position+3)!=null){
-                        intent.putExtra("newsFour", gS.toJson(newsArrayList.get(position+3)));lenght++;}
-
-                    if (newsArrayList.size()>position+4 && newsArrayList.get(position+4)!=null){
-                        intent.putExtra("newsFive", gS.toJson(newsArrayList.get(position+4)));lenght++;}
-
-                    intent.putExtra("leght",lenght);
-                    view.getContext().startActivity(intent);*/
                     }
                 }
             });

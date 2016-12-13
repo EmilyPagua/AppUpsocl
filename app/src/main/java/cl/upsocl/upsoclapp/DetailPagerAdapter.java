@@ -51,8 +51,8 @@ public class DetailPagerAdapter extends AppCompatActivity {
         newsList.add(newsPrimary);
         newsList.add(newsSegundary);
         newsList.add(newsThree);
-        newsList.add(newsFour);
-        newsList.add(newsFive);
+       // newsList.add(newsFour);
+        //newsList.add(newsFive);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager(), newsList);
@@ -98,12 +98,14 @@ public class DetailPagerAdapter extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
         Log.e("DetailPagerAdapter onStop", "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        this.onDestroy();
         Log.e("DetailPagerAdapter onDestroy", "onDestroy");
     }
 }

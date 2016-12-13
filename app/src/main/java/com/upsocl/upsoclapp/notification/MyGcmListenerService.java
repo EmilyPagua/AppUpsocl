@@ -81,7 +81,7 @@ public class MyGcmListenerService extends GcmListenerService implements Callback
 
         SharedPreferences prefs =  getSharedPreferences(Preferences.DATA_USER, Context.MODE_PRIVATE);
         String token = prefs.getString(CustomerKeys.DATA_USER_TOKEN,null);
-        if (token!=null){
+        if (token!=null && idPost!=null){
             if (idPost.equals("upsocl123")){
                 sendMessage(message, contentTitle, idMessage);
             }else{

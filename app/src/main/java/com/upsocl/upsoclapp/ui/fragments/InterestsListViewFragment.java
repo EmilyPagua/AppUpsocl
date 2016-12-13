@@ -11,7 +11,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.upsocl.upsoclapp.R;
-import com.upsocl.upsoclapp.domain.Interests;
+import com.upsocl.upsoclapp.domain.Category;
+import com.upsocl.upsoclapp.domain.CategoryList;
 import com.upsocl.upsoclapp.ui.adapters.CustomArrayAdapter;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class InterestsListViewFragment  extends Fragment {
 
-    List<Interests> rows;
+    List<Category> rows;
 
     private SharedPreferences preferences;
 
@@ -59,18 +60,21 @@ public class InterestsListViewFragment  extends Fragment {
         map.size();
         rows= new ArrayList<>();
 
-        Interests obj;
+        Category obj;
 
         for (Map.Entry<String, ?> e: map.entrySet()) {
 
-            Interests interests = new Interests();
-            if (!e.getKey().equals(Interests.INTERESTS_SIZE)){
-                obj = new Interests().getInterestByID(Integer.valueOf(e.getKey()));
-                interests.setId(obj.getId());
-                interests.setTitle(obj.getTitle());
-                interests.setIsCheck(Boolean.valueOf(e.getValue().toString()));
-                interests.setImagen(obj.getImagen());
-                rows.add(interests);
+            if (!e.getKey().equals(CategoryList.INTERESTS_SIZE)){
+                Category category =  new Category();
+
+                obj = new CategoryList().getCategoryById(Integer.valueOf(e.getKey()));
+                if (obj.getImage()!=0){
+                    category.setId(obj.getId());
+                    category.setName(obj.getName());
+                    category.setCheck(Boolean.valueOf(e.getValue().toString()));
+                    category.setImage(obj.getImage());
+                    rows.add(category);
+                }
             }
         }
     }

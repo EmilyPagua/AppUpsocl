@@ -39,7 +39,7 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
     private LinearLayoutManager llm;
     private ProgressBar spinner;
     private TextView header_news;
-    private String categoryName;
+    private String category;
     private Boolean isHome;
 
     private SwipeRefreshLayout swipeContainer;
@@ -90,7 +90,7 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
                         super.onScrolled(recyclerView, dx, dy);
                         llm = (LinearLayoutManager) recyclerView.getLayoutManager();
                         int size = llm.getItemCount();
-                        if (size == llm.findLastCompletelyVisibleItemPosition() + 4) {
+                        if (size == llm.findLastCompletelyVisibleItemPosition() + 1) {
                             page = page + 1;
                             spinner.setVisibility(View.VISIBLE);
                             loadPosts(page);
@@ -126,17 +126,17 @@ public class HomePrimaryFragment extends Fragment implements Callback<ArrayList<
 
     public void loadPosts(Integer paged){
         if (isConnect())
-            WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+            WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(category, paged, this);
         else
             Toast.makeText(getContext(), "Verifique su conexión a red", Toast.LENGTH_SHORT).show();
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public void setHome(Boolean home) {

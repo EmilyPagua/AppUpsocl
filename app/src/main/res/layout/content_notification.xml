@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_notification"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="1dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="cl.upsocl.upsoclapp.NotificationActivity"
+    tools:showIn="@layout/activity_notification">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll_detail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/cardtextColor"
+            android:weightSum="1"
+            android:id="@+id/viewDetailLinear"
+            tools:ignore="WebViewLayout">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/heigny_image_detail"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder"
+                android:id="@+id/imageViewDetail"
+                tools:ignore="ContentDescription"
+                android:contentDescription="" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailTextView"
+                android:text="@string/notification_title"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:fontFamily="sans-serif"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:id="@+id/detail" />
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@color/verde"/>
+
+            <ProgressBar
+                android:id="@+id/progressNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleInverse"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal" />
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewNotificationUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                app:adSize="MEDIUM_RECTANGLE"
+                android:visibility="gone"
+                app:adUnitId="ca-mb-app-pub-7682123866908966/2346534963">
+            </com.google.android.gms.ads.AdView>
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/webView"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:adSize="MEDIUM_RECTANGLE"
+                android:visibility="gone"
+                app:adUnitId="ca-mb-app-pub-7682123866908966/7102497723"
+                android:layout_marginBottom="20dp">
+            </com.google.android.gms.ads.AdView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

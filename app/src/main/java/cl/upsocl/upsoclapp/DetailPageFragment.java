@@ -221,7 +221,6 @@ public class DetailPageFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.e(TAG + " swipeContainer", "refesh");
                 webViewNew.reload();
                 swipeContainer.setRefreshing(false);
             }
@@ -361,16 +360,6 @@ public class DetailPageFragment extends Fragment {
     @NonNull
     public String createContentHTML() {
         String topHTML = "<html><header> " + ViewConstants.HTML_HEAD+ "</header><body>";
-
-        String imageMainHTML = "<center><img align='middle' alt='Portada' class='wp-image-480065 size-full' " +
-                "height='605' itemprop='contentURL' sizes='(max-width: 728px) 100vw, 728px' src=" + news.getImage() + " width='728' > </center>";
-
-        String titleHTML = "<h2 style='text-align: justify;'><strong> " + news.getTitle() + "</strong></h2>";
-        String authorHTML = "<div class='entry-meta socialtop socialextra'>  " +
-                "Autor: <font color='#009688'>" + news.getAuthor() + "</font>.  " +
-                "El: <font color='#009688'> " + news.getDate() + " </font> ";
-        String categoryHTML = "<br/> Categorias: <font color='#009688'>" + news.getCategories() + "</font> </div> ";
-        String lineHTML = "<hr  color='#009688' />";
         String contentHTML = news.getContent();
         String bottomHTML = "</body> </html>";
 
@@ -380,6 +369,11 @@ public class DetailPageFragment extends Fragment {
     /** Called before the activity is destroyed */
    @Override
     public void onDestroy() {
+
+       Log.e(TAG + " loadImageView ", "DESTRUIR TODO");
+       if (webViewNew!=null){
+           webViewNew.clearView();
+       }
         if (mAdView != null) {
             mAdView.destroy();
         }
@@ -389,9 +383,14 @@ public class DetailPageFragment extends Fragment {
 
     @Override
     public void onPause() {
+        Log.e(TAG + " loadImageView ", "PAUSAR TODO");
         if (mAdView != null) {
             mAdView.pause();
         }
+        if (webViewNew!=null){
+            webViewNew.destroy();
+        }
+
         super.onPause();
     }
 

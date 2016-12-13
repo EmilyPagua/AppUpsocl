@@ -39,7 +39,7 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
     private LinearLayoutManager llm;
     private ProgressBar spinner;
     private TextView header_news;
-    private String categoryName;
+    private String category;
     private Boolean isHome;
 
     private SwipeRefreshLayout swipeContainer;
@@ -123,13 +123,13 @@ public class HomeSegundaryFragment extends Fragment implements Callback<ArrayLis
 
     public void loadPosts(Integer paged){
         if (isConnect())
-            WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(categoryName, paged, this);
+            WordpressApiAdapter.getApiService(ApiConstants.BASE_URL).getListByCategoryName(category, paged, this);
         else
             Toast.makeText(getContext(), "Verifique su conexión a red", Toast.LENGTH_SHORT).show();
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public void setHome(Boolean home) {

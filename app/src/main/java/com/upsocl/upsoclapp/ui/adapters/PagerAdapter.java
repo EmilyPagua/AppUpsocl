@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.upsocl.upsoclapp.domain.Interests;
-import com.upsocl.upsoclapp.keys.CategoryKeys;
+import com.upsocl.upsoclapp.domain.Category;
+import com.upsocl.upsoclapp.domain.CategoryList;
 import com.upsocl.upsoclapp.ui.fragments.HomePrimaryFragment;
 import com.upsocl.upsoclapp.ui.fragments.HomeSegundaryFragment;
 
@@ -19,6 +19,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
     private SharedPreferences prefs;
     private Boolean isHome;
+    private CategoryList categoryKeys = new CategoryList();
+
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -33,41 +35,40 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 HomePrimaryFragment homeLastNews = new HomePrimaryFragment();
                 homeLastNews.setHome(isHome);
                 return homeLastNews;
-
             case 1:
                 HomeSegundaryFragment homeNews = new HomeSegundaryFragment();
                 String filter= loadInterests();
-                homeNews.setCategoryName(filter);
+                homeNews.setCategory(filter);
                 homeNews.setHome(isHome);
                 return homeNews;
             case 2:
                 HomePrimaryFragment homeGreen = new HomePrimaryFragment();
-                homeGreen.setCategoryName(CategoryKeys.ID_CATEGORY_GREEN);
+                homeGreen.setCategory(String.valueOf(categoryKeys.getIdCategoryByName(CategoryList.OPT_GREEN).getId()));
                 homeGreen.setHome(isHome);
                 return homeGreen;
             case 3:
                 HomeSegundaryFragment homeCreativity = new HomeSegundaryFragment();
-                homeCreativity.setCategoryName(CategoryKeys.ID_CATEGORY_CREATIVITY);
+                homeCreativity.setCategory(String.valueOf(categoryKeys.getIdCategoryByName(CategoryList.OPT_CREATIVITY).getId()));
                 homeCreativity.setHome(isHome);
                 return homeCreativity;
             case 4:
                 HomePrimaryFragment  homeFood = new HomePrimaryFragment();
-                homeFood.setCategoryName(CategoryKeys.ID_CATEGORY_WOMEN);
+                homeFood.setCategory(String.valueOf(categoryKeys.getIdCategoryByName(CategoryList.OPT_WOMEN).getId()));
                 homeFood.setHome(isHome);
                 return homeFood;
             case 5:
                 HomeSegundaryFragment homeWomen = new HomeSegundaryFragment();
-                homeWomen.setCategoryName(CategoryKeys.ID_CATEGORY_FOOD);
+                homeWomen.setCategory(String.valueOf(categoryKeys.getIdCategoryByName(CategoryList.OPT_FOOD).getId()));
                 homeWomen.setHome(isHome);
                 return homeWomen;
             case 6:
                 HomePrimaryFragment homePopulary = new HomePrimaryFragment();
-                homePopulary.setCategoryName(CategoryKeys.ID_CATEGORY_POPULARY);
+                homePopulary.setCategory(String.valueOf(categoryKeys.getIdCategoryByName(CategoryList.OPT_POPULARY).getId()));
                 homePopulary.setHome(isHome);
                 return homePopulary;
             case 7:
                 HomeSegundaryFragment segundaryFragment = new HomeSegundaryFragment();
-                segundaryFragment.setCategoryName(CategoryKeys.ID_CATEGORY_QUIZ);
+                segundaryFragment.setCategory(String.valueOf(categoryKeys.getIdCategoryByName(CategoryList.OPT_QUIZ).getId()));
                 segundaryFragment.setHome(isHome);
                 return segundaryFragment;
             default:
@@ -90,19 +91,19 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         map.size();
         String filter = "";
 
-        Interests obj;
+        Category obj;
 
         for (Map.Entry<String, ?> e: map.entrySet()) {
 
-            if (!e.getKey().equals(Interests.INTERESTS_SIZE) &&
+            if (!e.getKey().equals(CategoryList.INTERESTS_SIZE) &&
                     e.getValue().equals(true)){
 
-                obj = new Interests().getInterestByID(Integer.valueOf(e.getKey()));
-                filter = filter.concat(obj.getNameCategory()+",");
+               // obj = categoryKeys.getIdCategoryById(Integer.valueOf(e.getKey()));
+                filter = filter.concat(e.getKey()+",");
             }
         }
         if (filter.equals(""))
-            return CategoryKeys.OPT_COMMUNITY;
+            return CategoryList.OPT_COMMUNITY;
         else
             return filter.substring(0, filter.length()-1);
     }
